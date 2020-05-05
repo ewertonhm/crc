@@ -19,3 +19,12 @@
 /fuel/app/logs/*/*/*
 /fuel/app/cache/*/*
 /fuel/app/config/crypt.php
+
+
+# IDEA PHPSTORM
+/.idea/
+
+
+# Composer
+composer.phar
+/vendor/
