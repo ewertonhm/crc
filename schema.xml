@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<database name="crc" defaultIdMethod="native" namespace="App/Model" defaultPhpNamingMethod="underscore">
-  <table name="agendamento" idMethod="native" phpName="Agendamento" namespace="App/Model">
+<database name="crc" defaultIdMethod="native" defaultPhpNamingMethod="underscore">
+  <table name="agendamento" idMethod="native" phpName="Agendamento">
     <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="agendamento" phpName="Agendamento" type="VARCHAR" size="45" required="true"/>
   </table>
-  <table name="atendente" idMethod="native" phpName="Atendente" namespace="App/Model">
+  <table name="atendente" idMethod="native" phpName="Atendente">
     <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="nome" phpName="Nome" type="VARCHAR" size="45" required="true"/>
     <column name="login" phpName="Login" type="VARCHAR" size="45" required="true"/>
     <column name="senha" phpName="Senha" type="VARCHAR" size="32" required="true"/>
     <column name="permissao" phpName="Permissao" type="INTEGER"/>
   </table>
-  <table name="atendimento" idMethod="native" phpName="Atendimento" namespace="App/Model">
+  <table name="atendimento" idMethod="native" phpName="Atendimento">
     <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="data" phpName="Data" type="VARCHAR" size="10" required="true"/>
     <column name="hora" phpName="Hora" type="VARCHAR" size="8" required="true"/>
@@ -59,7 +59,7 @@
       <reference local="tipo_id" foreign="id"/>
     </foreign-key>
   </table>
-  <table name="bairro" idMethod="native" phpName="Bairro" namespace="App/Model">
+  <table name="bairro" idMethod="native" phpName="Bairro">
     <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="nome" phpName="Nome" type="VARCHAR" size="60" required="true"/>
     <column name="cidade_id" phpName="CidadeId" type="INTEGER"/>
@@ -67,7 +67,7 @@
       <reference local="cidade_id" foreign="id"/>
     </foreign-key>
   </table>
-  <table name="cidade" idMethod="native" phpName="Cidade" namespace="App/Model">
+  <table name="cidade" idMethod="native" phpName="Cidade">
     <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="nome" phpName="Nome" type="VARCHAR" size="45" required="true"/>
     <column name="estado_id" phpName="EstadoId" type="INTEGER"/>
@@ -75,32 +75,32 @@
       <reference local="estado_id" foreign="id"/>
     </foreign-key>
   </table>
-  <table name="contato" idMethod="native" phpName="Contato" namespace="App/Model">
+  <table name="contato" idMethod="native" phpName="Contato">
     <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="contato" phpName="Contato" type="VARCHAR" size="45" required="true"/>
   </table>
-  <table name="contrato" idMethod="native" phpName="Contrato" namespace="App/Model">
+  <table name="contrato" idMethod="native" phpName="Contrato">
     <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="contrato" phpName="Contrato" type="VARCHAR" size="90" required="true"/>
   </table>
-  <table name="estado" idMethod="native" phpName="Estado" namespace="App/Model">
+  <table name="estado" idMethod="native" phpName="Estado">
     <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="nome" phpName="Nome" type="VARCHAR" size="45" required="true"/>
     <column name="uf" phpName="Uf" type="VARCHAR" size="45" required="true"/>
   </table>
-  <table name="motivo" idMethod="native" phpName="Motivo" namespace="App/Model">
+  <table name="motivo" idMethod="native" phpName="Motivo">
     <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="motivo" phpName="Motivo" type="VARCHAR" size="60" required="true"/>
   </table>
-  <table name="solicitacao" idMethod="native" phpName="Solicitacao" namespace="App/Model">
+  <table name="solicitacao" idMethod="native" phpName="Solicitacao">
     <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="solicitacao" phpName="Solicitacao" type="VARCHAR" size="60"/>
   </table>
-  <table name="tag" idMethod="native" phpName="Tag" namespace="App/Model">
+  <table name="tag" idMethod="native" phpName="Tag">
     <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="tag" phpName="Tag" type="VARCHAR" size="45" required="true"/>
   </table>
-  <table name="tipo" idMethod="native" phpName="Tipo" namespace="App/Model">
+  <table name="tipo" idMethod="native" phpName="Tipo">
     <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="tipo" phpName="Tipo" type="VARCHAR" size="45" required="true"/>
   </table>
