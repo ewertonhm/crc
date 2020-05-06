@@ -7,6 +7,8 @@ CREATE TABLE atendente (
     permissao INTEGER
 );
 
+INSERT INTO atendente (nome,login,senha,permissao) VALUES ('Administrador','admin','c289ffe12a30c94530b7fc4e532e2f42',0); -- senha é admin23
+
 CREATE TABLE agendamento (
     id SERIAL PRIMARY KEY,
     agendamento VARCHAR(45) NOT NULL
@@ -102,7 +104,7 @@ CREATE TABLE tag (
 
 CREATE TABLE solicitacao (
     id SERIAL PRIMARY KEY,
-    solicitacao VARCHAR(45)
+    solicitacao VARCHAR(60)
 );
 
 INSERT INTO solicitacao (solicitacao) VALUES ('Suporte');
@@ -112,10 +114,10 @@ INSERT INTO solicitacao (solicitacao) VALUES ('Alteração de Endereço');
 INSERT INTO solicitacao (solicitacao) VALUES ('Cancelamento');
 INSERT INTO solicitacao (solicitacao) VALUES ('Adesão');
 INSERT INTO solicitacao (solicitacao) VALUES ('Informações');
-INSERT INTO solicitacao (solicitacao) VALUES ('Informações');
-INSERT INTO solicitacao (solicitacao) VALUES ('Informações');
-INSERT INTO solicitacao (solicitacao) VALUES ('Informações');
-INSERT INTO solicitacao (solicitacao) VALUES ('Informações');
+INSERT INTO solicitacao (solicitacao) VALUES ('Financeiro');
+INSERT INTO solicitacao (solicitacao) VALUES ('Alteração Cadastral');
+INSERT INTO solicitacao (solicitacao) VALUES ('Outros');
+INSERT INTO solicitacao (solicitacao) VALUES ('Retenção');
 
 
 
@@ -126,17 +128,172 @@ CREATE TABLE estado (
     uf VARCHAR(45) NOT NULL
 );
 
+INSERT INTO estado (nome, uf) VALUES ('Paraná', 'PR');
+INSERT INTO estado (nome, uf) VALUES ('Santa Catarina', 'SC');
+
+
 CREATE TABLE cidade (
     id SERIAL PRIMARY KEY,
     nome VARCHAR(45) NOT NULL,
     estado_id INT REFERENCES estado(id)
 );
 
+INSERT INTO cidade (nome, estado_id) VALUES ('União da Vitória', 1);
+INSERT INTO cidade (nome, estado_id) VALUES ('Porto União', 2);
+INSERT INTO cidade (nome, estado_id) VALUES ('Paula Freitas', 1);
+INSERT INTO cidade (nome, estado_id) VALUES ('Irati', 1);
+INSERT INTO cidade (nome, estado_id) VALUES ('Mallet', 1);
+INSERT INTO cidade (nome, estado_id) VALUES ('Paulo Frontin', 1);
+INSERT INTO cidade (nome, estado_id) VALUES ('Curitiba', 1);
+
+
 CREATE TABLE bairro (
     id SERIAL PRIMARY KEY,
-    nome VARCHAR(45) NOT NULL ,
+    nome VARCHAR(60) NOT NULL ,
     cidade_id INT REFERENCES cidade(id)
 );
+
+INSERT INTO bairro (nome, cidade_id) VALUES ('Bela Vista',1);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Bento Munhoz da Rocha',1);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Bom Jesus',1);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Centro',1);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Cidade Jardim',1);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Cristo Rei',1);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Dona Mercedes',1);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Limeira',1);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Navegantes',1);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Nossa Senhora da Salete',1);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Nossa Senhora das Graças',1);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Ouro Verde',1);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Ponte Nova',1);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Rio d’Areia',1);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Rocio',1);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Sagrada Família',1);
+INSERT INTO bairro (nome, cidade_id) VALUES ('São Basílio Magno',1);
+INSERT INTO bairro (nome, cidade_id) VALUES ('São Bernardo',1);
+INSERT INTO bairro (nome, cidade_id) VALUES ('São Braz',1);
+INSERT INTO bairro (nome, cidade_id) VALUES ('São Gabriel',1);
+INSERT INTO bairro (nome, cidade_id) VALUES ('São Joaquim',1);
+INSERT INTO bairro (nome, cidade_id) VALUES ('São Sebastião',1);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Outro',1);
+
+INSERT INTO bairro (nome, cidade_id) VALUES ('Area Industrial', 2);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Boa Vista', 2);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Centro', 2);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Cidade Nova', 2);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Bela Vista', 2);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Jardim Brasília', 2);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Pintado', 2);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Porto União', 2);
+INSERT INTO bairro (nome, cidade_id) VALUES ('São Judas Tadeu', 2);
+INSERT INTO bairro (nome, cidade_id) VALUES ('São Miguel da Serra', 2);
+INSERT INTO bairro (nome, cidade_id) VALUES ('São Pedro', 2);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Santa Cruz do Timbo', 2);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Santa Rosa', 2);
+INSERT INTO bairro (nome, cidade_id) VALUES ('São Bernardo do Campo', 2);
+INSERT INTO bairro (nome, cidade_id) VALUES ('São Francisco', 2);
+INSERT INTO bairro (nome, cidade_id) VALUES ('São Miguel da Serra', 2);
+INSERT INTO bairro (nome, cidade_id) VALUES ('São Pedro', 2);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Vice-king', 2);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Outro', 2);
+
+INSERT INTO bairro (nome, cidade_id) VALUES ('Área Industrial', 3);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Barão 476', 3);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Centro', 3);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Colônia Dona Júlia', 3);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Colônioa Santa Luzia', 3);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Faxinal', 3);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Jarim Andreia', 3);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Jardim Maria Anísia', 3);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Localidade de Vargem Grande', 3);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Rondinha', 3);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Vila Ucraniana', 3);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Outro', 3);
+
+INSERT INTO bairro (nome, cidade_id) VALUES ('Alto da Lagoa', 4);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Bairro Industrial', 4);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Campina de Guamirim', 4);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Canesianas', 4);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Centro', 4);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Cochinhos', 4);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Colina Nossa Senhora das Graças', 4);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Contundo Fragatas', 4);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Dallegra', 4);
+INSERT INTO bairro (nome, cidade_id) VALUES ('DER', 4);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Engenheiro Gutierrez', 4);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Fernando Gomes', 4);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Floresta', 4);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Fósforo', 4);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Gonçalves Jr', 4);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Guamirim', 4);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Irati', 4);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Jardim Aeroporto', 4);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Jardim Califórnia', 4);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Jardim Kenidi', 4);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Jardim Ouro Verde', 4);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Jardim Planalto', 4);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Jardim Virgínia', 4);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Lagoa', 4);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Lajeadinho', 4);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Lamil', 4);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Largo', 4);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Linha Pinho', 4);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Loteamento Ouro Verde', 4);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Loteamento Pabis', 4);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Loteamento Pabis', 4);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Loteamento Vitório Marcelo', 4);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Luiz Fernando Gomes', 4);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Morro da Santa', 4);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Nhapindazal', 4);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Ouro Verde', 4);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Rio Bonito', 4);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Riozinho', 4);
+INSERT INTO bairro (nome, cidade_id) VALUES ('São Francisco', 4);
+INSERT INTO bairro (nome, cidade_id) VALUES ('São Pedro', 4);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Santa Terezinha', 4);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Santana', 4);
+INSERT INTO bairro (nome, cidade_id) VALUES ('São João', 4);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Stroparo', 4);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Vila Batista', 4);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Vila Flor', 4);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Vila Matilde', 4);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Vila Nova', 4);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Vila São João', 4);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Outro', 4);
+
+INSERT INTO bairro (nome, cidade_id) VALUES ('Dorizon', 5);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Eldorado', 5);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Jardim Emília', 5);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Centro', 5);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Rio Claro', 5);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Ronda', 5);
+INSERT INTO bairro (nome, cidade_id) VALUES ('São Pedro', 5);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Vila Caroline', 5);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Vila Lopacinski', 5);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Vila Maria', 5);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Vila Mariana', 5);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Vila São Pedro', 5);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Outro', 5);
+
+INSERT INTO bairro (nome, cidade_id) VALUES ('Alto Paraíso', 6);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Centro', 6);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Colonia Jacu', 6);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Colonia São Roque', 6);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Colonia Tancredo Neves', 6);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Vera Guarani', 6);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Outro', 6);
+
+INSERT INTO bairro (nome, cidade_id) VALUES ('Araucária', 7);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Barigui', 7);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Boa Vista', 7);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Boqueirão', 7);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Butiatuva', 7);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Cachoeira', 7);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Campina da Barra', 7);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Centro', 7);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Sabiá', 7);
+INSERT INTO bairro (nome, cidade_id) VALUES ('Outro', 7);
+
 
 CREATE TABLE atendimento (
     id SERIAL PRIMARY KEY,
