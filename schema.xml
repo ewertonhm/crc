@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<database name="default" defaultIdMethod="native" namespace="App" defaultPhpNamingMethod="underscore">
+  <table name="agendamento" idMethod="native" phpName="Agendamento" namespace="App">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="agendamento" phpName="Agendamento" type="VARCHAR" size="45" required="true"/>
+  </table>
+  <table name="atendente" idMethod="native" phpName="Atendente" namespace="App">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="nome" phpName="Nome" type="VARCHAR" size="45" required="true"/>
+    <column name="login" phpName="Login" type="VARCHAR" size="45" required="true"/>
+    <column name="senha" phpName="Senha" type="VARCHAR" size="32" required="true"/>
+    <column name="permissao" phpName="Permissao" type="INTEGER"/>
+  </table>
+  <table name="atendimento" idMethod="native" phpName="Atendimento" namespace="App">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="data" phpName="Data" type="VARCHAR" size="10" required="true"/>
+    <column name="hora" phpName="Hora" type="VARCHAR" size="8" required="true"/>
+    <column name="cadastro" phpName="Cadastro" type="INTEGER"/>
+    <column name="cliente" phpName="Cliente" type="VARCHAR" size="100" required="true"/>
+    <column name="tipo_id" phpName="TipoId" type="INTEGER"/>
+    <column name="bairro_id" phpName="BairroId" type="INTEGER"/>
+    <column name="cidade_id" phpName="CidadeId" type="INTEGER"/>
+    <column name="estado_id" phpName="EstadoId" type="INTEGER"/>
+    <column name="contato_id" phpName="ContatoId" type="INTEGER"/>
+    <column name="solicitacao_id" phpName="SolicitacaoId" type="INTEGER"/>
+    <column name="motivo_id" phpName="MotivoId" type="INTEGER"/>
+    <column name="contrato_id" phpName="ContratoId" type="INTEGER"/>
+    <column name="agendamento_id" phpName="AgendamentoId" type="INTEGER"/>
+    <column name="telefone" phpName="Telefone" type="VARCHAR" size="13" required="true"/>
+    <column name="tag_id" phpName="TagId" type="INTEGER"/>
+    <foreign-key foreignTable="agendamento" name="atendimento_agendamento_id_fkey">
+      <reference local="agendamento_id" foreign="id"/>
+    </foreign-key>
+    <foreign-key foreignTable="bairro" name="atendimento_bairro_id_fkey">
+      <reference local="bairro_id" foreign="id"/>
+    </foreign-key>
+    <foreign-key foreignTable="cidade" name="atendimento_cidade_id_fkey">
+      <reference local="cidade_id" foreign="id"/>
+    </foreign-key>
+    <foreign-key foreignTable="contato" name="atendimento_contato_id_fkey">
+      <reference local="contato_id" foreign="id"/>
+    </foreign-key>
+    <foreign-key foreignTable="contato" name="atendimento_contrato_id_fkey">
+      <reference local="contrato_id" foreign="id"/>
+    </foreign-key>
+    <foreign-key foreignTable="estado" name="atendimento_estado_id_fkey">
+      <reference local="estado_id" foreign="id"/>
+    </foreign-key>
+    <foreign-key foreignTable="motivo" name="atendimento_motivo_id_fkey">
+      <reference local="motivo_id" foreign="id"/>
+    </foreign-key>
+    <foreign-key foreignTable="solicitacao" name="atendimento_solicitacao_id_fkey">
+      <reference local="solicitacao_id" foreign="id"/>
+    </foreign-key>
+    <foreign-key foreignTable="tag" name="atendimento_tag_id_fkey">
+      <reference local="tag_id" foreign="id"/>
+    </foreign-key>
+    <foreign-key foreignTable="tipo" name="atendimento_tipo_id_fkey">
+      <reference local="tipo_id" foreign="id"/>
+    </foreign-key>
+  </table>
+  <table name="bairro" idMethod="native" phpName="Bairro" namespace="App">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="nome" phpName="Nome" type="VARCHAR" size="60" required="true"/>
+    <column name="cidade_id" phpName="CidadeId" type="INTEGER"/>
+    <foreign-key foreignTable="cidade" name="bairro_cidade_id_fkey">
+      <reference local="cidade_id" foreign="id"/>
+    </foreign-key>
+  </table>
+  <table name="cidade" idMethod="native" phpName="Cidade" namespace="App">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="nome" phpName="Nome" type="VARCHAR" size="45" required="true"/>
+    <column name="estado_id" phpName="EstadoId" type="INTEGER"/>
+    <foreign-key foreignTable="estado" name="cidade_estado_id_fkey">
+      <reference local="estado_id" foreign="id"/>
+    </foreign-key>
+  </table>
+  <table name="contato" idMethod="native" phpName="Contato" namespace="App">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="contato" phpName="Contato" type="VARCHAR" size="45" required="true"/>
+  </table>
+  <table name="contrato" idMethod="native" phpName="Contrato" namespace="App">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="contrato" phpName="Contrato" type="VARCHAR" size="90" required="true"/>
+  </table>
+  <table name="estado" idMethod="native" phpName="Estado" namespace="App">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="nome" phpName="Nome" type="VARCHAR" size="45" required="true"/>
+    <column name="uf" phpName="Uf" type="VARCHAR" size="45" required="true"/>
+  </table>
+  <table name="motivo" idMethod="native" phpName="Motivo" namespace="App">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="motivo" phpName="Motivo" type="VARCHAR" size="60" required="true"/>
+  </table>
+  <table name="solicitacao" idMethod="native" phpName="Solicitacao" namespace="App">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="solicitacao" phpName="Solicitacao" type="VARCHAR" size="60"/>
+  </table>
+  <table name="tag" idMethod="native" phpName="Tag" namespace="App">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="tag" phpName="Tag" type="VARCHAR" size="45" required="true"/>
+  </table>
+  <table name="tipo" idMethod="native" phpName="Tipo" namespace="App">
+    <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
+    <column name="tipo" phpName="Tipo" type="VARCHAR" size="45" required="true"/>
+  </table>
+</database>
