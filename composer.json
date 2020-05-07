@@ -1,8 +1,11 @@
 {
-  "require": {
-    "propel/propel": "~2.0@dev"
-  },
   "autoload": {
-    "psr-0": {"App\\": "App/"}
+    "classmap": ["classes/"]
+  },
+  "require": {
+    "ext-pdo": "*",
+    "propel/propel": "~2.0@dev",
+    "nesbot/carbon": "^2.24",
+    "monolog/monolog": "^2.0"
   }
 }

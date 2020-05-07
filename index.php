@@ -1,7 +1,9 @@
 <?php
 
-require "vendor/autoload.php";
+require_once "config.php";
 
-$cidade = \App\App\CidadeQuery::create()->findByNome('União da Vitória');
+$cidade = new CidadeQuery();
+$q = $cidade->findPk(1);
+
 echo "<pre>";
-var_dump($cidade);
+echo $q->getNome();
