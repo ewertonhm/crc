@@ -308,7 +308,7 @@ CREATE TABLE atendimento (
     contato_id INT REFERENCES contato(id),
     solicitacao_id INT REFERENCES solicitacao(id),
     motivo_id INT REFERENCES motivo(id),
-    contrato_id INT REFERENCES contato(id),
+    contrato_id INT REFERENCES contrato(id),
     agendamento_id INT REFERENCES agendamento(id),
     telefone VARCHAR(40) NOT NULL,
     tag_id INT REFERENCES tag(id)
