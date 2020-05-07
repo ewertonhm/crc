@@ -310,6 +310,6 @@ CREATE TABLE atendimento (
     motivo_id INT REFERENCES motivo(id),
     contrato_id INT REFERENCES contato(id),
     agendamento_id INT REFERENCES agendamento(id),
-    telefone VARCHAR(13) NOT NULL,
+    telefone VARCHAR(40) NOT NULL,
     tag_id INT REFERENCES tag(id)
 );
