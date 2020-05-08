@@ -4,6 +4,8 @@ namespace Base;
 
 use \Agendamento as ChildAgendamento;
 use \AgendamentoQuery as ChildAgendamentoQuery;
+use \Atendente as ChildAtendente;
+use \AtendenteQuery as ChildAtendenteQuery;
 use \AtendimentoQuery as ChildAtendimentoQuery;
 use \Bairro as ChildBairro;
 use \BairroQuery as ChildBairroQuery;
@@ -11,6 +13,8 @@ use \Cidade as ChildCidade;
 use \CidadeQuery as ChildCidadeQuery;
 use \Contato as ChildContato;
 use \ContatoQuery as ChildContatoQuery;
+use \Contrato as ChildContrato;
+use \ContratoQuery as ChildContratoQuery;
 use \Estado as ChildEstado;
 use \EstadoQuery as ChildEstadoQuery;
 use \Motivo as ChildMotivo;
@@ -176,6 +180,13 @@ abstract class Atendimento implements ActiveRecordInterface
     protected $agendamento_id;
 
     /**
+     * The value for the atendente_id field.
+     *
+     * @var        int
+     */
+    protected $atendente_id;
+
+    /**
      * The value for the telefone field.
      *
      * @var        string
@@ -195,6 +206,11 @@ abstract class Atendimento implements ActiveRecordInterface
     protected $aAgendamento;
 
     /**
+     * @var        ChildAtendente
+     */
+    protected $aAtendente;
+
+    /**
      * @var        ChildBairro
      */
     protected $aBairro;
@@ -207,12 +223,12 @@ abstract class Atendimento implements ActiveRecordInterface
     /**
      * @var        ChildContato
      */
-    protected $aContatoRelatedByContatoId;
+    protected $aContato;
 
     /**
-     * @var        ChildContato
+     * @var        ChildContrato
      */
-    protected $aContatoRelatedByContratoId;
+    protected $aContrato;
 
     /**
      * @var        ChildEstado
@@ -613,6 +629,16 @@ abstract class Atendimento implements ActiveRecordInterface
     }
 
     /**
+     * Get the [atendente_id] column value.
+     *
+     * @return int
+     */
+    public function getAtendenteId()
+    {
+        return $this->atendente_id;
+    }
+
+    /**
      * Get the [telefone] column value.
      *
      * @return string
@@ -845,8 +871,8 @@ abstract class Atendimento implements ActiveRecordInterface
             $this->modifiedColumns[AtendimentoTableMap::COL_CONTATO_ID] = true;
         }
 
-        if ($this->aContatoRelatedByContatoId !== null && $this->aContatoRelatedByContatoId->getId() !== $v) {
-            $this->aContatoRelatedByContatoId = null;
+        if ($this->aContato !== null && $this->aContato->getId() !== $v) {
+            $this->aContato = null;
         }
 
         return $this;
@@ -917,8 +943,8 @@ abstract class Atendimento implements ActiveRecordInterface
             $this->modifiedColumns[AtendimentoTableMap::COL_CONTRATO_ID] = true;
         }
 
-        if ($this->aContatoRelatedByContratoId !== null && $this->aContatoRelatedByContratoId->getId() !== $v) {
-            $this->aContatoRelatedByContratoId = null;
+        if ($this->aContrato !== null && $this->aContrato->getId() !== $v) {
+            $this->aContrato = null;
         }
 
         return $this;
@@ -947,6 +973,30 @@ abstract class Atendimento implements ActiveRecordInterface
 
         return $this;
     } // setAgendamentoId()
+
+    /**
+     * Set the value of [atendente_id] column.
+     *
+     * @param int $v new value
+     * @return $this|\Atendimento The current object (for fluent API support)
+     */
+    public function setAtendenteId($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->atendente_id !== $v) {
+            $this->atendente_id = $v;
+            $this->modifiedColumns[AtendimentoTableMap::COL_ATENDENTE_ID] = true;
+        }
+
+        if ($this->aAtendente !== null && $this->aAtendente->getId() !== $v) {
+            $this->aAtendente = null;
+        }
+
+        return $this;
+    } // setAtendenteId()
 
     /**
      * Set the value of [telefone] column.
@@ -1070,10 +1120,13 @@ abstract class Atendimento implements ActiveRecordInterface
             $col = $row[TableMap::TYPE_NUM == $indexType ? 13 + $startcol : AtendimentoTableMap::translateFieldName('AgendamentoId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->agendamento_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 14 + $startcol : AtendimentoTableMap::translateFieldName('Telefone', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 14 + $startcol : AtendimentoTableMap::translateFieldName('AtendenteId', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->atendente_id = (null !== $col) ? (int) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 15 + $startcol : AtendimentoTableMap::translateFieldName('Telefone', TableMap::TYPE_PHPNAME, $indexType)];
             $this->telefone = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 15 + $startcol : AtendimentoTableMap::translateFieldName('TagId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 16 + $startcol : AtendimentoTableMap::translateFieldName('TagId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->tag_id = (null !== $col) ? (int) $col : null;
             $this->resetModified();
 
@@ -1083,7 +1136,7 @@ abstract class Atendimento implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 16; // 16 = AtendimentoTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 17; // 17 = AtendimentoTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\Atendimento'), 0, $e);
@@ -1117,8 +1170,8 @@ abstract class Atendimento implements ActiveRecordInterface
         if ($this->aEstado !== null && $this->estado_id !== $this->aEstado->getId()) {
             $this->aEstado = null;
         }
-        if ($this->aContatoRelatedByContatoId !== null && $this->contato_id !== $this->aContatoRelatedByContatoId->getId()) {
-            $this->aContatoRelatedByContatoId = null;
+        if ($this->aContato !== null && $this->contato_id !== $this->aContato->getId()) {
+            $this->aContato = null;
         }
         if ($this->aSolicitacao !== null && $this->solicitacao_id !== $this->aSolicitacao->getId()) {
             $this->aSolicitacao = null;
@@ -1126,11 +1179,14 @@ abstract class Atendimento implements ActiveRecordInterface
         if ($this->aMotivo !== null && $this->motivo_id !== $this->aMotivo->getId()) {
             $this->aMotivo = null;
         }
-        if ($this->aContatoRelatedByContratoId !== null && $this->contrato_id !== $this->aContatoRelatedByContratoId->getId()) {
-            $this->aContatoRelatedByContratoId = null;
+        if ($this->aContrato !== null && $this->contrato_id !== $this->aContrato->getId()) {
+            $this->aContrato = null;
         }
         if ($this->aAgendamento !== null && $this->agendamento_id !== $this->aAgendamento->getId()) {
             $this->aAgendamento = null;
+        }
+        if ($this->aAtendente !== null && $this->atendente_id !== $this->aAtendente->getId()) {
+            $this->aAtendente = null;
         }
         if ($this->aTag !== null && $this->tag_id !== $this->aTag->getId()) {
             $this->aTag = null;
@@ -1175,10 +1231,11 @@ abstract class Atendimento implements ActiveRecordInterface
         if ($deep) {  // also de-associate any related objects?
 
             $this->aAgendamento = null;
+            $this->aAtendente = null;
             $this->aBairro = null;
             $this->aCidade = null;
-            $this->aContatoRelatedByContatoId = null;
-            $this->aContatoRelatedByContratoId = null;
+            $this->aContato = null;
+            $this->aContrato = null;
             $this->aEstado = null;
             $this->aMotivo = null;
             $this->aSolicitacao = null;
@@ -1299,6 +1356,13 @@ abstract class Atendimento implements ActiveRecordInterface
                 $this->setAgendamento($this->aAgendamento);
             }
 
+            if ($this->aAtendente !== null) {
+                if ($this->aAtendente->isModified() || $this->aAtendente->isNew()) {
+                    $affectedRows += $this->aAtendente->save($con);
+                }
+                $this->setAtendente($this->aAtendente);
+            }
+
             if ($this->aBairro !== null) {
                 if ($this->aBairro->isModified() || $this->aBairro->isNew()) {
                     $affectedRows += $this->aBairro->save($con);
@@ -1313,18 +1377,18 @@ abstract class Atendimento implements ActiveRecordInterface
                 $this->setCidade($this->aCidade);
             }
 
-            if ($this->aContatoRelatedByContatoId !== null) {
-                if ($this->aContatoRelatedByContatoId->isModified() || $this->aContatoRelatedByContatoId->isNew()) {
-                    $affectedRows += $this->aContatoRelatedByContatoId->save($con);
+            if ($this->aContato !== null) {
+                if ($this->aContato->isModified() || $this->aContato->isNew()) {
+                    $affectedRows += $this->aContato->save($con);
                 }
-                $this->setContatoRelatedByContatoId($this->aContatoRelatedByContatoId);
+                $this->setContato($this->aContato);
             }
 
-            if ($this->aContatoRelatedByContratoId !== null) {
-                if ($this->aContatoRelatedByContratoId->isModified() || $this->aContatoRelatedByContratoId->isNew()) {
-                    $affectedRows += $this->aContatoRelatedByContratoId->save($con);
+            if ($this->aContrato !== null) {
+                if ($this->aContrato->isModified() || $this->aContrato->isNew()) {
+                    $affectedRows += $this->aContrato->save($con);
                 }
-                $this->setContatoRelatedByContratoId($this->aContatoRelatedByContratoId);
+                $this->setContrato($this->aContrato);
             }
 
             if ($this->aEstado !== null) {
@@ -1450,6 +1514,9 @@ abstract class Atendimento implements ActiveRecordInterface
         if ($this->isColumnModified(AtendimentoTableMap::COL_AGENDAMENTO_ID)) {
             $modifiedColumns[':p' . $index++]  = 'agendamento_id';
         }
+        if ($this->isColumnModified(AtendimentoTableMap::COL_ATENDENTE_ID)) {
+            $modifiedColumns[':p' . $index++]  = 'atendente_id';
+        }
         if ($this->isColumnModified(AtendimentoTableMap::COL_TELEFONE)) {
             $modifiedColumns[':p' . $index++]  = 'telefone';
         }
@@ -1508,6 +1575,9 @@ abstract class Atendimento implements ActiveRecordInterface
                         break;
                     case 'agendamento_id':
                         $stmt->bindValue($identifier, $this->agendamento_id, PDO::PARAM_INT);
+                        break;
+                    case 'atendente_id':
+                        $stmt->bindValue($identifier, $this->atendente_id, PDO::PARAM_INT);
                         break;
                     case 'telefone':
                         $stmt->bindValue($identifier, $this->telefone, PDO::PARAM_STR);
@@ -1613,9 +1683,12 @@ abstract class Atendimento implements ActiveRecordInterface
                 return $this->getAgendamentoId();
                 break;
             case 14:
-                return $this->getTelefone();
+                return $this->getAtendenteId();
                 break;
             case 15:
+                return $this->getTelefone();
+                break;
+            case 16:
                 return $this->getTagId();
                 break;
             default:
@@ -1662,8 +1735,9 @@ abstract class Atendimento implements ActiveRecordInterface
             $keys[11] => $this->getMotivoId(),
             $keys[12] => $this->getContratoId(),
             $keys[13] => $this->getAgendamentoId(),
-            $keys[14] => $this->getTelefone(),
-            $keys[15] => $this->getTagId(),
+            $keys[14] => $this->getAtendenteId(),
+            $keys[15] => $this->getTelefone(),
+            $keys[16] => $this->getTagId(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1685,6 +1759,21 @@ abstract class Atendimento implements ActiveRecordInterface
                 }
 
                 $result[$key] = $this->aAgendamento->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+            if (null !== $this->aAtendente) {
+
+                switch ($keyType) {
+                    case TableMap::TYPE_CAMELNAME:
+                        $key = 'atendente';
+                        break;
+                    case TableMap::TYPE_FIELDNAME:
+                        $key = 'atendente';
+                        break;
+                    default:
+                        $key = 'Atendente';
+                }
+
+                $result[$key] = $this->aAtendente->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
             if (null !== $this->aBairro) {
 
@@ -1716,7 +1805,7 @@ abstract class Atendimento implements ActiveRecordInterface
 
                 $result[$key] = $this->aCidade->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
-            if (null !== $this->aContatoRelatedByContatoId) {
+            if (null !== $this->aContato) {
 
                 switch ($keyType) {
                     case TableMap::TYPE_CAMELNAME:
@@ -1729,22 +1818,22 @@ abstract class Atendimento implements ActiveRecordInterface
                         $key = 'Contato';
                 }
 
-                $result[$key] = $this->aContatoRelatedByContatoId->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+                $result[$key] = $this->aContato->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
-            if (null !== $this->aContatoRelatedByContratoId) {
+            if (null !== $this->aContrato) {
 
                 switch ($keyType) {
                     case TableMap::TYPE_CAMELNAME:
-                        $key = 'contato';
+                        $key = 'contrato';
                         break;
                     case TableMap::TYPE_FIELDNAME:
-                        $key = 'contato';
+                        $key = 'contrato';
                         break;
                     default:
-                        $key = 'Contato';
+                        $key = 'Contrato';
                 }
 
-                $result[$key] = $this->aContatoRelatedByContratoId->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+                $result[$key] = $this->aContrato->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
             }
             if (null !== $this->aEstado) {
 
@@ -1898,9 +1987,12 @@ abstract class Atendimento implements ActiveRecordInterface
                 $this->setAgendamentoId($value);
                 break;
             case 14:
-                $this->setTelefone($value);
+                $this->setAtendenteId($value);
                 break;
             case 15:
+                $this->setTelefone($value);
+                break;
+            case 16:
                 $this->setTagId($value);
                 break;
         } // switch()
@@ -1972,10 +2064,13 @@ abstract class Atendimento implements ActiveRecordInterface
             $this->setAgendamentoId($arr[$keys[13]]);
         }
         if (array_key_exists($keys[14], $arr)) {
-            $this->setTelefone($arr[$keys[14]]);
+            $this->setAtendenteId($arr[$keys[14]]);
         }
         if (array_key_exists($keys[15], $arr)) {
-            $this->setTagId($arr[$keys[15]]);
+            $this->setTelefone($arr[$keys[15]]);
+        }
+        if (array_key_exists($keys[16], $arr)) {
+            $this->setTagId($arr[$keys[16]]);
         }
     }
 
@@ -2059,6 +2154,9 @@ abstract class Atendimento implements ActiveRecordInterface
         }
         if ($this->isColumnModified(AtendimentoTableMap::COL_AGENDAMENTO_ID)) {
             $criteria->add(AtendimentoTableMap::COL_AGENDAMENTO_ID, $this->agendamento_id);
+        }
+        if ($this->isColumnModified(AtendimentoTableMap::COL_ATENDENTE_ID)) {
+            $criteria->add(AtendimentoTableMap::COL_ATENDENTE_ID, $this->atendente_id);
         }
         if ($this->isColumnModified(AtendimentoTableMap::COL_TELEFONE)) {
             $criteria->add(AtendimentoTableMap::COL_TELEFONE, $this->telefone);
@@ -2165,6 +2263,7 @@ abstract class Atendimento implements ActiveRecordInterface
         $copyObj->setMotivoId($this->getMotivoId());
         $copyObj->setContratoId($this->getContratoId());
         $copyObj->setAgendamentoId($this->getAgendamentoId());
+        $copyObj->setAtendenteId($this->getAtendenteId());
         $copyObj->setTelefone($this->getTelefone());
         $copyObj->setTagId($this->getTagId());
         if ($makeNew) {
@@ -2244,6 +2343,57 @@ abstract class Atendimento implements ActiveRecordInterface
         }
 
         return $this->aAgendamento;
+    }
+
+    /**
+     * Declares an association between this object and a ChildAtendente object.
+     *
+     * @param  ChildAtendente $v
+     * @return $this|\Atendimento The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setAtendente(ChildAtendente $v = null)
+    {
+        if ($v === null) {
+            $this->setAtendenteId(NULL);
+        } else {
+            $this->setAtendenteId($v->getId());
+        }
+
+        $this->aAtendente = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the ChildAtendente object, it will not be re-added.
+        if ($v !== null) {
+            $v->addAtendimento($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated ChildAtendente object
+     *
+     * @param  ConnectionInterface $con Optional Connection object.
+     * @return ChildAtendente The associated ChildAtendente object.
+     * @throws PropelException
+     */
+    public function getAtendente(ConnectionInterface $con = null)
+    {
+        if ($this->aAtendente === null && ($this->atendente_id != 0)) {
+            $this->aAtendente = ChildAtendenteQuery::create()->findPk($this->atendente_id, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aAtendente->addAtendimentos($this);
+             */
+        }
+
+        return $this->aAtendente;
     }
 
     /**
@@ -2355,7 +2505,7 @@ abstract class Atendimento implements ActiveRecordInterface
      * @return $this|\Atendimento The current object (for fluent API support)
      * @throws PropelException
      */
-    public function setContatoRelatedByContatoId(ChildContato $v = null)
+    public function setContato(ChildContato $v = null)
     {
         if ($v === null) {
             $this->setContatoId(NULL);
@@ -2363,12 +2513,12 @@ abstract class Atendimento implements ActiveRecordInterface
             $this->setContatoId($v->getId());
         }
 
-        $this->aContatoRelatedByContatoId = $v;
+        $this->aContato = $v;
 
         // Add binding for other direction of this n:n relationship.
         // If this object has already been added to the ChildContato object, it will not be re-added.
         if ($v !== null) {
-            $v->addAtendimentoRelatedByContatoId($this);
+            $v->addAtendimento($this);
         }
 
 
@@ -2383,30 +2533,30 @@ abstract class Atendimento implements ActiveRecordInterface
      * @return ChildContato The associated ChildContato object.
      * @throws PropelException
      */
-    public function getContatoRelatedByContatoId(ConnectionInterface $con = null)
+    public function getContato(ConnectionInterface $con = null)
     {
-        if ($this->aContatoRelatedByContatoId === null && ($this->contato_id != 0)) {
-            $this->aContatoRelatedByContatoId = ChildContatoQuery::create()->findPk($this->contato_id, $con);
+        if ($this->aContato === null && ($this->contato_id != 0)) {
+            $this->aContato = ChildContatoQuery::create()->findPk($this->contato_id, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
                 to this object.  This level of coupling may, however, be
                 undesirable since it could result in an only partially populated collection
                 in the referenced object.
-                $this->aContatoRelatedByContatoId->addAtendimentosRelatedByContatoId($this);
+                $this->aContato->addAtendimentos($this);
              */
         }
 
-        return $this->aContatoRelatedByContatoId;
+        return $this->aContato;
     }
 
     /**
-     * Declares an association between this object and a ChildContato object.
+     * Declares an association between this object and a ChildContrato object.
      *
-     * @param  ChildContato $v
+     * @param  ChildContrato $v
      * @return $this|\Atendimento The current object (for fluent API support)
      * @throws PropelException
      */
-    public function setContatoRelatedByContratoId(ChildContato $v = null)
+    public function setContrato(ChildContrato $v = null)
     {
         if ($v === null) {
             $this->setContratoId(NULL);
@@ -2414,12 +2564,12 @@ abstract class Atendimento implements ActiveRecordInterface
             $this->setContratoId($v->getId());
         }
 
-        $this->aContatoRelatedByContratoId = $v;
+        $this->aContrato = $v;
 
         // Add binding for other direction of this n:n relationship.
-        // If this object has already been added to the ChildContato object, it will not be re-added.
+        // If this object has already been added to the ChildContrato object, it will not be re-added.
         if ($v !== null) {
-            $v->addAtendimentoRelatedByContratoId($this);
+            $v->addAtendimento($this);
         }
 
 
@@ -2428,26 +2578,26 @@ abstract class Atendimento implements ActiveRecordInterface
 
 
     /**
-     * Get the associated ChildContato object
+     * Get the associated ChildContrato object
      *
      * @param  ConnectionInterface $con Optional Connection object.
-     * @return ChildContato The associated ChildContato object.
+     * @return ChildContrato The associated ChildContrato object.
      * @throws PropelException
      */
-    public function getContatoRelatedByContratoId(ConnectionInterface $con = null)
+    public function getContrato(ConnectionInterface $con = null)
     {
-        if ($this->aContatoRelatedByContratoId === null && ($this->contrato_id != 0)) {
-            $this->aContatoRelatedByContratoId = ChildContatoQuery::create()->findPk($this->contrato_id, $con);
+        if ($this->aContrato === null && ($this->contrato_id != 0)) {
+            $this->aContrato = ChildContratoQuery::create()->findPk($this->contrato_id, $con);
             /* The following can be used additionally to
                 guarantee the related object contains a reference
                 to this object.  This level of coupling may, however, be
                 undesirable since it could result in an only partially populated collection
                 in the referenced object.
-                $this->aContatoRelatedByContratoId->addAtendimentosRelatedByContratoId($this);
+                $this->aContrato->addAtendimentos($this);
              */
         }
 
-        return $this->aContatoRelatedByContratoId;
+        return $this->aContrato;
     }
 
     /**
@@ -2715,17 +2865,20 @@ abstract class Atendimento implements ActiveRecordInterface
         if (null !== $this->aAgendamento) {
             $this->aAgendamento->removeAtendimento($this);
         }
+        if (null !== $this->aAtendente) {
+            $this->aAtendente->removeAtendimento($this);
+        }
         if (null !== $this->aBairro) {
             $this->aBairro->removeAtendimento($this);
         }
         if (null !== $this->aCidade) {
             $this->aCidade->removeAtendimento($this);
         }
-        if (null !== $this->aContatoRelatedByContatoId) {
-            $this->aContatoRelatedByContatoId->removeAtendimentoRelatedByContatoId($this);
+        if (null !== $this->aContato) {
+            $this->aContato->removeAtendimento($this);
         }
-        if (null !== $this->aContatoRelatedByContratoId) {
-            $this->aContatoRelatedByContratoId->removeAtendimentoRelatedByContratoId($this);
+        if (null !== $this->aContrato) {
+            $this->aContrato->removeAtendimento($this);
         }
         if (null !== $this->aEstado) {
             $this->aEstado->removeAtendimento($this);
@@ -2756,6 +2909,7 @@ abstract class Atendimento implements ActiveRecordInterface
         $this->motivo_id = null;
         $this->contrato_id = null;
         $this->agendamento_id = null;
+        $this->atendente_id = null;
         $this->telefone = null;
         $this->tag_id = null;
         $this->alreadyInSave = false;
@@ -2779,10 +2933,11 @@ abstract class Atendimento implements ActiveRecordInterface
         } // if ($deep)
 
         $this->aAgendamento = null;
+        $this->aAtendente = null;
         $this->aBairro = null;
         $this->aCidade = null;
-        $this->aContatoRelatedByContatoId = null;
-        $this->aContatoRelatedByContratoId = null;
+        $this->aContato = null;
+        $this->aContrato = null;
         $this->aEstado = null;
         $this->aMotivo = null;
         $this->aSolicitacao = null;

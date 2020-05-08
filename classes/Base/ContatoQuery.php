@@ -34,25 +34,15 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildContatoQuery rightJoinWith($relation) Adds a RIGHT JOIN clause and with to the query
  * @method     ChildContatoQuery innerJoinWith($relation) Adds a INNER JOIN clause and with to the query
  *
- * @method     ChildContatoQuery leftJoinAtendimentoRelatedByContatoId($relationAlias = null) Adds a LEFT JOIN clause to the query using the AtendimentoRelatedByContatoId relation
- * @method     ChildContatoQuery rightJoinAtendimentoRelatedByContatoId($relationAlias = null) Adds a RIGHT JOIN clause to the query using the AtendimentoRelatedByContatoId relation
- * @method     ChildContatoQuery innerJoinAtendimentoRelatedByContatoId($relationAlias = null) Adds a INNER JOIN clause to the query using the AtendimentoRelatedByContatoId relation
+ * @method     ChildContatoQuery leftJoinAtendimento($relationAlias = null) Adds a LEFT JOIN clause to the query using the Atendimento relation
+ * @method     ChildContatoQuery rightJoinAtendimento($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Atendimento relation
+ * @method     ChildContatoQuery innerJoinAtendimento($relationAlias = null) Adds a INNER JOIN clause to the query using the Atendimento relation
  *
- * @method     ChildContatoQuery joinWithAtendimentoRelatedByContatoId($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the AtendimentoRelatedByContatoId relation
+ * @method     ChildContatoQuery joinWithAtendimento($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the Atendimento relation
  *
- * @method     ChildContatoQuery leftJoinWithAtendimentoRelatedByContatoId() Adds a LEFT JOIN clause and with to the query using the AtendimentoRelatedByContatoId relation
- * @method     ChildContatoQuery rightJoinWithAtendimentoRelatedByContatoId() Adds a RIGHT JOIN clause and with to the query using the AtendimentoRelatedByContatoId relation
- * @method     ChildContatoQuery innerJoinWithAtendimentoRelatedByContatoId() Adds a INNER JOIN clause and with to the query using the AtendimentoRelatedByContatoId relation
- *
- * @method     ChildContatoQuery leftJoinAtendimentoRelatedByContratoId($relationAlias = null) Adds a LEFT JOIN clause to the query using the AtendimentoRelatedByContratoId relation
- * @method     ChildContatoQuery rightJoinAtendimentoRelatedByContratoId($relationAlias = null) Adds a RIGHT JOIN clause to the query using the AtendimentoRelatedByContratoId relation
- * @method     ChildContatoQuery innerJoinAtendimentoRelatedByContratoId($relationAlias = null) Adds a INNER JOIN clause to the query using the AtendimentoRelatedByContratoId relation
- *
- * @method     ChildContatoQuery joinWithAtendimentoRelatedByContratoId($joinType = Criteria::INNER_JOIN) Adds a join clause and with to the query using the AtendimentoRelatedByContratoId relation
- *
- * @method     ChildContatoQuery leftJoinWithAtendimentoRelatedByContratoId() Adds a LEFT JOIN clause and with to the query using the AtendimentoRelatedByContratoId relation
- * @method     ChildContatoQuery rightJoinWithAtendimentoRelatedByContratoId() Adds a RIGHT JOIN clause and with to the query using the AtendimentoRelatedByContratoId relation
- * @method     ChildContatoQuery innerJoinWithAtendimentoRelatedByContratoId() Adds a INNER JOIN clause and with to the query using the AtendimentoRelatedByContratoId relation
+ * @method     ChildContatoQuery leftJoinWithAtendimento() Adds a LEFT JOIN clause and with to the query using the Atendimento relation
+ * @method     ChildContatoQuery rightJoinWithAtendimento() Adds a RIGHT JOIN clause and with to the query using the Atendimento relation
+ * @method     ChildContatoQuery innerJoinWithAtendimento() Adds a INNER JOIN clause and with to the query using the Atendimento relation
  *
  * @method     \AtendimentoQuery endUse() Finalizes a secondary criteria and merges it with its primary Criteria
  *
@@ -333,33 +323,33 @@ abstract class ContatoQuery extends ModelCriteria
      *
      * @return ChildContatoQuery The current query, for fluid interface
      */
-    public function filterByAtendimentoRelatedByContatoId($atendimento, $comparison = null)
+    public function filterByAtendimento($atendimento, $comparison = null)
     {
         if ($atendimento instanceof \Atendimento) {
             return $this
                 ->addUsingAlias(ContatoTableMap::COL_ID, $atendimento->getContatoId(), $comparison);
         } elseif ($atendimento instanceof ObjectCollection) {
             return $this
-                ->useAtendimentoRelatedByContatoIdQuery()
+                ->useAtendimentoQuery()
                 ->filterByPrimaryKeys($atendimento->getPrimaryKeys())
                 ->endUse();
         } else {
-            throw new PropelException('filterByAtendimentoRelatedByContatoId() only accepts arguments of type \Atendimento or Collection');
+            throw new PropelException('filterByAtendimento() only accepts arguments of type \Atendimento or Collection');
         }
     }
 
     /**
-     * Adds a JOIN clause to the query using the AtendimentoRelatedByContatoId relation
+     * Adds a JOIN clause to the query using the Atendimento relation
      *
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return $this|ChildContatoQuery The current query, for fluid interface
      */
-    public function joinAtendimentoRelatedByContatoId($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    public function joinAtendimento($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('AtendimentoRelatedByContatoId');
+        $relationMap = $tableMap->getRelation('Atendimento');
 
         // create a ModelJoin object for this join
         $join = new ModelJoin();
@@ -374,14 +364,14 @@ abstract class ContatoQuery extends ModelCriteria
             $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
             $this->addJoinObject($join, $relationAlias);
         } else {
-            $this->addJoinObject($join, 'AtendimentoRelatedByContatoId');
+            $this->addJoinObject($join, 'Atendimento');
         }
 
         return $this;
     }
 
     /**
-     * Use the AtendimentoRelatedByContatoId relation Atendimento object
+     * Use the Atendimento relation Atendimento object
      *
      * @see useQuery()
      *
@@ -391,84 +381,11 @@ abstract class ContatoQuery extends ModelCriteria
      *
      * @return \AtendimentoQuery A secondary query class using the current class as primary query
      */
-    public function useAtendimentoRelatedByContatoIdQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
+    public function useAtendimentoQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
     {
         return $this
-            ->joinAtendimentoRelatedByContatoId($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'AtendimentoRelatedByContatoId', '\AtendimentoQuery');
-    }
-
-    /**
-     * Filter the query by a related \Atendimento object
-     *
-     * @param \Atendimento|ObjectCollection $atendimento the related object to use as filter
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
-     *
-     * @return ChildContatoQuery The current query, for fluid interface
-     */
-    public function filterByAtendimentoRelatedByContratoId($atendimento, $comparison = null)
-    {
-        if ($atendimento instanceof \Atendimento) {
-            return $this
-                ->addUsingAlias(ContatoTableMap::COL_ID, $atendimento->getContratoId(), $comparison);
-        } elseif ($atendimento instanceof ObjectCollection) {
-            return $this
-                ->useAtendimentoRelatedByContratoIdQuery()
-                ->filterByPrimaryKeys($atendimento->getPrimaryKeys())
-                ->endUse();
-        } else {
-            throw new PropelException('filterByAtendimentoRelatedByContratoId() only accepts arguments of type \Atendimento or Collection');
-        }
-    }
-
-    /**
-     * Adds a JOIN clause to the query using the AtendimentoRelatedByContratoId relation
-     *
-     * @param     string $relationAlias optional alias for the relation
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return $this|ChildContatoQuery The current query, for fluid interface
-     */
-    public function joinAtendimentoRelatedByContratoId($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
-    {
-        $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('AtendimentoRelatedByContratoId');
-
-        // create a ModelJoin object for this join
-        $join = new ModelJoin();
-        $join->setJoinType($joinType);
-        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
-        if ($previousJoin = $this->getPreviousJoin()) {
-            $join->setPreviousJoin($previousJoin);
-        }
-
-        // add the ModelJoin to the current object
-        if ($relationAlias) {
-            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
-            $this->addJoinObject($join, $relationAlias);
-        } else {
-            $this->addJoinObject($join, 'AtendimentoRelatedByContratoId');
-        }
-
-        return $this;
-    }
-
-    /**
-     * Use the AtendimentoRelatedByContratoId relation Atendimento object
-     *
-     * @see useQuery()
-     *
-     * @param     string $relationAlias optional alias for the relation,
-     *                                   to be used as main alias in the secondary query
-     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
-     *
-     * @return \AtendimentoQuery A secondary query class using the current class as primary query
-     */
-    public function useAtendimentoRelatedByContratoIdQuery($relationAlias = null, $joinType = Criteria::LEFT_JOIN)
-    {
-        return $this
-            ->joinAtendimentoRelatedByContratoId($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'AtendimentoRelatedByContratoId', '\AtendimentoQuery');
+            ->joinAtendimento($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'Atendimento', '\AtendimentoQuery');
     }
 
     /**

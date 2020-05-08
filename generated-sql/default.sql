@@ -52,7 +52,8 @@ CREATE TABLE "atendimento"
     "motivo_id" INTEGER,
     "contrato_id" INTEGER,
     "agendamento_id" INTEGER,
-    "telefone" VARCHAR(13) NOT NULL,
+    "atendente_id" INTEGER,
+    "telefone" VARCHAR(40) NOT NULL,
     "tag_id" INTEGER,
     PRIMARY KEY ("id")
 );
@@ -181,6 +182,10 @@ ALTER TABLE "atendimento" ADD CONSTRAINT "atendimento_agendamento_id_fkey"
     FOREIGN KEY ("agendamento_id")
     REFERENCES "agendamento" ("id");
 
+ALTER TABLE "atendimento" ADD CONSTRAINT "atendimento_atendente_id_fkey"
+    FOREIGN KEY ("atendente_id")
+    REFERENCES "atendente" ("id");
+
 ALTER TABLE "atendimento" ADD CONSTRAINT "atendimento_bairro_id_fkey"
     FOREIGN KEY ("bairro_id")
     REFERENCES "bairro" ("id");
@@ -195,7 +200,7 @@ ALTER TABLE "atendimento" ADD CONSTRAINT "atendimento_contato_id_fkey"
 
 ALTER TABLE "atendimento" ADD CONSTRAINT "atendimento_contrato_id_fkey"
     FOREIGN KEY ("contrato_id")
-    REFERENCES "contato" ("id");
+    REFERENCES "contrato" ("id");
 
 ALTER TABLE "atendimento" ADD CONSTRAINT "atendimento_estado_id_fkey"
     FOREIGN KEY ("estado_id")

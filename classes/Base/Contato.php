@@ -81,14 +81,8 @@ abstract class Contato implements ActiveRecordInterface
     /**
      * @var        ObjectCollection|ChildAtendimento[] Collection to store aggregation of ChildAtendimento objects.
      */
-    protected $collAtendimentosRelatedByContatoId;
-    protected $collAtendimentosRelatedByContatoIdPartial;
-
-    /**
-     * @var        ObjectCollection|ChildAtendimento[] Collection to store aggregation of ChildAtendimento objects.
-     */
-    protected $collAtendimentosRelatedByContratoId;
-    protected $collAtendimentosRelatedByContratoIdPartial;
+    protected $collAtendimentos;
+    protected $collAtendimentosPartial;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -102,13 +96,7 @@ abstract class Contato implements ActiveRecordInterface
      * An array of objects scheduled for deletion.
      * @var ObjectCollection|ChildAtendimento[]
      */
-    protected $atendimentosRelatedByContatoIdScheduledForDeletion = null;
-
-    /**
-     * An array of objects scheduled for deletion.
-     * @var ObjectCollection|ChildAtendimento[]
-     */
-    protected $atendimentosRelatedByContratoIdScheduledForDeletion = null;
+    protected $atendimentosScheduledForDeletion = null;
 
     /**
      * Initializes internal state of Base\Contato object.
@@ -505,9 +493,7 @@ abstract class Contato implements ActiveRecordInterface
 
         if ($deep) {  // also de-associate any related objects?
 
-            $this->collAtendimentosRelatedByContatoId = null;
-
-            $this->collAtendimentosRelatedByContratoId = null;
+            $this->collAtendimentos = null;
 
         } // if (deep)
     }
@@ -623,36 +609,18 @@ abstract class Contato implements ActiveRecordInterface
                 $this->resetModified();
             }
 
-            if ($this->atendimentosRelatedByContatoIdScheduledForDeletion !== null) {
-                if (!$this->atendimentosRelatedByContatoIdScheduledForDeletion->isEmpty()) {
-                    foreach ($this->atendimentosRelatedByContatoIdScheduledForDeletion as $atendimentoRelatedByContatoId) {
+            if ($this->atendimentosScheduledForDeletion !== null) {
+                if (!$this->atendimentosScheduledForDeletion->isEmpty()) {
+                    foreach ($this->atendimentosScheduledForDeletion as $atendimento) {
                         // need to save related object because we set the relation to null
-                        $atendimentoRelatedByContatoId->save($con);
+                        $atendimento->save($con);
                     }
-                    $this->atendimentosRelatedByContatoIdScheduledForDeletion = null;
+                    $this->atendimentosScheduledForDeletion = null;
                 }
             }
 
-            if ($this->collAtendimentosRelatedByContatoId !== null) {
-                foreach ($this->collAtendimentosRelatedByContatoId as $referrerFK) {
-                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
-                        $affectedRows += $referrerFK->save($con);
-                    }
-                }
-            }
-
-            if ($this->atendimentosRelatedByContratoIdScheduledForDeletion !== null) {
-                if (!$this->atendimentosRelatedByContratoIdScheduledForDeletion->isEmpty()) {
-                    foreach ($this->atendimentosRelatedByContratoIdScheduledForDeletion as $atendimentoRelatedByContratoId) {
-                        // need to save related object because we set the relation to null
-                        $atendimentoRelatedByContratoId->save($con);
-                    }
-                    $this->atendimentosRelatedByContratoIdScheduledForDeletion = null;
-                }
-            }
-
-            if ($this->collAtendimentosRelatedByContratoId !== null) {
-                foreach ($this->collAtendimentosRelatedByContratoId as $referrerFK) {
+            if ($this->collAtendimentos !== null) {
+                foreach ($this->collAtendimentos as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -817,7 +785,7 @@ abstract class Contato implements ActiveRecordInterface
         }
 
         if ($includeForeignObjects) {
-            if (null !== $this->collAtendimentosRelatedByContatoId) {
+            if (null !== $this->collAtendimentos) {
 
                 switch ($keyType) {
                     case TableMap::TYPE_CAMELNAME:
@@ -830,22 +798,7 @@ abstract class Contato implements ActiveRecordInterface
                         $key = 'Atendimentos';
                 }
 
-                $result[$key] = $this->collAtendimentosRelatedByContatoId->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
-            }
-            if (null !== $this->collAtendimentosRelatedByContratoId) {
-
-                switch ($keyType) {
-                    case TableMap::TYPE_CAMELNAME:
-                        $key = 'atendimentos';
-                        break;
-                    case TableMap::TYPE_FIELDNAME:
-                        $key = 'atendimentos';
-                        break;
-                    default:
-                        $key = 'Atendimentos';
-                }
-
-                $result[$key] = $this->collAtendimentosRelatedByContratoId->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+                $result[$key] = $this->collAtendimentos->toArray(null, false, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
         }
 
@@ -1059,15 +1012,9 @@ abstract class Contato implements ActiveRecordInterface
             // the getter/setter methods for fkey referrer objects.
             $copyObj->setNew(false);
 
-            foreach ($this->getAtendimentosRelatedByContatoId() as $relObj) {
+            foreach ($this->getAtendimentos() as $relObj) {
                 if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addAtendimentoRelatedByContatoId($relObj->copy($deepCopy));
-                }
-            }
-
-            foreach ($this->getAtendimentosRelatedByContratoId() as $relObj) {
-                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-                    $copyObj->addAtendimentoRelatedByContratoId($relObj->copy($deepCopy));
+                    $copyObj->addAtendimento($relObj->copy($deepCopy));
                 }
             }
 
@@ -1112,42 +1059,38 @@ abstract class Contato implements ActiveRecordInterface
      */
     public function initRelation($relationName)
     {
-        if ('AtendimentoRelatedByContatoId' == $relationName) {
-            $this->initAtendimentosRelatedByContatoId();
-            return;
-        }
-        if ('AtendimentoRelatedByContratoId' == $relationName) {
-            $this->initAtendimentosRelatedByContratoId();
+        if ('Atendimento' == $relationName) {
+            $this->initAtendimentos();
             return;
         }
     }
 
     /**
-     * Clears out the collAtendimentosRelatedByContatoId collection
+     * Clears out the collAtendimentos collection
      *
      * This does not modify the database; however, it will remove any associated objects, causing
      * them to be refetched by subsequent calls to accessor method.
      *
      * @return void
-     * @see        addAtendimentosRelatedByContatoId()
+     * @see        addAtendimentos()
      */
-    public function clearAtendimentosRelatedByContatoId()
+    public function clearAtendimentos()
     {
-        $this->collAtendimentosRelatedByContatoId = null; // important to set this to NULL since that means it is uninitialized
+        $this->collAtendimentos = null; // important to set this to NULL since that means it is uninitialized
     }
 
     /**
-     * Reset is the collAtendimentosRelatedByContatoId collection loaded partially.
+     * Reset is the collAtendimentos collection loaded partially.
      */
-    public function resetPartialAtendimentosRelatedByContatoId($v = true)
+    public function resetPartialAtendimentos($v = true)
     {
-        $this->collAtendimentosRelatedByContatoIdPartial = $v;
+        $this->collAtendimentosPartial = $v;
     }
 
     /**
-     * Initializes the collAtendimentosRelatedByContatoId collection.
+     * Initializes the collAtendimentos collection.
      *
-     * By default this just sets the collAtendimentosRelatedByContatoId collection to an empty array (like clearcollAtendimentosRelatedByContatoId());
+     * By default this just sets the collAtendimentos collection to an empty array (like clearcollAtendimentos());
      * however, you may wish to override this method in your stub class to provide setting appropriate
      * to your application -- for example, setting the initial array to the values stored in database.
      *
@@ -1156,16 +1099,16 @@ abstract class Contato implements ActiveRecordInterface
      *
      * @return void
      */
-    public function initAtendimentosRelatedByContatoId($overrideExisting = true)
+    public function initAtendimentos($overrideExisting = true)
     {
-        if (null !== $this->collAtendimentosRelatedByContatoId && !$overrideExisting) {
+        if (null !== $this->collAtendimentos && !$overrideExisting) {
             return;
         }
 
         $collectionClassName = AtendimentoTableMap::getTableMap()->getCollectionClassName();
 
-        $this->collAtendimentosRelatedByContatoId = new $collectionClassName;
-        $this->collAtendimentosRelatedByContatoId->setModel('\Atendimento');
+        $this->collAtendimentos = new $collectionClassName;
+        $this->collAtendimentos->setModel('\Atendimento');
     }
 
     /**
@@ -1182,48 +1125,48 @@ abstract class Contato implements ActiveRecordInterface
      * @return ObjectCollection|ChildAtendimento[] List of ChildAtendimento objects
      * @throws PropelException
      */
-    public function getAtendimentosRelatedByContatoId(Criteria $criteria = null, ConnectionInterface $con = null)
+    public function getAtendimentos(Criteria $criteria = null, ConnectionInterface $con = null)
     {
-        $partial = $this->collAtendimentosRelatedByContatoIdPartial && !$this->isNew();
-        if (null === $this->collAtendimentosRelatedByContatoId || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collAtendimentosRelatedByContatoId) {
+        $partial = $this->collAtendimentosPartial && !$this->isNew();
+        if (null === $this->collAtendimentos || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collAtendimentos) {
                 // return empty collection
-                $this->initAtendimentosRelatedByContatoId();
+                $this->initAtendimentos();
             } else {
-                $collAtendimentosRelatedByContatoId = ChildAtendimentoQuery::create(null, $criteria)
-                    ->filterByContatoRelatedByContatoId($this)
+                $collAtendimentos = ChildAtendimentoQuery::create(null, $criteria)
+                    ->filterByContato($this)
                     ->find($con);
 
                 if (null !== $criteria) {
-                    if (false !== $this->collAtendimentosRelatedByContatoIdPartial && count($collAtendimentosRelatedByContatoId)) {
-                        $this->initAtendimentosRelatedByContatoId(false);
+                    if (false !== $this->collAtendimentosPartial && count($collAtendimentos)) {
+                        $this->initAtendimentos(false);
 
-                        foreach ($collAtendimentosRelatedByContatoId as $obj) {
-                            if (false == $this->collAtendimentosRelatedByContatoId->contains($obj)) {
-                                $this->collAtendimentosRelatedByContatoId->append($obj);
+                        foreach ($collAtendimentos as $obj) {
+                            if (false == $this->collAtendimentos->contains($obj)) {
+                                $this->collAtendimentos->append($obj);
                             }
                         }
 
-                        $this->collAtendimentosRelatedByContatoIdPartial = true;
+                        $this->collAtendimentosPartial = true;
                     }
 
-                    return $collAtendimentosRelatedByContatoId;
+                    return $collAtendimentos;
                 }
 
-                if ($partial && $this->collAtendimentosRelatedByContatoId) {
-                    foreach ($this->collAtendimentosRelatedByContatoId as $obj) {
+                if ($partial && $this->collAtendimentos) {
+                    foreach ($this->collAtendimentos as $obj) {
                         if ($obj->isNew()) {
-                            $collAtendimentosRelatedByContatoId[] = $obj;
+                            $collAtendimentos[] = $obj;
                         }
                     }
                 }
 
-                $this->collAtendimentosRelatedByContatoId = $collAtendimentosRelatedByContatoId;
-                $this->collAtendimentosRelatedByContatoIdPartial = false;
+                $this->collAtendimentos = $collAtendimentos;
+                $this->collAtendimentosPartial = false;
             }
         }
 
-        return $this->collAtendimentosRelatedByContatoId;
+        return $this->collAtendimentos;
     }
 
     /**
@@ -1232,29 +1175,29 @@ abstract class Contato implements ActiveRecordInterface
      * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
      * and new objects from the given Propel collection.
      *
-     * @param      Collection $atendimentosRelatedByContatoId A Propel collection.
+     * @param      Collection $atendimentos A Propel collection.
      * @param      ConnectionInterface $con Optional connection object
      * @return $this|ChildContato The current object (for fluent API support)
      */
-    public function setAtendimentosRelatedByContatoId(Collection $atendimentosRelatedByContatoId, ConnectionInterface $con = null)
+    public function setAtendimentos(Collection $atendimentos, ConnectionInterface $con = null)
     {
-        /** @var ChildAtendimento[] $atendimentosRelatedByContatoIdToDelete */
-        $atendimentosRelatedByContatoIdToDelete = $this->getAtendimentosRelatedByContatoId(new Criteria(), $con)->diff($atendimentosRelatedByContatoId);
+        /** @var ChildAtendimento[] $atendimentosToDelete */
+        $atendimentosToDelete = $this->getAtendimentos(new Criteria(), $con)->diff($atendimentos);
 
 
-        $this->atendimentosRelatedByContatoIdScheduledForDeletion = $atendimentosRelatedByContatoIdToDelete;
+        $this->atendimentosScheduledForDeletion = $atendimentosToDelete;
 
-        foreach ($atendimentosRelatedByContatoIdToDelete as $atendimentoRelatedByContatoIdRemoved) {
-            $atendimentoRelatedByContatoIdRemoved->setContatoRelatedByContatoId(null);
+        foreach ($atendimentosToDelete as $atendimentoRemoved) {
+            $atendimentoRemoved->setContato(null);
         }
 
-        $this->collAtendimentosRelatedByContatoId = null;
-        foreach ($atendimentosRelatedByContatoId as $atendimentoRelatedByContatoId) {
-            $this->addAtendimentoRelatedByContatoId($atendimentoRelatedByContatoId);
+        $this->collAtendimentos = null;
+        foreach ($atendimentos as $atendimento) {
+            $this->addAtendimento($atendimento);
         }
 
-        $this->collAtendimentosRelatedByContatoId = $atendimentosRelatedByContatoId;
-        $this->collAtendimentosRelatedByContatoIdPartial = false;
+        $this->collAtendimentos = $atendimentos;
+        $this->collAtendimentosPartial = false;
 
         return $this;
     }
@@ -1268,16 +1211,16 @@ abstract class Contato implements ActiveRecordInterface
      * @return int             Count of related Atendimento objects.
      * @throws PropelException
      */
-    public function countAtendimentosRelatedByContatoId(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    public function countAtendimentos(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
     {
-        $partial = $this->collAtendimentosRelatedByContatoIdPartial && !$this->isNew();
-        if (null === $this->collAtendimentosRelatedByContatoId || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collAtendimentosRelatedByContatoId) {
+        $partial = $this->collAtendimentosPartial && !$this->isNew();
+        if (null === $this->collAtendimentos || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collAtendimentos) {
                 return 0;
             }
 
             if ($partial && !$criteria) {
-                return count($this->getAtendimentosRelatedByContatoId());
+                return count($this->getAtendimentos());
             }
 
             $query = ChildAtendimentoQuery::create(null, $criteria);
@@ -1286,11 +1229,11 @@ abstract class Contato implements ActiveRecordInterface
             }
 
             return $query
-                ->filterByContatoRelatedByContatoId($this)
+                ->filterByContato($this)
                 ->count($con);
         }
 
-        return count($this->collAtendimentosRelatedByContatoId);
+        return count($this->collAtendimentos);
     }
 
     /**
@@ -1300,18 +1243,18 @@ abstract class Contato implements ActiveRecordInterface
      * @param  ChildAtendimento $l ChildAtendimento
      * @return $this|\Contato The current object (for fluent API support)
      */
-    public function addAtendimentoRelatedByContatoId(ChildAtendimento $l)
+    public function addAtendimento(ChildAtendimento $l)
     {
-        if ($this->collAtendimentosRelatedByContatoId === null) {
-            $this->initAtendimentosRelatedByContatoId();
-            $this->collAtendimentosRelatedByContatoIdPartial = true;
+        if ($this->collAtendimentos === null) {
+            $this->initAtendimentos();
+            $this->collAtendimentosPartial = true;
         }
 
-        if (!$this->collAtendimentosRelatedByContatoId->contains($l)) {
-            $this->doAddAtendimentoRelatedByContatoId($l);
+        if (!$this->collAtendimentos->contains($l)) {
+            $this->doAddAtendimento($l);
 
-            if ($this->atendimentosRelatedByContatoIdScheduledForDeletion and $this->atendimentosRelatedByContatoIdScheduledForDeletion->contains($l)) {
-                $this->atendimentosRelatedByContatoIdScheduledForDeletion->remove($this->atendimentosRelatedByContatoIdScheduledForDeletion->search($l));
+            if ($this->atendimentosScheduledForDeletion and $this->atendimentosScheduledForDeletion->contains($l)) {
+                $this->atendimentosScheduledForDeletion->remove($this->atendimentosScheduledForDeletion->search($l));
             }
         }
 
@@ -1319,29 +1262,29 @@ abstract class Contato implements ActiveRecordInterface
     }
 
     /**
-     * @param ChildAtendimento $atendimentoRelatedByContatoId The ChildAtendimento object to add.
+     * @param ChildAtendimento $atendimento The ChildAtendimento object to add.
      */
-    protected function doAddAtendimentoRelatedByContatoId(ChildAtendimento $atendimentoRelatedByContatoId)
+    protected function doAddAtendimento(ChildAtendimento $atendimento)
     {
-        $this->collAtendimentosRelatedByContatoId[]= $atendimentoRelatedByContatoId;
-        $atendimentoRelatedByContatoId->setContatoRelatedByContatoId($this);
+        $this->collAtendimentos[]= $atendimento;
+        $atendimento->setContato($this);
     }
 
     /**
-     * @param  ChildAtendimento $atendimentoRelatedByContatoId The ChildAtendimento object to remove.
+     * @param  ChildAtendimento $atendimento The ChildAtendimento object to remove.
      * @return $this|ChildContato The current object (for fluent API support)
      */
-    public function removeAtendimentoRelatedByContatoId(ChildAtendimento $atendimentoRelatedByContatoId)
+    public function removeAtendimento(ChildAtendimento $atendimento)
     {
-        if ($this->getAtendimentosRelatedByContatoId()->contains($atendimentoRelatedByContatoId)) {
-            $pos = $this->collAtendimentosRelatedByContatoId->search($atendimentoRelatedByContatoId);
-            $this->collAtendimentosRelatedByContatoId->remove($pos);
-            if (null === $this->atendimentosRelatedByContatoIdScheduledForDeletion) {
-                $this->atendimentosRelatedByContatoIdScheduledForDeletion = clone $this->collAtendimentosRelatedByContatoId;
-                $this->atendimentosRelatedByContatoIdScheduledForDeletion->clear();
+        if ($this->getAtendimentos()->contains($atendimento)) {
+            $pos = $this->collAtendimentos->search($atendimento);
+            $this->collAtendimentos->remove($pos);
+            if (null === $this->atendimentosScheduledForDeletion) {
+                $this->atendimentosScheduledForDeletion = clone $this->collAtendimentos;
+                $this->atendimentosScheduledForDeletion->clear();
             }
-            $this->atendimentosRelatedByContatoIdScheduledForDeletion[]= $atendimentoRelatedByContatoId;
-            $atendimentoRelatedByContatoId->setContatoRelatedByContatoId(null);
+            $this->atendimentosScheduledForDeletion[]= $atendimento;
+            $atendimento->setContato(null);
         }
 
         return $this;
@@ -1353,7 +1296,7 @@ abstract class Contato implements ActiveRecordInterface
      * an identical criteria, it returns the collection.
      * Otherwise if this Contato is new, it will return
      * an empty collection; or if this Contato has previously
-     * been saved, it will retrieve related AtendimentosRelatedByContatoId from storage.
+     * been saved, it will retrieve related Atendimentos from storage.
      *
      * This method is protected by default in order to keep the public
      * api reasonable.  You can provide public methods for those you
@@ -1364,12 +1307,12 @@ abstract class Contato implements ActiveRecordInterface
      * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return ObjectCollection|ChildAtendimento[] List of ChildAtendimento objects
      */
-    public function getAtendimentosRelatedByContatoIdJoinAgendamento(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    public function getAtendimentosJoinAgendamento(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
     {
         $query = ChildAtendimentoQuery::create(null, $criteria);
         $query->joinWith('Agendamento', $joinBehavior);
 
-        return $this->getAtendimentosRelatedByContatoId($query, $con);
+        return $this->getAtendimentos($query, $con);
     }
 
 
@@ -1378,7 +1321,7 @@ abstract class Contato implements ActiveRecordInterface
      * an identical criteria, it returns the collection.
      * Otherwise if this Contato is new, it will return
      * an empty collection; or if this Contato has previously
-     * been saved, it will retrieve related AtendimentosRelatedByContatoId from storage.
+     * been saved, it will retrieve related Atendimentos from storage.
      *
      * This method is protected by default in order to keep the public
      * api reasonable.  You can provide public methods for those you
@@ -1389,12 +1332,37 @@ abstract class Contato implements ActiveRecordInterface
      * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return ObjectCollection|ChildAtendimento[] List of ChildAtendimento objects
      */
-    public function getAtendimentosRelatedByContatoIdJoinBairro(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    public function getAtendimentosJoinAtendente(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildAtendimentoQuery::create(null, $criteria);
+        $query->joinWith('Atendente', $joinBehavior);
+
+        return $this->getAtendimentos($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Contato is new, it will return
+     * an empty collection; or if this Contato has previously
+     * been saved, it will retrieve related Atendimentos from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Contato.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return ObjectCollection|ChildAtendimento[] List of ChildAtendimento objects
+     */
+    public function getAtendimentosJoinBairro(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
     {
         $query = ChildAtendimentoQuery::create(null, $criteria);
         $query->joinWith('Bairro', $joinBehavior);
 
-        return $this->getAtendimentosRelatedByContatoId($query, $con);
+        return $this->getAtendimentos($query, $con);
     }
 
 
@@ -1403,7 +1371,7 @@ abstract class Contato implements ActiveRecordInterface
      * an identical criteria, it returns the collection.
      * Otherwise if this Contato is new, it will return
      * an empty collection; or if this Contato has previously
-     * been saved, it will retrieve related AtendimentosRelatedByContatoId from storage.
+     * been saved, it will retrieve related Atendimentos from storage.
      *
      * This method is protected by default in order to keep the public
      * api reasonable.  You can provide public methods for those you
@@ -1414,12 +1382,12 @@ abstract class Contato implements ActiveRecordInterface
      * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return ObjectCollection|ChildAtendimento[] List of ChildAtendimento objects
      */
-    public function getAtendimentosRelatedByContatoIdJoinCidade(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    public function getAtendimentosJoinCidade(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
     {
         $query = ChildAtendimentoQuery::create(null, $criteria);
         $query->joinWith('Cidade', $joinBehavior);
 
-        return $this->getAtendimentosRelatedByContatoId($query, $con);
+        return $this->getAtendimentos($query, $con);
     }
 
 
@@ -1428,7 +1396,7 @@ abstract class Contato implements ActiveRecordInterface
      * an identical criteria, it returns the collection.
      * Otherwise if this Contato is new, it will return
      * an empty collection; or if this Contato has previously
-     * been saved, it will retrieve related AtendimentosRelatedByContatoId from storage.
+     * been saved, it will retrieve related Atendimentos from storage.
      *
      * This method is protected by default in order to keep the public
      * api reasonable.  You can provide public methods for those you
@@ -1439,12 +1407,37 @@ abstract class Contato implements ActiveRecordInterface
      * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return ObjectCollection|ChildAtendimento[] List of ChildAtendimento objects
      */
-    public function getAtendimentosRelatedByContatoIdJoinEstado(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    public function getAtendimentosJoinContrato(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildAtendimentoQuery::create(null, $criteria);
+        $query->joinWith('Contrato', $joinBehavior);
+
+        return $this->getAtendimentos($query, $con);
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this Contato is new, it will return
+     * an empty collection; or if this Contato has previously
+     * been saved, it will retrieve related Atendimentos from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in Contato.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return ObjectCollection|ChildAtendimento[] List of ChildAtendimento objects
+     */
+    public function getAtendimentosJoinEstado(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
     {
         $query = ChildAtendimentoQuery::create(null, $criteria);
         $query->joinWith('Estado', $joinBehavior);
 
-        return $this->getAtendimentosRelatedByContatoId($query, $con);
+        return $this->getAtendimentos($query, $con);
     }
 
 
@@ -1453,7 +1446,7 @@ abstract class Contato implements ActiveRecordInterface
      * an identical criteria, it returns the collection.
      * Otherwise if this Contato is new, it will return
      * an empty collection; or if this Contato has previously
-     * been saved, it will retrieve related AtendimentosRelatedByContatoId from storage.
+     * been saved, it will retrieve related Atendimentos from storage.
      *
      * This method is protected by default in order to keep the public
      * api reasonable.  You can provide public methods for those you
@@ -1464,12 +1457,12 @@ abstract class Contato implements ActiveRecordInterface
      * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return ObjectCollection|ChildAtendimento[] List of ChildAtendimento objects
      */
-    public function getAtendimentosRelatedByContatoIdJoinMotivo(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    public function getAtendimentosJoinMotivo(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
     {
         $query = ChildAtendimentoQuery::create(null, $criteria);
         $query->joinWith('Motivo', $joinBehavior);
 
-        return $this->getAtendimentosRelatedByContatoId($query, $con);
+        return $this->getAtendimentos($query, $con);
     }
 
 
@@ -1478,7 +1471,7 @@ abstract class Contato implements ActiveRecordInterface
      * an identical criteria, it returns the collection.
      * Otherwise if this Contato is new, it will return
      * an empty collection; or if this Contato has previously
-     * been saved, it will retrieve related AtendimentosRelatedByContatoId from storage.
+     * been saved, it will retrieve related Atendimentos from storage.
      *
      * This method is protected by default in order to keep the public
      * api reasonable.  You can provide public methods for those you
@@ -1489,12 +1482,12 @@ abstract class Contato implements ActiveRecordInterface
      * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return ObjectCollection|ChildAtendimento[] List of ChildAtendimento objects
      */
-    public function getAtendimentosRelatedByContatoIdJoinSolicitacao(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    public function getAtendimentosJoinSolicitacao(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
     {
         $query = ChildAtendimentoQuery::create(null, $criteria);
         $query->joinWith('Solicitacao', $joinBehavior);
 
-        return $this->getAtendimentosRelatedByContatoId($query, $con);
+        return $this->getAtendimentos($query, $con);
     }
 
 
@@ -1503,7 +1496,7 @@ abstract class Contato implements ActiveRecordInterface
      * an identical criteria, it returns the collection.
      * Otherwise if this Contato is new, it will return
      * an empty collection; or if this Contato has previously
-     * been saved, it will retrieve related AtendimentosRelatedByContatoId from storage.
+     * been saved, it will retrieve related Atendimentos from storage.
      *
      * This method is protected by default in order to keep the public
      * api reasonable.  You can provide public methods for those you
@@ -1514,12 +1507,12 @@ abstract class Contato implements ActiveRecordInterface
      * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return ObjectCollection|ChildAtendimento[] List of ChildAtendimento objects
      */
-    public function getAtendimentosRelatedByContatoIdJoinTag(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    public function getAtendimentosJoinTag(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
     {
         $query = ChildAtendimentoQuery::create(null, $criteria);
         $query->joinWith('Tag', $joinBehavior);
 
-        return $this->getAtendimentosRelatedByContatoId($query, $con);
+        return $this->getAtendimentos($query, $con);
     }
 
 
@@ -1528,7 +1521,7 @@ abstract class Contato implements ActiveRecordInterface
      * an identical criteria, it returns the collection.
      * Otherwise if this Contato is new, it will return
      * an empty collection; or if this Contato has previously
-     * been saved, it will retrieve related AtendimentosRelatedByContatoId from storage.
+     * been saved, it will retrieve related Atendimentos from storage.
      *
      * This method is protected by default in order to keep the public
      * api reasonable.  You can provide public methods for those you
@@ -1539,437 +1532,12 @@ abstract class Contato implements ActiveRecordInterface
      * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
      * @return ObjectCollection|ChildAtendimento[] List of ChildAtendimento objects
      */
-    public function getAtendimentosRelatedByContatoIdJoinTipo(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    public function getAtendimentosJoinTipo(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
     {
         $query = ChildAtendimentoQuery::create(null, $criteria);
         $query->joinWith('Tipo', $joinBehavior);
 
-        return $this->getAtendimentosRelatedByContatoId($query, $con);
-    }
-
-    /**
-     * Clears out the collAtendimentosRelatedByContratoId collection
-     *
-     * This does not modify the database; however, it will remove any associated objects, causing
-     * them to be refetched by subsequent calls to accessor method.
-     *
-     * @return void
-     * @see        addAtendimentosRelatedByContratoId()
-     */
-    public function clearAtendimentosRelatedByContratoId()
-    {
-        $this->collAtendimentosRelatedByContratoId = null; // important to set this to NULL since that means it is uninitialized
-    }
-
-    /**
-     * Reset is the collAtendimentosRelatedByContratoId collection loaded partially.
-     */
-    public function resetPartialAtendimentosRelatedByContratoId($v = true)
-    {
-        $this->collAtendimentosRelatedByContratoIdPartial = $v;
-    }
-
-    /**
-     * Initializes the collAtendimentosRelatedByContratoId collection.
-     *
-     * By default this just sets the collAtendimentosRelatedByContratoId collection to an empty array (like clearcollAtendimentosRelatedByContratoId());
-     * however, you may wish to override this method in your stub class to provide setting appropriate
-     * to your application -- for example, setting the initial array to the values stored in database.
-     *
-     * @param      boolean $overrideExisting If set to true, the method call initializes
-     *                                        the collection even if it is not empty
-     *
-     * @return void
-     */
-    public function initAtendimentosRelatedByContratoId($overrideExisting = true)
-    {
-        if (null !== $this->collAtendimentosRelatedByContratoId && !$overrideExisting) {
-            return;
-        }
-
-        $collectionClassName = AtendimentoTableMap::getTableMap()->getCollectionClassName();
-
-        $this->collAtendimentosRelatedByContratoId = new $collectionClassName;
-        $this->collAtendimentosRelatedByContratoId->setModel('\Atendimento');
-    }
-
-    /**
-     * Gets an array of ChildAtendimento objects which contain a foreign key that references this object.
-     *
-     * If the $criteria is not null, it is used to always fetch the results from the database.
-     * Otherwise the results are fetched from the database the first time, then cached.
-     * Next time the same method is called without $criteria, the cached collection is returned.
-     * If this ChildContato is new, it will return
-     * an empty collection or the current collection; the criteria is ignored on a new object.
-     *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      ConnectionInterface $con optional connection object
-     * @return ObjectCollection|ChildAtendimento[] List of ChildAtendimento objects
-     * @throws PropelException
-     */
-    public function getAtendimentosRelatedByContratoId(Criteria $criteria = null, ConnectionInterface $con = null)
-    {
-        $partial = $this->collAtendimentosRelatedByContratoIdPartial && !$this->isNew();
-        if (null === $this->collAtendimentosRelatedByContratoId || null !== $criteria  || $partial) {
-            if ($this->isNew() && null === $this->collAtendimentosRelatedByContratoId) {
-                // return empty collection
-                $this->initAtendimentosRelatedByContratoId();
-            } else {
-                $collAtendimentosRelatedByContratoId = ChildAtendimentoQuery::create(null, $criteria)
-                    ->filterByContatoRelatedByContratoId($this)
-                    ->find($con);
-
-                if (null !== $criteria) {
-                    if (false !== $this->collAtendimentosRelatedByContratoIdPartial && count($collAtendimentosRelatedByContratoId)) {
-                        $this->initAtendimentosRelatedByContratoId(false);
-
-                        foreach ($collAtendimentosRelatedByContratoId as $obj) {
-                            if (false == $this->collAtendimentosRelatedByContratoId->contains($obj)) {
-                                $this->collAtendimentosRelatedByContratoId->append($obj);
-                            }
-                        }
-
-                        $this->collAtendimentosRelatedByContratoIdPartial = true;
-                    }
-
-                    return $collAtendimentosRelatedByContratoId;
-                }
-
-                if ($partial && $this->collAtendimentosRelatedByContratoId) {
-                    foreach ($this->collAtendimentosRelatedByContratoId as $obj) {
-                        if ($obj->isNew()) {
-                            $collAtendimentosRelatedByContratoId[] = $obj;
-                        }
-                    }
-                }
-
-                $this->collAtendimentosRelatedByContratoId = $collAtendimentosRelatedByContratoId;
-                $this->collAtendimentosRelatedByContratoIdPartial = false;
-            }
-        }
-
-        return $this->collAtendimentosRelatedByContratoId;
-    }
-
-    /**
-     * Sets a collection of ChildAtendimento objects related by a one-to-many relationship
-     * to the current object.
-     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
-     * and new objects from the given Propel collection.
-     *
-     * @param      Collection $atendimentosRelatedByContratoId A Propel collection.
-     * @param      ConnectionInterface $con Optional connection object
-     * @return $this|ChildContato The current object (for fluent API support)
-     */
-    public function setAtendimentosRelatedByContratoId(Collection $atendimentosRelatedByContratoId, ConnectionInterface $con = null)
-    {
-        /** @var ChildAtendimento[] $atendimentosRelatedByContratoIdToDelete */
-        $atendimentosRelatedByContratoIdToDelete = $this->getAtendimentosRelatedByContratoId(new Criteria(), $con)->diff($atendimentosRelatedByContratoId);
-
-
-        $this->atendimentosRelatedByContratoIdScheduledForDeletion = $atendimentosRelatedByContratoIdToDelete;
-
-        foreach ($atendimentosRelatedByContratoIdToDelete as $atendimentoRelatedByContratoIdRemoved) {
-            $atendimentoRelatedByContratoIdRemoved->setContatoRelatedByContratoId(null);
-        }
-
-        $this->collAtendimentosRelatedByContratoId = null;
-        foreach ($atendimentosRelatedByContratoId as $atendimentoRelatedByContratoId) {
-            $this->addAtendimentoRelatedByContratoId($atendimentoRelatedByContratoId);
-        }
-
-        $this->collAtendimentosRelatedByContratoId = $atendimentosRelatedByContratoId;
-        $this->collAtendimentosRelatedByContratoIdPartial = false;
-
-        return $this;
-    }
-
-    /**
-     * Returns the number of related Atendimento objects.
-     *
-     * @param      Criteria $criteria
-     * @param      boolean $distinct
-     * @param      ConnectionInterface $con
-     * @return int             Count of related Atendimento objects.
-     * @throws PropelException
-     */
-    public function countAtendimentosRelatedByContratoId(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
-    {
-        $partial = $this->collAtendimentosRelatedByContratoIdPartial && !$this->isNew();
-        if (null === $this->collAtendimentosRelatedByContratoId || null !== $criteria || $partial) {
-            if ($this->isNew() && null === $this->collAtendimentosRelatedByContratoId) {
-                return 0;
-            }
-
-            if ($partial && !$criteria) {
-                return count($this->getAtendimentosRelatedByContratoId());
-            }
-
-            $query = ChildAtendimentoQuery::create(null, $criteria);
-            if ($distinct) {
-                $query->distinct();
-            }
-
-            return $query
-                ->filterByContatoRelatedByContratoId($this)
-                ->count($con);
-        }
-
-        return count($this->collAtendimentosRelatedByContratoId);
-    }
-
-    /**
-     * Method called to associate a ChildAtendimento object to this object
-     * through the ChildAtendimento foreign key attribute.
-     *
-     * @param  ChildAtendimento $l ChildAtendimento
-     * @return $this|\Contato The current object (for fluent API support)
-     */
-    public function addAtendimentoRelatedByContratoId(ChildAtendimento $l)
-    {
-        if ($this->collAtendimentosRelatedByContratoId === null) {
-            $this->initAtendimentosRelatedByContratoId();
-            $this->collAtendimentosRelatedByContratoIdPartial = true;
-        }
-
-        if (!$this->collAtendimentosRelatedByContratoId->contains($l)) {
-            $this->doAddAtendimentoRelatedByContratoId($l);
-
-            if ($this->atendimentosRelatedByContratoIdScheduledForDeletion and $this->atendimentosRelatedByContratoIdScheduledForDeletion->contains($l)) {
-                $this->atendimentosRelatedByContratoIdScheduledForDeletion->remove($this->atendimentosRelatedByContratoIdScheduledForDeletion->search($l));
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param ChildAtendimento $atendimentoRelatedByContratoId The ChildAtendimento object to add.
-     */
-    protected function doAddAtendimentoRelatedByContratoId(ChildAtendimento $atendimentoRelatedByContratoId)
-    {
-        $this->collAtendimentosRelatedByContratoId[]= $atendimentoRelatedByContratoId;
-        $atendimentoRelatedByContratoId->setContatoRelatedByContratoId($this);
-    }
-
-    /**
-     * @param  ChildAtendimento $atendimentoRelatedByContratoId The ChildAtendimento object to remove.
-     * @return $this|ChildContato The current object (for fluent API support)
-     */
-    public function removeAtendimentoRelatedByContratoId(ChildAtendimento $atendimentoRelatedByContratoId)
-    {
-        if ($this->getAtendimentosRelatedByContratoId()->contains($atendimentoRelatedByContratoId)) {
-            $pos = $this->collAtendimentosRelatedByContratoId->search($atendimentoRelatedByContratoId);
-            $this->collAtendimentosRelatedByContratoId->remove($pos);
-            if (null === $this->atendimentosRelatedByContratoIdScheduledForDeletion) {
-                $this->atendimentosRelatedByContratoIdScheduledForDeletion = clone $this->collAtendimentosRelatedByContratoId;
-                $this->atendimentosRelatedByContratoIdScheduledForDeletion->clear();
-            }
-            $this->atendimentosRelatedByContratoIdScheduledForDeletion[]= $atendimentoRelatedByContratoId;
-            $atendimentoRelatedByContratoId->setContatoRelatedByContratoId(null);
-        }
-
-        return $this;
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this Contato is new, it will return
-     * an empty collection; or if this Contato has previously
-     * been saved, it will retrieve related AtendimentosRelatedByContratoId from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in Contato.
-     *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      ConnectionInterface $con optional connection object
-     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return ObjectCollection|ChildAtendimento[] List of ChildAtendimento objects
-     */
-    public function getAtendimentosRelatedByContratoIdJoinAgendamento(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
-    {
-        $query = ChildAtendimentoQuery::create(null, $criteria);
-        $query->joinWith('Agendamento', $joinBehavior);
-
-        return $this->getAtendimentosRelatedByContratoId($query, $con);
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this Contato is new, it will return
-     * an empty collection; or if this Contato has previously
-     * been saved, it will retrieve related AtendimentosRelatedByContratoId from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in Contato.
-     *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      ConnectionInterface $con optional connection object
-     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return ObjectCollection|ChildAtendimento[] List of ChildAtendimento objects
-     */
-    public function getAtendimentosRelatedByContratoIdJoinBairro(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
-    {
-        $query = ChildAtendimentoQuery::create(null, $criteria);
-        $query->joinWith('Bairro', $joinBehavior);
-
-        return $this->getAtendimentosRelatedByContratoId($query, $con);
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this Contato is new, it will return
-     * an empty collection; or if this Contato has previously
-     * been saved, it will retrieve related AtendimentosRelatedByContratoId from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in Contato.
-     *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      ConnectionInterface $con optional connection object
-     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return ObjectCollection|ChildAtendimento[] List of ChildAtendimento objects
-     */
-    public function getAtendimentosRelatedByContratoIdJoinCidade(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
-    {
-        $query = ChildAtendimentoQuery::create(null, $criteria);
-        $query->joinWith('Cidade', $joinBehavior);
-
-        return $this->getAtendimentosRelatedByContratoId($query, $con);
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this Contato is new, it will return
-     * an empty collection; or if this Contato has previously
-     * been saved, it will retrieve related AtendimentosRelatedByContratoId from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in Contato.
-     *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      ConnectionInterface $con optional connection object
-     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return ObjectCollection|ChildAtendimento[] List of ChildAtendimento objects
-     */
-    public function getAtendimentosRelatedByContratoIdJoinEstado(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
-    {
-        $query = ChildAtendimentoQuery::create(null, $criteria);
-        $query->joinWith('Estado', $joinBehavior);
-
-        return $this->getAtendimentosRelatedByContratoId($query, $con);
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this Contato is new, it will return
-     * an empty collection; or if this Contato has previously
-     * been saved, it will retrieve related AtendimentosRelatedByContratoId from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in Contato.
-     *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      ConnectionInterface $con optional connection object
-     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return ObjectCollection|ChildAtendimento[] List of ChildAtendimento objects
-     */
-    public function getAtendimentosRelatedByContratoIdJoinMotivo(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
-    {
-        $query = ChildAtendimentoQuery::create(null, $criteria);
-        $query->joinWith('Motivo', $joinBehavior);
-
-        return $this->getAtendimentosRelatedByContratoId($query, $con);
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this Contato is new, it will return
-     * an empty collection; or if this Contato has previously
-     * been saved, it will retrieve related AtendimentosRelatedByContratoId from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in Contato.
-     *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      ConnectionInterface $con optional connection object
-     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return ObjectCollection|ChildAtendimento[] List of ChildAtendimento objects
-     */
-    public function getAtendimentosRelatedByContratoIdJoinSolicitacao(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
-    {
-        $query = ChildAtendimentoQuery::create(null, $criteria);
-        $query->joinWith('Solicitacao', $joinBehavior);
-
-        return $this->getAtendimentosRelatedByContratoId($query, $con);
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this Contato is new, it will return
-     * an empty collection; or if this Contato has previously
-     * been saved, it will retrieve related AtendimentosRelatedByContratoId from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in Contato.
-     *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      ConnectionInterface $con optional connection object
-     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return ObjectCollection|ChildAtendimento[] List of ChildAtendimento objects
-     */
-    public function getAtendimentosRelatedByContratoIdJoinTag(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
-    {
-        $query = ChildAtendimentoQuery::create(null, $criteria);
-        $query->joinWith('Tag', $joinBehavior);
-
-        return $this->getAtendimentosRelatedByContratoId($query, $con);
-    }
-
-
-    /**
-     * If this collection has already been initialized with
-     * an identical criteria, it returns the collection.
-     * Otherwise if this Contato is new, it will return
-     * an empty collection; or if this Contato has previously
-     * been saved, it will retrieve related AtendimentosRelatedByContratoId from storage.
-     *
-     * This method is protected by default in order to keep the public
-     * api reasonable.  You can provide public methods for those you
-     * actually need in Contato.
-     *
-     * @param      Criteria $criteria optional Criteria object to narrow the query
-     * @param      ConnectionInterface $con optional connection object
-     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
-     * @return ObjectCollection|ChildAtendimento[] List of ChildAtendimento objects
-     */
-    public function getAtendimentosRelatedByContratoIdJoinTipo(Criteria $criteria = null, ConnectionInterface $con = null, $joinBehavior = Criteria::LEFT_JOIN)
-    {
-        $query = ChildAtendimentoQuery::create(null, $criteria);
-        $query->joinWith('Tipo', $joinBehavior);
-
-        return $this->getAtendimentosRelatedByContratoId($query, $con);
+        return $this->getAtendimentos($query, $con);
     }
 
     /**
@@ -1999,20 +1567,14 @@ abstract class Contato implements ActiveRecordInterface
     public function clearAllReferences($deep = false)
     {
         if ($deep) {
-            if ($this->collAtendimentosRelatedByContatoId) {
-                foreach ($this->collAtendimentosRelatedByContatoId as $o) {
-                    $o->clearAllReferences($deep);
-                }
-            }
-            if ($this->collAtendimentosRelatedByContratoId) {
-                foreach ($this->collAtendimentosRelatedByContratoId as $o) {
+            if ($this->collAtendimentos) {
+                foreach ($this->collAtendimentos as $o) {
                     $o->clearAllReferences($deep);
                 }
             }
         } // if ($deep)
 
-        $this->collAtendimentosRelatedByContatoId = null;
-        $this->collAtendimentosRelatedByContratoId = null;
+        $this->collAtendimentos = null;
     }
 
     /**

@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="bs/bootstrap.min.css">
     <link rel="stylesheet" href="bs/custom.css">
 
     <!--Import Google Icon Font-->
@@ -17,6 +17,11 @@
 
 
     <title>Planilha do C.R.C</title>
+    <?php
+        require_once 'config.php';
+        $atendimentos = AtendimentoQuery::create()->find();
+    ?>
+
 </head>
 <body>
 <div class="container-fluid full-width">
@@ -42,23 +47,22 @@
             </thead>
             <tbody>
                 <?php
-                    for ($i = 0; $i<100; $i++){
-                        echo "
+                    foreach ($atendimentos as $a){echo "
                             <tr>
-                                <td>Mark</td>
-                                <td>Mark</td>
-                                <td>Otto</td>
-                                <td>@mdo</td>
-                                <td>Mark</td>
-                                <td>Mark</td>
-                                <td>Otto</td>
-                                <td>@mdo</td>
-                                <td>Mark</td>
-                                <td>Mark</td>
-                                <td>Otto</td>
-                                <td>@mdo</td>
-                                <td>Mark</td>
-                                <td>Mark</td>
+                                <td>".$a->getData()."</td>
+                                <td>".$a->getHora()."</td>
+                                <td>".$a->getCadastro()."</td>
+                                <td>".$a->getCliente()."</td>
+                                <td>".$a->getTipo()->getTipo()."</td>
+                                <td>".$a->getBairro()->getNome()."</td>
+                                <td>".$a->getCidade()->getNome()."</td>
+                                <td>".$a->getEstado()->getUf()."</td>
+                                <td>".$a->getContato()->getContato()."</td>
+                                <td>".$a->getMotivo()->getMotivo()."</td>
+                                <td>".$a->getContrato()->getContrato()."</td>
+                                <td>".$a->getAgendamento()->getAgendamento()."</td>
+                                <td>".$a->getAtendente()->getNome()."</td>
+                                <td>".$a->getTelefone()."</td>
                             </tr>
                         ";
                     }

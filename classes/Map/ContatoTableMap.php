@@ -24,7 +24,6 @@ use Propel\Runtime\Map\TableMapTrait;
  * For example, the createSelectSql() method checks the type of a given column used in an
  * ORDER BY clause to know whether it needs to apply SQL to make the ORDER BY case-insensitive
  * (i.e. if it's a text column type).
- *
  */
 class ContatoTableMap extends TableMap
 {
@@ -141,20 +140,13 @@ class ContatoTableMap extends TableMap
      */
     public function buildRelations()
     {
-        $this->addRelation('AtendimentoRelatedByContatoId', '\\Atendimento', RelationMap::ONE_TO_MANY, array (
+        $this->addRelation('Atendimento', '\\Atendimento', RelationMap::ONE_TO_MANY, array (
   0 =>
   array (
     0 => ':contato_id',
     1 => ':id',
   ),
-), null, null, 'AtendimentosRelatedByContatoId', false);
-        $this->addRelation('AtendimentoRelatedByContratoId', '\\Atendimento', RelationMap::ONE_TO_MANY, array (
-  0 =>
-  array (
-    0 => ':contrato_id',
-    1 => ':id',
-  ),
-), null, null, 'AtendimentosRelatedByContratoId', false);
+), null, null, 'Atendimentos', false);
     } // buildRelations()
 
     /**

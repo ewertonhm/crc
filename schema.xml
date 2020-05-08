@@ -26,10 +26,14 @@
     <column name="motivo_id" phpName="MotivoId" type="INTEGER"/>
     <column name="contrato_id" phpName="ContratoId" type="INTEGER"/>
     <column name="agendamento_id" phpName="AgendamentoId" type="INTEGER"/>
-    <column name="telefone" phpName="Telefone" type="VARCHAR" size="13" required="true"/>
+    <column name="atendente_id" phpName="AtendenteId" type="INTEGER"/>
+    <column name="telefone" phpName="Telefone" type="VARCHAR" size="40" required="true"/>
     <column name="tag_id" phpName="TagId" type="INTEGER"/>
     <foreign-key foreignTable="agendamento" name="atendimento_agendamento_id_fkey">
       <reference local="agendamento_id" foreign="id"/>
+    </foreign-key>
+    <foreign-key foreignTable="atendente" name="atendimento_atendente_id_fkey">
+      <reference local="atendente_id" foreign="id"/>
     </foreign-key>
     <foreign-key foreignTable="bairro" name="atendimento_bairro_id_fkey">
       <reference local="bairro_id" foreign="id"/>
@@ -40,7 +44,7 @@
     <foreign-key foreignTable="contato" name="atendimento_contato_id_fkey">
       <reference local="contato_id" foreign="id"/>
     </foreign-key>
-    <foreign-key foreignTable="contato" name="atendimento_contrato_id_fkey">
+    <foreign-key foreignTable="contrato" name="atendimento_contrato_id_fkey">
       <reference local="contrato_id" foreign="id"/>
     </foreign-key>
     <foreign-key foreignTable="estado" name="atendimento_estado_id_fkey">
