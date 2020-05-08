@@ -41,6 +41,7 @@
             <a class="navbar-brand" href="#">
                 <img src="img/footerfinal.png" width="30" height="30" class="d-inline-block align-top" alt="">
             </a>
+            <span class="navbar-brand mb-0 h1"><a class="navbar-brand" href="logout.php">Sair</a></span>
         </nav>
         <table class="table table-hover table-striped table-sm table-dark">
             <thead>
