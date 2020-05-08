@@ -1,3 +1,14 @@
+<?php
+    session_start();
+    if((!isset ($_SESSION['logado']) == true) and (!isset ($_SESSION['id']) == true)){
+        var_dump($_SESSION['logado']);
+        var_dump($_SESSION['id']);
+        unset($_SESSION['logado']);
+        unset($_SESSION['id']);
+        header('location:index.php');
+    }
+?>
+
 <!doctype html>
 <html lang="pt-br">
 <head>
@@ -26,6 +37,11 @@
 <body>
 <div class="container-fluid full-width">
     <div class="tableFixHead">
+        <nav class="navbar navbar-light bg-light">
+            <a class="navbar-brand" href="#">
+                <img src="img/footerfinal.png" width="30" height="30" class="d-inline-block align-top" alt="">
+            </a>
+        </nav>
         <table class="table table-hover table-striped table-sm table-dark">
             <thead>
             <tr>
@@ -71,7 +87,7 @@
         </table>
     </div>
     <div class="fixed-action-btn">
-        <a class="btn-floating btn-large green" href="#">
+        <a class="btn-floating btn-large green" href="inserir.php">
             <i class="large material-icons">add</i>
         </a>
     </div>
