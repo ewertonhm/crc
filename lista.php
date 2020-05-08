@@ -19,7 +19,7 @@
     <title>Planilha do C.R.C</title>
     <?php
         require_once 'config.php';
-        $atendimentos = AtendimentoQuery::create()->find();
+        $atendimentos = AtendimentoQuery::create()->orderByData()->orderByHora()->find();
     ?>
 
 </head>
