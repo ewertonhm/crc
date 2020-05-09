@@ -16,7 +16,7 @@
     <!--<link rel="stylesheet" href="css/materialize/materialize.min.css">-->
 
 
-    <title>Planilha do C.R.C</title>
+    <title>Planilha do C.R.C - Login</title>
     <?php
         require_once 'config.php';
         $atendimentos = AtendimentoQuery::create()->orderByData()->orderByHora()->find();

@@ -37,11 +37,13 @@
 <body>
 <div class="container-fluid full-width">
     <div class="tableFixHead">
-        <nav class="navbar navbar-light bg-light">
-            <a class="navbar-brand" href="#">
-                <img src="img/footerfinal.png" width="30" height="30" class="d-inline-block align-top" alt="">
-            </a>
-            <span class="navbar-brand mb-0 h1"><a class="navbar-brand" href="logout.php">Sair</a></span>
+        <nav class="bg-dark">
+            <div class="nav-wrapper">
+                <a class="brand-logo center"><img src="img/footerfinal.png" width="45" height="45" class="d-inline-block" alt=""></a>
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <li class="black-text"><a href="logout.php">Sair</a></li>
+                </ul>
+            </div>
         </nav>
         <table class="table table-hover table-striped table-sm table-dark">
             <thead>
