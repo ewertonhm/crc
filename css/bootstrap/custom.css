@@ -9,6 +9,8 @@ th     { background:#00c853; }
 .full-width {
     width: 100%;
     height: auto;
+    padding-right:0px !important;
+    padding-left:0px !important;
 }
 
 /* Botão pesquisar e Mais Botões

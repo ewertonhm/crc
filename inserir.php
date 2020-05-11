@@ -21,29 +21,128 @@
 
     <!-- Materialize CSS -->
     <link rel="stylesheet" href="css/materialize/materialize.min.css">
-
+    <link rel="stylesheet" href="css/materialize/form.css">
 
     <title>Planilha do C.R.C - Inserir</title>
     <?php
     require_once 'config.php';
+    $tipo = TipoQuery::create()->orderByTipo()->find();
     ?>
 
 </head>
 <body>
 
-<label>Skills:</label>
-<input type="text" id="skill_input"/>
+<div class="row">
+    <form class="col s12" action="save.php" method="post">
+        <div class="col s12">
+            <div class="row ">
+                <h3 class="green-text">Inserção</h3>
+            </div>
+            <div class="row">
+                <div class="input-field col s1">
+                    <input type="text" id="autocomplete-input" class="data green-text">
+                    <label for="autocomplete-input">Data</label>
+                </div>
+                <div class="input-field col s1">
+                    <input type="text" id="autocomplete-input" class="hora">
+                    <label for="autocomplete-input">Hora</label>
+                </div>
+                <div class="input-field col s1">
+                    <input type="text" id="autocomplete-input" class="cadastro">
+                    <label for="autocomplete-input">Cadastro</label>
+                </div>
+                <div class="input-field col s4">
+                    <input type="text" id="autocomplete-input" class="cliente">
+                    <label for="autocomplete-input">Cliente</label>
+                </div>
+                <div class="input-field col s2">
+                    <input type="text" id="autocomplete-input" class="tipo">
+                    <label for="autocomplete-input">Tipo de Cliente</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s2">
+                    <input type="text" id="autocomplete-input" class="bairro">
+                    <label for="autocomplete-input">Bairro</label>
+                </div>
+                <div class="input-field col s2">
+                    <input type="text" id="autocomplete-input" class="cidade">
+                    <label for="autocomplete-input">Cidade</label>
+                </div>
+                <div class="input-field col s1">
+                    <input type="text" id="autocomplete-input" class="uf">
+                    <label for="autocomplete-input">UF</label>
+                </div>
+                <div class="input-field col s2">
+                    <input type="text" id="autocomplete-input" class="contato">
+                    <label for="autocomplete-input">Contato</label>
+                </div>
+                <div class="input-field col s2">
+                    <input type="text" id="autocomplete-input" class="solicitação">
+                    <label for="autocomplete-input">Solicitação</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s2">
+                    <input type="text" id="autocomplete-input" class="motivo">
+                    <label for="autocomplete-input">Motivo</label>
+                </div>
+                <div class="input-field col s3">
+                    <input type="text" id="autocomplete-input" class="Contrato">
+                    <label for="autocomplete-input">Contrato</label>
+                </div>
+                <div class="input-field col s1">
+                    <input type="text" id="autocomplete-input" class="agendamento">
+                    <label for="autocomplete-input">Agendamento</label>
+                </div>
+                <div class="input-field col s1">
+                    <input type="text" id="autocomplete-input" class="atendente">
+                    <label for="autocomplete-input">Atendente</label>
+                </div>
+                <div class="input-field col s2">
+                    <input type="text" id="autocomplete-input" class="telefone">
+                    <label for="autocomplete-input">Telefone</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s1">
+                    <button class="btn waves-effect waves-light green" type="submit" name="action">Salvar
+                        <i class="material-icons right">send</i>
+                    </button>
+                </div>
+            </div>
+    </form>
+</div>
 
 
 
-<!-- jQuery first, then Materialize -->
+<!-- Compiled and minified JavaScript -->
+<script src="js/jquery-3.5.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 
 
 
-<script>
-    $(document).ready(function () {
 
+
+<script type='text/javascript'>
+    $(document).ready(function(){
+        $('input.tipo').autocomplete({
+            data: {
+                <?php
+                $i = count($tipo);
+                $t = 0;
+                foreach ($tipo as $t) {
+                    echo "\"".$t->getTipo()."\": null";
+                    if($i != $t){
+                        echo ",";
+                        $t++;
+                    }
+                }
+                ?>
+            },
+        });
     });
+
 </script>
 </body>
 </html>

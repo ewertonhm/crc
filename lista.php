@@ -28,6 +28,7 @@
 
 
     <title>Planilha do C.R.C</title>
+    <link rel="icon" href="img/footerfinal.png" sizes="16x16 32x32" type="image/png">
     <?php
         require_once 'config.php';
         $atendimentos = AtendimentoQuery::create()->orderByData()->orderByHora()->find();
@@ -41,11 +42,11 @@
             <div class="nav-wrapper">
                 <a class="brand-logo center"><img src="img/footerfinal.png" width="45" height="45" class="d-inline-block" alt=""></a>
                 <ul id="nav-mobile" class="right hide-on-med-and-down">
-                    <li class="black-text"><a href="logout.php">Sair</a></li>
+                    <li class="black-text"><a href="logout.php"><i class="large material-icons">exit_to_app</i></a></li>
                 </ul>
             </div>
         </nav>
-        <table class="table table-hover table-striped table-sm table-dark">
+        <table id="lista" class="table table-hover table-striped table-sm table-dark">
             <thead>
             <tr>
                 <th scope="col">Data</th>
@@ -93,6 +94,7 @@
         <a class="btn-floating btn-large green" href="inserir.php">
             <i class="large material-icons">add</i>
         </a>
+        <button class="btn-floating btn-large green" onClick="scrollToBottom()"><i class="large material-icons">arrow_downward</i></button>
     </div>
 
     <!-- <div class="btnMaisBotoes">
@@ -119,6 +121,10 @@
         $('.fixed-action-btn').floatingActionButton();
     });
 
+    function scrollToBottom () {
+        $('html,body').animate({scrollTop: document.body.scrollHeight},"fast");
+    }
+
 
 </script>
 <!-- jQuery first, then Popper.js, then Bootstrap JS, then Materialize -->
@@ -126,5 +132,6 @@
 <script src="js/popper.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/materialize.min.js"></script>
+<script src="js/jquery-3.5.1.min.js"></script>
 </body>
 </html>
