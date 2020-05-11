@@ -26,7 +26,15 @@
     <title>Planilha do C.R.C - Inserir</title>
     <?php
     require_once 'config.php';
-    $tipo = TipoQuery::create()->orderByTipo()->find();
+    $tipos = TipoQuery::create()->orderByTipo()->find();
+    $bairros = BairroQuery::create()->orderByNome()->find();
+    $cidades = CidadeQuery::create()->orderByNome()->find();
+    $estados = EstadoQuery::create()->find();
+    $contatos = ContatoQuery::create()->orderByContato()->find();
+    $solicitacaos = SolicitacaoQuery::create()->orderBySolicitacao()->find();
+    $motivos = MotivoQuery::create()->orderByMotivo()->find();
+    $contratos = ContratoQuery::create()->orderByContrato()->find();
+    $agendamentos = AgendamentoQuery::create()->orderByAgendamento()->find();
     ?>
 
 </head>
@@ -129,13 +137,30 @@
         $('input.tipo').autocomplete({
             data: {
                 <?php
-                $i = count($tipo);
-                $t = 0;
-                foreach ($tipo as $t) {
-                    echo "\"".$t->getTipo()."\": null";
-                    if($i != $t){
+                $quantidadeTipos = count($tipos);
+                $contadorTipos = 0;
+                foreach ($tipos as $tipo) {
+                    echo "\"".$tipo->getTipo()."\": null";
+                    if($quantidadeTipos != $contadorTipos){
                         echo ",";
-                        $t++;
+                        $contadorTipos++;
+                    }
+                }
+                ?>
+            },
+        });
+    });
+    $(document).ready(function(){
+        $('input.bairro').autocomplete({
+            data: {
+                <?php
+                $quantidadeBairros = count($bairros);
+                $contadorBairros = 0;
+                foreach ($bairros as $bairro) {
+                    echo "\"".$bairro->getNome()."\": null";
+                    if($quantidadeBairros != $contadorBairros){
+                        echo ",";
+                        $contadorBairros++;
                     }
                 }
                 ?>
