@@ -5,7 +5,7 @@
   "require": {
     "ext-pdo": "*",
     "propel/propel": "~2.0@dev",
-    "nesbot/carbon": "^2.24",
+    "nesbot/carbon": "^2.33",
     "monolog/monolog": "^2.0"
   }
 }

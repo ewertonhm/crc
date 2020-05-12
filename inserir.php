@@ -35,89 +35,107 @@
     $motivos = MotivoQuery::create()->orderByMotivo()->find();
     $contratos = ContratoQuery::create()->orderByContrato()->find();
     $agendamentos = AgendamentoQuery::create()->orderByAgendamento()->find();
+
+
+    $now = \Carbon\Carbon::now()->toDateTimeString();
+    $carbon = \Carbon\Carbon::parse($now);
+
+    $date = $carbon->isoFormat('D-MM-YYYY');
+    $time = $carbon->isoFormat('hh-mm');
+
+
+    $atendente = AtendenteQuery::create()->findOneById($_SESSION['id'])->getNome();
+
+    $formManager = new \controller\Form();
     ?>
 
 </head>
 <body>
 
 <div class="row">
-    <form class="col s12" action="save.php" method="post">
+    <form autocomplete="off" class="col s12" action="save.php" method="post">
         <div class="col s12">
             <div class="row ">
                 <h3 class="green-text">Inserção</h3>
             </div>
             <div class="row">
-                <div class="input-field col s1">
-                    <input type="text" id="autocomplete-input" class="data green-text">
+                <div class="input-field col s2">
+                    <input disabled type="text" id="autocomplete-input" name="data" class="data" value=<?php echo $date;?>>
                     <label for="autocomplete-input">Data</label>
                 </div>
                 <div class="input-field col s1">
-                    <input type="text" id="autocomplete-input" class="hora">
+                    <input type="text" id="autocomplete-input" name="hora" class="hora" value=<?php echo $time;?>>
                     <label for="autocomplete-input">Hora</label>
                 </div>
-                <div class="input-field col s1">
-                    <input type="text" id="autocomplete-input" class="cadastro">
+                <div class="input-field col s3">
+                    <input disabled type="text" id="autocomplete-input" name="atendente" class="atendente" value=<?php echo $atendente;?>>
+                    <label for="autocomplete-input">Atendente</label>
+                </div>
+                <div class="input-field col s3">
+                    <input autofocus type="text" name="cadastro" class="cadastro">
                     <label for="autocomplete-input">Cadastro</label>
                 </div>
-                <div class="input-field col s4">
-                    <input type="text" id="autocomplete-input" class="cliente">
+            </div>
+            <div class="row">
+                <div class="input-field col s5">
+                    <input type="text" id="autocomplete-input" name="cliente" class="cliente">
                     <label for="autocomplete-input">Cliente</label>
                 </div>
                 <div class="input-field col s2">
-                    <input type="text" id="autocomplete-input" class="tipo">
+                    <?php $formManager->selectForm($tipos,'getTipo','tipo') ?>
                     <label for="autocomplete-input">Tipo de Cliente</label>
                 </div>
-            </div>
-            <div class="row">
                 <div class="input-field col s2">
-                    <input type="text" id="autocomplete-input" class="bairro">
-                    <label for="autocomplete-input">Bairro</label>
-                </div>
-                <div class="input-field col s2">
-                    <input type="text" id="autocomplete-input" class="cidade">
-                    <label for="autocomplete-input">Cidade</label>
-                </div>
-                <div class="input-field col s1">
-                    <input type="text" id="autocomplete-input" class="uf">
-                    <label for="autocomplete-input">UF</label>
-                </div>
-                <div class="input-field col s2">
-                    <input type="text" id="autocomplete-input" class="contato">
-                    <label for="autocomplete-input">Contato</label>
-                </div>
-                <div class="input-field col s2">
-                    <input type="text" id="autocomplete-input" class="solicitação">
-                    <label for="autocomplete-input">Solicitação</label>
-                </div>
-            </div>
-            <div class="row">
-                <div class="input-field col s2">
-                    <input type="text" id="autocomplete-input" class="motivo">
-                    <label for="autocomplete-input">Motivo</label>
-                </div>
-                <div class="input-field col s3">
-                    <input type="text" id="autocomplete-input" class="Contrato">
-                    <label for="autocomplete-input">Contrato</label>
-                </div>
-                <div class="input-field col s1">
-                    <input type="text" id="autocomplete-input" class="agendamento">
-                    <label for="autocomplete-input">Agendamento</label>
-                </div>
-                <div class="input-field col s1">
-                    <input type="text" id="autocomplete-input" class="atendente">
-                    <label for="autocomplete-input">Atendente</label>
-                </div>
-                <div class="input-field col s2">
-                    <input type="text" id="autocomplete-input" class="telefone">
+                    <input type="text" id="autocomplete-input" name="telefone" class="telefone">
                     <label for="autocomplete-input">Telefone</label>
                 </div>
             </div>
             <div class="row">
+                <div class="input-field col s2">
+                    <input type="text" id="autocomplete-input" name="cidade" class="cidade">
+                    <label for="autocomplete-input">Cidade</label>
+                </div>
+                <div class="input-field col s1">
+                    <input type="text" id="autocomplete-input" name="uf" class="uf">
+                    <label for="autocomplete-input">UF</label>
+                </div>
+                <div class="input-field col s2">
+                    <input type="text" id="autocomplete-input" name="bairro" class="bairro">
+                    <label for="autocomplete-input">Bairro</label>
+                </div>
+                <div class="input-field col s2">
+                    <?php $formManager->selectForm($contatos,'getContato','contato') ?>
+                    <label for="autocomplete-input">Contato</label>
+                </div>
+                <div class="input-field col s2">
+                    <?php $formManager->selectForm($solicitacaos,'getSolicitacao','solicitacao') ?>
+                    <label for="autocomplete-input">Solicitação</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s3">
+                    <?php $formManager->selectForm($motivos,'getMotivo','motivo') ?>
+                    <label for="autocomplete-input">Motivo</label>
+                </div>
+                <div class="input-field col s4">
+                    <?php $formManager->selectForm($contratos,'getContrato','contrato') ?>
+                    <label for="autocomplete-input">Contrato</label>
+                </div>
+                <div class="input-field col s2">
+                    <?php $formManager->selectForm($agendamentos,'getAgendamento','agendamento') ?>
+                    <label for="autocomplete-input">Agendamento</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s8">
+
+                </div>
                 <div class="input-field col s1">
                     <button class="btn waves-effect waves-light green" type="submit" name="action">Salvar
                         <i class="material-icons right">send</i>
                     </button>
                 </div>
+
             </div>
     </form>
 </div>
@@ -133,37 +151,45 @@
 
 
 <script type='text/javascript'>
+
     $(document).ready(function(){
-        $('input.tipo').autocomplete({
-            data: {
-                <?php
-                $quantidadeTipos = count($tipos);
-                $contadorTipos = 0;
-                foreach ($tipos as $tipo) {
-                    echo "\"".$tipo->getTipo()."\": null";
-                    if($quantidadeTipos != $contadorTipos){
-                        echo ",";
-                        $contadorTipos++;
-                    }
-                }
-                ?>
-            },
+        $('select').formSelect();
+    });
+
+    // Desativa o salvar com Enter
+    $(document).ready(function() {
+        $(window).keydown(function(event){
+            if(event.keyCode == 13) {
+                event.preventDefault();
+                return false;
+            }
         });
     });
+
+
+    // Auto Complete do bairro
     $(document).ready(function(){
         $('input.bairro').autocomplete({
             data: {
-                <?php
-                $quantidadeBairros = count($bairros);
-                $contadorBairros = 0;
-                foreach ($bairros as $bairro) {
-                    echo "\"".$bairro->getNome()."\": null";
-                    if($quantidadeBairros != $contadorBairros){
-                        echo ",";
-                        $contadorBairros++;
-                    }
-                }
-                ?>
+                <?php $formManager->autocompleteForm($bairros,'getNome');?>
+            },
+        });
+    });
+
+    // Auto Complete da cidade
+    $(document).ready(function(){
+        $('input.cidade').autocomplete({
+            data: {
+                <?php $formManager->autocompleteForm($cidades,'getNome');?>
+            },
+        });
+    });
+
+    // Auto complete UF
+    $(document).ready(function(){
+        $('input.uf').autocomplete({
+            data: {
+                <?php $formManager->autocompleteForm($estados,'getUf');?>
             },
         });
     });
