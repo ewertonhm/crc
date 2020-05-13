@@ -27,7 +27,6 @@
     <!-- Materialize CSS -->
     <link rel="stylesheet" href="css/materialize/materialize.min.css">
 
-
     <title>Planilha do C.R.C</title>
     <link rel="icon" href="img/footerfinal.png" sizes="16x16 32x32" type="image/png">
     <?php
@@ -41,7 +40,7 @@
     ?>
 
 </head>
-<body>
+<body class="bg-dark">
 <div class="container-fluid full-width">
     <div class="tableFixHead">
         <nav class="bg-dark">
