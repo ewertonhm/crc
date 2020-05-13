@@ -183,7 +183,17 @@
         </table>
     </div>
     <div class="fixed-action-btn">
-        <a class="btn-floating btn-large green" href="inserir.php">
+        <a class="btn-floating btn-large green" href="
+        <?php
+        if(AtendenteQuery::create()->findOneById($_SESSION['id'])->getForm() == 1){
+            echo "inserir-autocomplete.php";
+        } elseif(AtendenteQuery::create()->findOneById($_SESSION['id'])->getForm() == 0) {
+            echo "inserir-dropdown.php";
+        } elseif(AtendenteQuery::create()->findOneById($_SESSION['id'])->getForm() == 2) {
+            echo "inserir-misto.php";
+        }
+        ?>
+        ">
             <i class="large material-icons">add</i>
         </a>
         <button class="btn-floating btn-large green" onClick="scrollToBottom()"><i class="large material-icons">arrow_downward</i></button>

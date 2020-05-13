@@ -70,6 +70,19 @@ if(isset($_POST['action'])){
         }
         $atendimento->save();
         header('location:lista.php');
+    } else if(isset($_POST['config'])){
+        require_once 'config.php';
+
+        $atendente = AtendenteQuery::create()->findOneById($_SESSION['id']);
+
+        if(isset($_POST['lista'])){
+            $atendente->setLista((int)$_POST['lista']);
+        }
+        if(isset($_POST['config'])){
+            $atendente->setForm((int)$_POST['insert']);
+        }
+        $atendente->save();
+        header('location:lista.php');
     } else {
         header('location:lista.php');
     }

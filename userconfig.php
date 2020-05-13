@@ -66,13 +66,14 @@ if((!isset ($_SESSION['logado']) == true) and (!isset ($_SESSION['id']) == true)
                         <option value ='null' disabled selected>Selecione</option>
                         <option value ='0'>Dropdown</option>
                         <option value ='1'>Autocomplete</option>
+                        <option value ='2'>Misto</option>
                     </select>
                     <label for="autocomplete-input">Formato dos campos de inserção</label>
                 </div>
             </div>
             <div class="row">
                 <div class="input-field col s1">
-                    <button class="btn waves-effect waves-light green" type="submit" name="action">Salvar
+                    <button class="btn waves-effect waves-light green" type="submit" name="config">Salvar
                         <i class="material-icons right">send</i>
                     </button>
                 </div>
