@@ -1,4 +1,7 @@
 <?php
+// TODO Opção de menu dropdown e autocompletar para cada campo
+
+
     session_start();
     if((!isset ($_SESSION['logado']) == true) and (!isset ($_SESSION['id']) == true)){
         var_dump($_SESSION['logado']);
@@ -47,6 +50,9 @@
     $atendente = AtendenteQuery::create()->findOneById($_SESSION['id'])->getNome();
 
     $formManager = new \controller\Form();
+
+
+
     ?>
 
 </head>
@@ -91,14 +97,16 @@
                 </div>
             </div>
             <div class="row">
-                <div class="input-field col s2">
+                <div class="input-field col s3">
                     <input type="text" id="autocomplete-input" name="cidade" class="cidade">
                     <label for="autocomplete-input">Cidade</label>
                 </div>
+                <!-- campo estado, removido para alterar o mesmo para preenchimento no backend
                 <div class="input-field col s1">
                     <input type="text" id="autocomplete-input" name="uf" class="uf">
                     <label for="autocomplete-input">UF</label>
                 </div>
+                -->
                 <div class="input-field col s2">
                     <input type="text" id="autocomplete-input" name="bairro" class="bairro">
                     <label for="autocomplete-input">Bairro</label>
@@ -186,13 +194,7 @@
     });
 
     // Auto complete UF
-    $(document).ready(function(){
-        $('input.uf').autocomplete({
-            data: {
-                <?php $formManager->autocompleteForm($estados,'getUf');?>
-            },
-        });
-    });
+    /* removido */
 
 </script>
 </body>

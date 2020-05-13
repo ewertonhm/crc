@@ -20,14 +20,17 @@
             $cidade = CidadeQuery::create()->findOneByNome($_POST['cidade']);
             if($cidade != NULL){
                 $atendimento->setCidadeId($cidade->getId());
+                $atendimento->setEstadoId($cidade->getEstadoId());
             }
         }
+        /* REMOVIDO
         if(isset($_POST['uf'])){
             $uf = EstadoQuery::create()->findOneByUf($_POST['uf']);
             if($uf != NULL){
                 $atendimento->setEstadoId($uf->getId());
             }
         }
+        */
         if(isset($_POST['bairro'])){
             $bairro = BairroQuery::create()->findOneByNome($_POST['bairro']);
             if($bairro != NULL){
