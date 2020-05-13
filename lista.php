@@ -1,4 +1,6 @@
 <?php
+// TODO: opção de filtro por data
+
     session_start();
     if((!isset ($_SESSION['logado']) == true) and (!isset ($_SESSION['id']) == true)){
         var_dump($_SESSION['logado']);
@@ -67,22 +69,99 @@
             </thead>
             <tbody>
                 <?php
-                    foreach ($atendimentos as $a){echo "
+                    foreach ($atendimentos as $a){
+                        $data = '';
+                        $hora = '';
+                        $cadastro = '';
+                        $cliente = '';
+                        $tipo = '';
+                        $bairro = '';
+                        $cidade = '';
+                        $estado = '';
+                        $contato = '';
+                        $motivo = '';
+                        $contato = '';
+                        $agendamento = '';
+                        $atendente = '';
+                        $telefone = '';
+
+                        if($a->getData() != NULL){
+                            $data = $a->getData();
+                        }
+                        if($a->getHora() != NULL){
+                            $hora = $a->getHora();
+                        }
+                        if($a->getCadastro() != NULL){
+                            $cadastro = $a->getCadastro();
+                        }
+                        if($a->getCliente() != NULL){
+                            $cliente = $a->getCliente();
+                        }
+                        if($a->getTipo() != NULL){
+                            if($a->getTipo()->getTipo() != NULL){
+                                $tipo = $a->getTipo()->getTipo();
+                            }
+                        }
+                        if($a->getBairro() != NULL){
+                            if($a->getBairro()->getNome() != NULL){
+                                $bairro = $a->getBairro()->getNome();
+                            }
+                        }
+                        if($a->getCidade() != NULL){
+                            if($a->getCidade()->getNome() != NULL){
+                                $cidade = $a->getCidade()->getNome();
+                            }
+                        }
+                        if($a->getEstado() != NULL){
+                            if($a->getEstado()->getUf() != NULL){
+                                $estado = $a->getEstado()->getUf();
+                            }
+                        }
+                        if($a->getContato() != NULL){
+                            if($a->getContato()->getContato() != NULL){
+                                $contato = $a->getContato()->getContato();
+                            }
+                        }
+                        if($a->getMotivo() != NULL){
+                            if($a->getMotivo()->getMotivo() != NULL){
+                                $motivo = $a->getMotivo()->getMotivo();
+                            }
+                        }
+                        if($a->getContrato() != NULL){
+                            if($a->getContrato()->getContrato() != NULL){
+                                $contrato = $a->getContrato()->getContrato();
+                            }
+                        }
+                        if($a->getAgendamento() != NULL){
+                            if($a->getAgendamento()->getAgendamento() != NULL){
+                                $agendamento = $a->getAgendamento()->getAgendamento();
+                            }
+                        }
+                        if($a->getAtendente() != NULL){
+                            if($a->getAtendente()->getNome() != NULL){
+                                $atendente = $a->getAtendente()->getNome();
+                            }
+                        }
+                        if($a->getTelefone() != NULL){
+                            $telefone = $a->getTelefone();
+                        }
+
+                        echo "
                             <tr>
-                                <td>".$a->getData()."</td>
-                                <td>".$a->getHora()."</td>
-                                <td>".$a->getCadastro()."</td>
-                                <td>".$a->getCliente()."</td>
-                                <td>".$a->getTipo()->getTipo()."</td>
-                                <td>".$a->getBairro()->getNome()."</td>
-                                <td>".$a->getCidade()->getNome()."</td>
-                                <td>".$a->getEstado()->getUf()."</td>
-                                <td>".$a->getContato()->getContato()."</td>
-                                <td>".$a->getMotivo()->getMotivo()."</td>
-                                <td>".$a->getContrato()->getContrato()."</td>
-                                <td>".$a->getAgendamento()->getAgendamento()."</td>
-                                <td>".$a->getAtendente()->getNome()."</td>
-                                <td>".$a->getTelefone()."</td>
+                                <td>".$data."</td>
+                                <td>".$hora."</td>
+                                <td>".$cadastro."</td>
+                                <td>".$cliente."</td>
+                                <td>".$tipo."</td>
+                                <td>".$bairro."</td>
+                                <td>".$cidade."</td>
+                                <td>".$estado."</td>
+                                <td>".$contato."</td>
+                                <td>".$motivo."</td>
+                                <td>".$contrato."</td>
+                                <td>".$agendamento."</td>
+                                <td>".$atendente."</td>
+                                <td>".$telefone."</td>
                             </tr>
                         ";
                     }
