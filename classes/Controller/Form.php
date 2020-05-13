@@ -22,7 +22,7 @@ class Form
     {
         echo "<select name='";
         echo $name;
-        echo "'>'";
+        echo "'>";
         echo "<option value ='null' disabled selected>Selecione</option>";
         foreach ($array as $a){
             echo "<option value='";
