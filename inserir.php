@@ -29,6 +29,7 @@
     <title>Planilha do C.R.C - Inserir</title>
     <?php
     require_once 'config.php';
+    unset($_POST);
     $tipos = TipoQuery::create()->orderByTipo()->find();
     $bairros = BairroQuery::create()->orderByNome()->find();
     $cidades = CidadeQuery::create()->orderByNome()->find();
@@ -44,14 +45,12 @@
     $carbon = \Carbon\Carbon::parse($now);
 
     $date = $carbon->isoFormat('D/MM/YYYY');
-    $time = $carbon->isoFormat('hh:mm');
+    $time = $carbon->isoFormat('HH:00');
 
 
     $atendente = AtendenteQuery::create()->findOneById($_SESSION['id'])->getNome();
 
     $formManager = new \controller\Form();
-
-
 
     ?>
 

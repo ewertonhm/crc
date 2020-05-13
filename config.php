@@ -9,6 +9,7 @@ use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 use Propel\Runtime\Propel;
 
-$defaultLogger = new Logger('defaultLogger');
+/*$defaultLogger = new Logger('defaultLogger');
 $defaultLogger->pushHandler(new StreamHandler('/var/log/propel.log', Logger::WARNING));
 Propel::getServiceContainer()->setLogger('defaultLogger', $defaultLogger);
+*/

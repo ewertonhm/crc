@@ -1,6 +1,4 @@
 <?php
-// TODO: opção de filtro por data
-
     session_start();
     if((!isset ($_SESSION['logado']) == true) and (!isset ($_SESSION['id']) == true)){
         var_dump($_SESSION['logado']);
@@ -33,7 +31,7 @@
     <link rel="icon" href="img/footerfinal.png" sizes="16x16 32x32" type="image/png">
     <?php
         require_once 'config.php';
-        $atendimentos = AtendimentoQuery::create()->orderByData()->orderByHora()->find();
+        $atendimentos = AtendimentoQuery::create()->orderByData()->orderByHora()->orderById()->where('atendimento.data like ?', \Carbon\Carbon::parse(\Carbon\Carbon::now()->toDateTimeString())->isoFormat('%MM/YYYY'))->find();
     ?>
 
 </head>
@@ -60,6 +58,7 @@
                 <th scope="col">Cidade</th>
                 <th scope="col">UF</th>
                 <th scope="col">Contato</th>
+                <th scope="col">Solicitação</th>
                 <th scope="col">Motivo</th>
                 <th scope="col">Contrato</th>
                 <th scope="col">Agendamento</th>
@@ -79,8 +78,9 @@
                         $cidade = '';
                         $estado = '';
                         $contato = '';
+                        $solicitacao = '';
                         $motivo = '';
-                        $contato = '';
+                        $contrato = '';
                         $agendamento = '';
                         $atendente = '';
                         $telefone = '';
@@ -122,6 +122,11 @@
                                 $contato = $a->getContato()->getContato();
                             }
                         }
+                        if($a->getSolicitacao() != NULL){
+                            if($a->getSolicitacao()->getSolicitacao() != NULL){
+                                $solicitacao = $a->getSolicitacao()->getSolicitacao();
+                            }
+                        }
                         if($a->getMotivo() != NULL){
                             if($a->getMotivo()->getMotivo() != NULL){
                                 $motivo = $a->getMotivo()->getMotivo();
@@ -157,6 +162,7 @@
                                 <td>".$cidade."</td>
                                 <td>".$estado."</td>
                                 <td>".$contato."</td>
+                                <td>".$solicitacao."</td>
                                 <td>".$motivo."</td>
                                 <td>".$contrato."</td>
                                 <td>".$agendamento."</td>
