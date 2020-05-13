@@ -1,4 +1,5 @@
 <?php
+// TODO: opção de lista inversa (se possível nas configs do usuário)
     session_start();
     if((!isset ($_SESSION['logado']) == true) and (!isset ($_SESSION['id']) == true)){
         var_dump($_SESSION['logado']);
@@ -42,6 +43,7 @@
             <div class="nav-wrapper">
                 <a class="brand-logo center"><img src="img/footerfinal.png" width="45" height="45" class="d-inline-block" alt=""></a>
                 <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <li class="black-text"><a href="userconfig.php"><i class="large material-icons">build</i></a></li>
                     <li class="black-text"><a href="logout.php"><i class="large material-icons">exit_to_app</i></a></li>
                 </ul>
             </div>

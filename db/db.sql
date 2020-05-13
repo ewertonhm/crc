@@ -4,10 +4,13 @@ CREATE TABLE atendente (
     nome VARCHAR(45) NOT NULL,
     login VARCHAR(45) NOT NULL,
     senha VARCHAR(32) NOT NULL,
-    permissao INTEGER
+    permissao INTEGER,
+    lista INTEGER,
+    form INTEGER
 );
 
-INSERT INTO atendente (nome,login,senha,permissao) VALUES ('Administrador','admin@netsultelecom.com.br','c289ffe12a30c94530b7fc4e532e2f42',0); -- senha é admin23
+
+INSERT INTO atendente (nome,login,senha,permissao,lista,form) VALUES ('Administrador','admin@netsultelecom.com.br','c289ffe12a30c94530b7fc4e532e2f42',0,0,0); -- senha é admin23
 
 CREATE TABLE agendamento (
     id SERIAL PRIMARY KEY,

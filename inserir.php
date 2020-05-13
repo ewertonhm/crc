@@ -1,5 +1,5 @@
 <?php
-// TODO Opção de menu dropdown e autocompletar para cada campo
+// TODO Opção de menu dropdown e autocompletar para cada campo (nas configurações do usuário)
 
 
     session_start();
