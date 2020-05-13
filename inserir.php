@@ -30,18 +30,18 @@
     $bairros = BairroQuery::create()->orderByNome()->find();
     $cidades = CidadeQuery::create()->orderByNome()->find();
     $estados = EstadoQuery::create()->find();
-    $contatos = ContatoQuery::create()->orderByContato()->find();
-    $solicitacaos = SolicitacaoQuery::create()->orderBySolicitacao()->find();
+    $contatos = ContatoQuery::create()->orderByContato('desc')->find();
+    $solicitacaos = SolicitacaoQuery::create()->orderBySolicitacao('desc')->find();
     $motivos = MotivoQuery::create()->orderByMotivo()->find();
-    $contratos = ContratoQuery::create()->orderByContrato()->find();
+    $contratos = ContratoQuery::create()->orderById()->find();
     $agendamentos = AgendamentoQuery::create()->orderByAgendamento()->find();
 
 
     $now = \Carbon\Carbon::now()->toDateTimeString();
     $carbon = \Carbon\Carbon::parse($now);
 
-    $date = $carbon->isoFormat('D-MM-YYYY');
-    $time = $carbon->isoFormat('hh-mm');
+    $date = $carbon->isoFormat('D/MM/YYYY');
+    $time = $carbon->isoFormat('hh:mm');
 
 
     $atendente = AtendenteQuery::create()->findOneById($_SESSION['id'])->getNome();

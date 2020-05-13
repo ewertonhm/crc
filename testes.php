@@ -1,8 +1,6 @@
 <?php
 require_once 'config.php';
 
-$tipos = TipoQuery::create()->find();
+$tipos = TipoQuery::create()->findOneByTipo('AAAA');
 
-$formManager = new \controller\Form();
-
-$formManager->selectForm($tipos,'getTipo');
+var_dump($tipos);
