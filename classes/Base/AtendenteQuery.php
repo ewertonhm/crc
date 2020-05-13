@@ -25,12 +25,16 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildAtendenteQuery orderByLogin($order = Criteria::ASC) Order by the login column
  * @method     ChildAtendenteQuery orderBySenha($order = Criteria::ASC) Order by the senha column
  * @method     ChildAtendenteQuery orderByPermissao($order = Criteria::ASC) Order by the permissao column
+ * @method     ChildAtendenteQuery orderByLista($order = Criteria::ASC) Order by the lista column
+ * @method     ChildAtendenteQuery orderByForm($order = Criteria::ASC) Order by the form column
  *
  * @method     ChildAtendenteQuery groupById() Group by the id column
  * @method     ChildAtendenteQuery groupByNome() Group by the nome column
  * @method     ChildAtendenteQuery groupByLogin() Group by the login column
  * @method     ChildAtendenteQuery groupBySenha() Group by the senha column
  * @method     ChildAtendenteQuery groupByPermissao() Group by the permissao column
+ * @method     ChildAtendenteQuery groupByLista() Group by the lista column
+ * @method     ChildAtendenteQuery groupByForm() Group by the form column
  *
  * @method     ChildAtendenteQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildAtendenteQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -59,7 +63,9 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildAtendente findOneByNome(string $nome) Return the first ChildAtendente filtered by the nome column
  * @method     ChildAtendente findOneByLogin(string $login) Return the first ChildAtendente filtered by the login column
  * @method     ChildAtendente findOneBySenha(string $senha) Return the first ChildAtendente filtered by the senha column
- * @method     ChildAtendente findOneByPermissao(int $permissao) Return the first ChildAtendente filtered by the permissao column *
+ * @method     ChildAtendente findOneByPermissao(int $permissao) Return the first ChildAtendente filtered by the permissao column
+ * @method     ChildAtendente findOneByLista(int $lista) Return the first ChildAtendente filtered by the lista column
+ * @method     ChildAtendente findOneByForm(int $form) Return the first ChildAtendente filtered by the form column *
 
  * @method     ChildAtendente requirePk($key, ConnectionInterface $con = null) Return the ChildAtendente by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildAtendente requireOne(ConnectionInterface $con = null) Return the first ChildAtendente matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -69,6 +75,8 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildAtendente requireOneByLogin(string $login) Return the first ChildAtendente filtered by the login column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildAtendente requireOneBySenha(string $senha) Return the first ChildAtendente filtered by the senha column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildAtendente requireOneByPermissao(int $permissao) Return the first ChildAtendente filtered by the permissao column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildAtendente requireOneByLista(int $lista) Return the first ChildAtendente filtered by the lista column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildAtendente requireOneByForm(int $form) Return the first ChildAtendente filtered by the form column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildAtendente[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildAtendente objects based on current ModelCriteria
  * @method     ChildAtendente[]|ObjectCollection findById(int $id) Return ChildAtendente objects filtered by the id column
@@ -76,6 +84,8 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildAtendente[]|ObjectCollection findByLogin(string $login) Return ChildAtendente objects filtered by the login column
  * @method     ChildAtendente[]|ObjectCollection findBySenha(string $senha) Return ChildAtendente objects filtered by the senha column
  * @method     ChildAtendente[]|ObjectCollection findByPermissao(int $permissao) Return ChildAtendente objects filtered by the permissao column
+ * @method     ChildAtendente[]|ObjectCollection findByLista(int $lista) Return ChildAtendente objects filtered by the lista column
+ * @method     ChildAtendente[]|ObjectCollection findByForm(int $form) Return ChildAtendente objects filtered by the form column
  * @method     ChildAtendente[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  *
  */
@@ -174,7 +184,7 @@ abstract class AtendenteQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id, nome, login, senha, permissao FROM atendente WHERE id = :p0';
+        $sql = 'SELECT id, nome, login, senha, permissao, lista, form FROM atendente WHERE id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -419,6 +429,88 @@ abstract class AtendenteQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(AtendenteTableMap::COL_PERMISSAO, $permissao, $comparison);
+    }
+
+    /**
+     * Filter the query on the lista column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByLista(1234); // WHERE lista = 1234
+     * $query->filterByLista(array(12, 34)); // WHERE lista IN (12, 34)
+     * $query->filterByLista(array('min' => 12)); // WHERE lista > 12
+     * </code>
+     *
+     * @param     mixed $lista The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildAtendenteQuery The current query, for fluid interface
+     */
+    public function filterByLista($lista = null, $comparison = null)
+    {
+        if (is_array($lista)) {
+            $useMinMax = false;
+            if (isset($lista['min'])) {
+                $this->addUsingAlias(AtendenteTableMap::COL_LISTA, $lista['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($lista['max'])) {
+                $this->addUsingAlias(AtendenteTableMap::COL_LISTA, $lista['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(AtendenteTableMap::COL_LISTA, $lista, $comparison);
+    }
+
+    /**
+     * Filter the query on the form column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByForm(1234); // WHERE form = 1234
+     * $query->filterByForm(array(12, 34)); // WHERE form IN (12, 34)
+     * $query->filterByForm(array('min' => 12)); // WHERE form > 12
+     * </code>
+     *
+     * @param     mixed $form The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildAtendenteQuery The current query, for fluid interface
+     */
+    public function filterByForm($form = null, $comparison = null)
+    {
+        if (is_array($form)) {
+            $useMinMax = false;
+            if (isset($form['min'])) {
+                $this->addUsingAlias(AtendenteTableMap::COL_FORM, $form['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($form['max'])) {
+                $this->addUsingAlias(AtendenteTableMap::COL_FORM, $form['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(AtendenteTableMap::COL_FORM, $form, $comparison);
     }
 
     /**

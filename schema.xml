@@ -10,6 +10,8 @@
     <column name="login" phpName="Login" type="VARCHAR" size="45" required="true"/>
     <column name="senha" phpName="Senha" type="VARCHAR" size="32" required="true"/>
     <column name="permissao" phpName="Permissao" type="INTEGER"/>
+    <column name="lista" phpName="Lista" type="INTEGER"/>
+    <column name="form" phpName="Form" type="INTEGER"/>
   </table>
   <table name="atendimento" idMethod="native" phpName="Atendimento">
     <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>

@@ -100,6 +100,20 @@ abstract class Atendente implements ActiveRecordInterface
     protected $permissao;
 
     /**
+     * The value for the lista field.
+     *
+     * @var        int
+     */
+    protected $lista;
+
+    /**
+     * The value for the form field.
+     *
+     * @var        int
+     */
+    protected $form;
+
+    /**
      * @var        ObjectCollection|ChildAtendimento[] Collection to store aggregation of ChildAtendimento objects.
      */
     protected $collAtendimentos;
@@ -395,6 +409,26 @@ abstract class Atendente implements ActiveRecordInterface
     }
 
     /**
+     * Get the [lista] column value.
+     *
+     * @return int
+     */
+    public function getLista()
+    {
+        return $this->lista;
+    }
+
+    /**
+     * Get the [form] column value.
+     *
+     * @return int
+     */
+    public function getForm()
+    {
+        return $this->form;
+    }
+
+    /**
      * Set the value of [id] column.
      *
      * @param int $v new value
@@ -495,6 +529,46 @@ abstract class Atendente implements ActiveRecordInterface
     } // setPermissao()
 
     /**
+     * Set the value of [lista] column.
+     *
+     * @param int $v new value
+     * @return $this|\Atendente The current object (for fluent API support)
+     */
+    public function setLista($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->lista !== $v) {
+            $this->lista = $v;
+            $this->modifiedColumns[AtendenteTableMap::COL_LISTA] = true;
+        }
+
+        return $this;
+    } // setLista()
+
+    /**
+     * Set the value of [form] column.
+     *
+     * @param int $v new value
+     * @return $this|\Atendente The current object (for fluent API support)
+     */
+    public function setForm($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->form !== $v) {
+            $this->form = $v;
+            $this->modifiedColumns[AtendenteTableMap::COL_FORM] = true;
+        }
+
+        return $this;
+    } // setForm()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -544,6 +618,12 @@ abstract class Atendente implements ActiveRecordInterface
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : AtendenteTableMap::translateFieldName('Permissao', TableMap::TYPE_PHPNAME, $indexType)];
             $this->permissao = (null !== $col) ? (int) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : AtendenteTableMap::translateFieldName('Lista', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->lista = (null !== $col) ? (int) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : AtendenteTableMap::translateFieldName('Form', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->form = (null !== $col) ? (int) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -552,7 +632,7 @@ abstract class Atendente implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 5; // 5 = AtendenteTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 7; // 7 = AtendenteTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\Atendente'), 0, $e);
@@ -797,6 +877,12 @@ abstract class Atendente implements ActiveRecordInterface
         if ($this->isColumnModified(AtendenteTableMap::COL_PERMISSAO)) {
             $modifiedColumns[':p' . $index++]  = 'permissao';
         }
+        if ($this->isColumnModified(AtendenteTableMap::COL_LISTA)) {
+            $modifiedColumns[':p' . $index++]  = 'lista';
+        }
+        if ($this->isColumnModified(AtendenteTableMap::COL_FORM)) {
+            $modifiedColumns[':p' . $index++]  = 'form';
+        }
 
         $sql = sprintf(
             'INSERT INTO atendente (%s) VALUES (%s)',
@@ -822,6 +908,12 @@ abstract class Atendente implements ActiveRecordInterface
                         break;
                     case 'permissao':
                         $stmt->bindValue($identifier, $this->permissao, PDO::PARAM_INT);
+                        break;
+                    case 'lista':
+                        $stmt->bindValue($identifier, $this->lista, PDO::PARAM_INT);
+                        break;
+                    case 'form':
+                        $stmt->bindValue($identifier, $this->form, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -893,6 +985,12 @@ abstract class Atendente implements ActiveRecordInterface
             case 4:
                 return $this->getPermissao();
                 break;
+            case 5:
+                return $this->getLista();
+                break;
+            case 6:
+                return $this->getForm();
+                break;
             default:
                 return null;
                 break;
@@ -928,6 +1026,8 @@ abstract class Atendente implements ActiveRecordInterface
             $keys[2] => $this->getLogin(),
             $keys[3] => $this->getSenha(),
             $keys[4] => $this->getPermissao(),
+            $keys[5] => $this->getLista(),
+            $keys[6] => $this->getForm(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -999,6 +1099,12 @@ abstract class Atendente implements ActiveRecordInterface
             case 4:
                 $this->setPermissao($value);
                 break;
+            case 5:
+                $this->setLista($value);
+                break;
+            case 6:
+                $this->setForm($value);
+                break;
         } // switch()
 
         return $this;
@@ -1039,6 +1145,12 @@ abstract class Atendente implements ActiveRecordInterface
         }
         if (array_key_exists($keys[4], $arr)) {
             $this->setPermissao($arr[$keys[4]]);
+        }
+        if (array_key_exists($keys[5], $arr)) {
+            $this->setLista($arr[$keys[5]]);
+        }
+        if (array_key_exists($keys[6], $arr)) {
+            $this->setForm($arr[$keys[6]]);
         }
     }
 
@@ -1095,6 +1207,12 @@ abstract class Atendente implements ActiveRecordInterface
         }
         if ($this->isColumnModified(AtendenteTableMap::COL_PERMISSAO)) {
             $criteria->add(AtendenteTableMap::COL_PERMISSAO, $this->permissao);
+        }
+        if ($this->isColumnModified(AtendenteTableMap::COL_LISTA)) {
+            $criteria->add(AtendenteTableMap::COL_LISTA, $this->lista);
+        }
+        if ($this->isColumnModified(AtendenteTableMap::COL_FORM)) {
+            $criteria->add(AtendenteTableMap::COL_FORM, $this->form);
         }
 
         return $criteria;
@@ -1186,6 +1304,8 @@ abstract class Atendente implements ActiveRecordInterface
         $copyObj->setLogin($this->getLogin());
         $copyObj->setSenha($this->getSenha());
         $copyObj->setPermissao($this->getPermissao());
+        $copyObj->setLista($this->getLista());
+        $copyObj->setForm($this->getForm());
 
         if ($deepCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1732,6 +1852,8 @@ abstract class Atendente implements ActiveRecordInterface
         $this->login = null;
         $this->senha = null;
         $this->permissao = null;
+        $this->lista = null;
+        $this->form = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
         $this->resetModified();

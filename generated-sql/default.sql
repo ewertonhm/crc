@@ -27,6 +27,8 @@ CREATE TABLE "atendente"
     "login" VARCHAR(45) NOT NULL,
     "senha" VARCHAR(32) NOT NULL,
     "permissao" INTEGER,
+    "lista" INTEGER,
+    "form" INTEGER,
     PRIMARY KEY ("id")
 );
 
