@@ -1,4 +1,16 @@
 <?php
+// TODO: Setar Filtro de Período para os gráficos
+// TODO: Gráfico Tipo atendimento
+// TODO: Gráfico Solicitação
+// TODO: Gráfico Motivo
+// TODO: Gráfico Contato
+// TODO: Gráfico Cidade
+// TODO: Gráfico Contrato
+// TODO: Gráfico Solicitação
+// TODO: Gráfico Agendamento
+// TODO: Maior tipo de atendimento por horário
+// TODO: Média de atendimentos por hora
+
     session_start();
 
     if((!isset ($_SESSION['logado']) == true) and (!isset ($_SESSION['id']) == true)){
@@ -11,12 +23,24 @@
 
 
     require_once 'config.php';
-    $atendimentosAtual = AtendimentoQuery::create()->orderByData()->orderByHora()->orderById()->where('atendimento.data like ?', \Carbon\Carbon::parse(\Carbon\Carbon::now()->toDateTimeString())->isoFormat('%MM/YYYY'))->find();
-    $atendimentosMenos1 = AtendimentoQuery::create()->orderByData()->orderByHora()->orderById()->where('atendimento.data like ?', \Carbon\Carbon::parse(\Carbon\Carbon::now()->subMonth(1)->toDateTimeString())->isoFormat('%MM/YYYY'))->find();
-    $atendimentosMenos2 = AtendimentoQuery::create()->orderByData()->orderByHora()->orderById()->where('atendimento.data like ?', \Carbon\Carbon::parse(\Carbon\Carbon::now()->subMonth(2)->toDateTimeString())->isoFormat('%MM/YYYY'))->find();
-    $atendimentosMenos3 = AtendimentoQuery::create()->orderByData()->orderByHora()->orderById()->where('atendimento.data like ?', \Carbon\Carbon::parse(\Carbon\Carbon::now()->subMonth(3)->toDateTimeString())->isoFormat('%MM/YYYY'))->find();
-    $atendimentosMenos4 = AtendimentoQuery::create()->orderByData()->orderByHora()->orderById()->where('atendimento.data like ?', \Carbon\Carbon::parse(\Carbon\Carbon::now()->subMonth(3)->toDateTimeString())->isoFormat('%MM/YYYY'))->find();
-    $atendimentosMenos5 = AtendimentoQuery::create()->orderByData()->orderByHora()->orderById()->where('atendimento.data like ?', \Carbon\Carbon::parse(\Carbon\Carbon::now()->subMonth(3)->toDateTimeString())->isoFormat('%MM/YYYY'))->find();
+
+    // total de atendimentos
+    $atendimentos = AtendimentoQuery::create()->find();
+
+    // total de atendimentos por mês dos ultimos 6 meses
+    $atendimentosAtual = AtendimentoQuery::create()->where('atendimento.data like ?', \Carbon\Carbon::parse(\Carbon\Carbon::now()->toDateTimeString())->isoFormat('%MM/YYYY'))->find();
+    $atendimentosMenos1 = AtendimentoQuery::create()->where('atendimento.data like ?', \Carbon\Carbon::parse(\Carbon\Carbon::now()->subMonth(1)->toDateTimeString())->isoFormat('%MM/YYYY'))->find();
+    $atendimentosMenos2 = AtendimentoQuery::create()->where('atendimento.data like ?', \Carbon\Carbon::parse(\Carbon\Carbon::now()->subMonth(2)->toDateTimeString())->isoFormat('%MM/YYYY'))->find();
+    $atendimentosMenos3 = AtendimentoQuery::create()->where('atendimento.data like ?', \Carbon\Carbon::parse(\Carbon\Carbon::now()->subMonth(3)->toDateTimeString())->isoFormat('%MM/YYYY'))->find();
+    $atendimentosMenos4 = AtendimentoQuery::create()->where('atendimento.data like ?', \Carbon\Carbon::parse(\Carbon\Carbon::now()->subMonth(3)->toDateTimeString())->isoFormat('%MM/YYYY'))->find();
+    $atendimentosMenos5 = AtendimentoQuery::create()->where('atendimento.data like ?', \Carbon\Carbon::parse(\Carbon\Carbon::now()->subMonth(3)->toDateTimeString())->isoFormat('%MM/YYYY'))->find();
+
+    // Total de atendimentos por tipo do ultimo mês
+    // Pessoa Fisica
+    
+
+    // Pessoa Jurídica
+
 ?>
 
 <!DOCTYPE html>
@@ -59,6 +83,10 @@
     </div>
 </nav>
 <div class="row">
+    <p>Total de atendimentos: <?php echo count($atendimentos); ?></p>
+    <p>Total de atendimentos no mês: <?php echo count($atendimentosAtual); ?></p>
+</div>
+<div class="row">
     <div class="col s6">
         <canvas id="atendimentos_numero" width="400" height="400"></canvas>
     </div>
@@ -86,15 +114,15 @@
             labels: [
                 <?php
                 echo "'";
-                echo \Carbon\Carbon::parse(\Carbon\Carbon::now()->subMonth(5)->toDateTimeString())->isoFormat('MMM');
+                echo \Carbon\Carbon::parse(\Carbon\Carbon::now()->subMonth(5)->toDateTimeString())->isoFormat('MMM/Y');
                 echo "','";
-                echo \Carbon\Carbon::parse(\Carbon\Carbon::now()->subMonth(4)->toDateTimeString())->isoFormat('MMM');
+                echo \Carbon\Carbon::parse(\Carbon\Carbon::now()->subMonth(4)->toDateTimeString())->isoFormat('MMM/Y');
                 echo "','";
-                echo \Carbon\Carbon::parse(\Carbon\Carbon::now()->subMonth(3)->toDateTimeString())->isoFormat('MMM');
+                echo \Carbon\Carbon::parse(\Carbon\Carbon::now()->subMonth(3)->toDateTimeString())->isoFormat('MMM/Y');
                 echo "','";
-                echo \Carbon\Carbon::parse(\Carbon\Carbon::now()->subMonth(2)->toDateTimeString())->isoFormat('MMM');
+                echo \Carbon\Carbon::parse(\Carbon\Carbon::now()->subMonth(2)->toDateTimeString())->isoFormat('MMM/Y');
                 echo "','";
-                echo \Carbon\Carbon::parse(\Carbon\Carbon::now()->subMonth(1)->toDateTimeString())->isoFormat('MMM');
+                echo \Carbon\Carbon::parse(\Carbon\Carbon::now()->subMonth(1)->toDateTimeString())->isoFormat('MMM/Y');
                 echo "','";
                 echo \Carbon\Carbon::parse(\Carbon\Carbon::now()->toDateTimeString())->isoFormat('MMM');
                 echo "'";
