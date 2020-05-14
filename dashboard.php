@@ -24,22 +24,7 @@
 
     require_once 'config.php';
 
-    // total de atendimentos
-    $atendimentos = AtendimentoQuery::create()->find();
-
-    // total de atendimentos por mês dos ultimos 6 meses
-    $atendimentosAtual = AtendimentoQuery::create()->where('atendimento.data like ?', \Carbon\Carbon::parse(\Carbon\Carbon::now()->toDateTimeString())->isoFormat('%MM/YYYY'))->find();
-    $atendimentosMenos1 = AtendimentoQuery::create()->where('atendimento.data like ?', \Carbon\Carbon::parse(\Carbon\Carbon::now()->subMonth(1)->toDateTimeString())->isoFormat('%MM/YYYY'))->find();
-    $atendimentosMenos2 = AtendimentoQuery::create()->where('atendimento.data like ?', \Carbon\Carbon::parse(\Carbon\Carbon::now()->subMonth(2)->toDateTimeString())->isoFormat('%MM/YYYY'))->find();
-    $atendimentosMenos3 = AtendimentoQuery::create()->where('atendimento.data like ?', \Carbon\Carbon::parse(\Carbon\Carbon::now()->subMonth(3)->toDateTimeString())->isoFormat('%MM/YYYY'))->find();
-    $atendimentosMenos4 = AtendimentoQuery::create()->where('atendimento.data like ?', \Carbon\Carbon::parse(\Carbon\Carbon::now()->subMonth(3)->toDateTimeString())->isoFormat('%MM/YYYY'))->find();
-    $atendimentosMenos5 = AtendimentoQuery::create()->where('atendimento.data like ?', \Carbon\Carbon::parse(\Carbon\Carbon::now()->subMonth(3)->toDateTimeString())->isoFormat('%MM/YYYY'))->find();
-
-    // Total de atendimentos por tipo do ultimo mês
-    // Pessoa Fisica
-    
-
-    // Pessoa Jurídica
+    $grafico = new \controller\Grafico();
 
 ?>
 
@@ -74,6 +59,7 @@
     <div class="nav-wrapper black">
         <a href="#!" class="brand-logo"><img src="img/footerfinal.png" width="45" height="45" class="d-inline-block center"></a>
         <ul class="right hide-on-med-and-down">
+            <li><a href="relatorio.php">Relatório</a></li>
             <li><a href="lista.php">Lista Inserção</a></li>
             <li><a href="conf-lista.php">Lista Consulta</a></li>
             <li><a href="config.php">Usuários</a></li>
@@ -82,10 +68,7 @@
         </ul>
     </div>
 </nav>
-<div class="row">
-    <p>Total de atendimentos: <?php echo count($atendimentos); ?></p>
-    <p>Total de atendimentos no mês: <?php echo count($atendimentosAtual); ?></p>
-</div>
+
 <div class="row">
     <div class="col s6">
         <canvas id="atendimentos_numero" width="400" height="400"></canvas>
@@ -106,75 +89,10 @@
     $(".dropdown-trigger").dropdown();
 
 </script>
-<script>
-    var ctx = document.getElementById('atendimentos_numero');
-    var myChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: [
-                <?php
-                echo "'";
-                echo \Carbon\Carbon::parse(\Carbon\Carbon::now()->subMonth(5)->toDateTimeString())->isoFormat('MMM/Y');
-                echo "','";
-                echo \Carbon\Carbon::parse(\Carbon\Carbon::now()->subMonth(4)->toDateTimeString())->isoFormat('MMM/Y');
-                echo "','";
-                echo \Carbon\Carbon::parse(\Carbon\Carbon::now()->subMonth(3)->toDateTimeString())->isoFormat('MMM/Y');
-                echo "','";
-                echo \Carbon\Carbon::parse(\Carbon\Carbon::now()->subMonth(2)->toDateTimeString())->isoFormat('MMM/Y');
-                echo "','";
-                echo \Carbon\Carbon::parse(\Carbon\Carbon::now()->subMonth(1)->toDateTimeString())->isoFormat('MMM/Y');
-                echo "','";
-                echo \Carbon\Carbon::parse(\Carbon\Carbon::now()->toDateTimeString())->isoFormat('MMM');
-                echo "'";
-                ?>
-            ],
-            datasets: [{
-                label: 'número de atendimentos',
-                data: [
-                    <?php
-                    echo count($atendimentosMenos5);
-                    echo ",";
-                    echo count($atendimentosMenos4);
-                    echo ",";
-                    echo count($atendimentosMenos3);
-                    echo ",";
-                    echo count($atendimentosMenos2);
-                    echo ",";
-                    echo count($atendimentosMenos1);
-                    echo ",";
-                    echo count($atendimentosAtual);
-                    ?>
-                ],
-                backgroundColor: [
-                    'rgba(63, 191, 63, 0.2)',
-                    'rgba(63, 191, 191, 0.2)',
-                    'rgba(63, 191, 63, 0.2)',
-                    'rgba(63, 191, 191, 0.2)',
-                    'rgba(63, 191, 63, 0.2)',
-                    'rgba(63, 191, 191, 0.2)'
-                ],
-                borderColor: [
-                    'rgba(63, 191, 63, 1)',
-                    'rgba(63, 191, 191, 1)',
-                    'rgba(63, 191, 63, 1)',
-                    'rgba(63, 191, 191, 1)',
-                    'rgba(63, 191, 63, 1)',
-                    'rgba(63, 191, 191, 1)'
-                ],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true
-                    }
-                }]
-            }
-        }
-    });
-</script>
+<?php
+$grafico->GraficoNumeroDeAtendimentos(12,'atendimentos_numero');
+
+?>
 
 </body>
 </html>
