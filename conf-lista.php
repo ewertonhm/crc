@@ -1,12 +1,13 @@
 <?php
 // TODO: opção de lista inversa (se possível nas configs do usuário)
     session_start();
+
     if((!isset ($_SESSION['logado']) == true) and (!isset ($_SESSION['id']) == true)){
-        var_dump($_SESSION['logado']);
-        var_dump($_SESSION['id']);
         unset($_SESSION['logado']);
         unset($_SESSION['id']);
         header('location:index.php');
+    } elseif ($_SESSION['permissao'] < 1){
+        header('location:warning.php');
     }
 ?>
 

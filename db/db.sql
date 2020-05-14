@@ -10,7 +10,7 @@ CREATE TABLE atendente (
 );
 
 
-INSERT INTO atendente (nome,login,senha,permissao,lista,form) VALUES ('Administrador','admin@netsultelecom.com.br','c289ffe12a30c94530b7fc4e532e2f42',0,0,0); -- senha é admin23
+INSERT INTO atendente (nome,login,senha,permissao,lista,form) VALUES ('Administrador','admin@netsultelecom.com.br','c289ffe12a30c94530b7fc4e532e2f42',2,0,0); -- senha é admin23
 
 CREATE TABLE agendamento (
     id SERIAL PRIMARY KEY,

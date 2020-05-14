@@ -69,7 +69,7 @@ if(isset($_POST['action'])){
             $atendimento->setAgendamentoId((int)$_POST['agendamento']);
         }
         $atendimento->save();
-        header('location:lista.php');
+        header('location:index.php');
     } else if(isset($_POST['config'])){
         require_once 'config.php';
 
@@ -82,9 +82,9 @@ if(isset($_POST['action'])){
             $atendente->setForm((int)$_POST['insert']);
         }
         $atendente->save();
-        header('location:lista.php');
+        header('location:index.php');
     } else {
-        header('location:lista.php');
+        header('location:index.php');
     }
 ?>
 

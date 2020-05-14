@@ -1,3 +1,32 @@
+<?php
+session_start();
+require_once 'config.php';
+if(!isset($_POST['login'])){
+    if($_SESSION['logado'] == true){
+        if($_SESSION['permissao'] == 0 OR $_SESSION['permissao'] == NULL){
+            header('Location: lista.php');
+        } elseif ($_SESSION['permissao'] == 1){
+            header('location:conf-lista.php');
+        } elseif ($_SESSION['permissao'] == 2){
+            header('location:dashboard.php');
+        }
+    }
+}
+/*
+if(!isset($_POST['login']) AND isset($_SESSION['logado'])){
+    if($_SESSION['logado'] = true){
+        if($_SESSION['permissao'] == 0 OR $_SESSION['permissao'] == NULL){
+            header('Location: lista.php');
+        } elseif ($_SESSION['permissao'] == 1){
+            header('location:conf-lista.php');
+        } elseif ($_SESSION['permissao'] == 2){
+            header('location:dashboard.php');
+        }
+    }
+}
+*/
+?>
+
 <!doctype html>
 <html lang="pt-br">
 <head>
@@ -38,12 +67,15 @@
             $usuario = AtendenteQuery::create()->findOneByLogin($_POST['login']);
             if($usuario != NULL){
                 if($usuario->getLogin() == $_POST['login'] AND $usuario->getSenha() == md5($_POST['senha'])){
-                    if($usuario->getPermissao() == 0){
-                        echo 'não implementado ainda';
-                    } else {
-                        $_SESSION['logado'] = true;
-                        $_SESSION['id'] = $usuario->getId();
+                    $_SESSION['logado'] = true;
+                    $_SESSION['id'] = $usuario->getId();
+                    $_SESSION['permissao'] = $usuario->getPermissao();
+                    if($_SESSION['permissao'] == 0 OR $_SESSION['permissao'] == NULL){
                         header('Location: lista.php');
+                    } elseif ($_SESSION['permissao'] == 1){
+                        header('location:conf-lista.php');
+                    } elseif ($_SESSION['permissao'] == 2){
+                        header('location:dashboard.php');
                     }
                 }
             } else {

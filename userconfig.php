@@ -64,9 +64,9 @@ if((!isset ($_SESSION['logado']) == true) and (!isset ($_SESSION['id']) == true)
                 <div class="input-field col s3">
                     <select name='insert'>
                         <option value ='null' disabled selected>Selecione</option>
-                        <option value ='0'>Dropdown</option>
+                        <option value ='0'>Padrão</option>
                         <option value ='1'>Autocomplete</option>
-                        <option value ='2'>Misto</option>
+                        <option value ='2'>Dropdown</option>
                     </select>
                     <label for="autocomplete-input">Formato dos campos de inserção</label>
                 </div>
