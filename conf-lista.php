@@ -1,5 +1,4 @@
 <?php
-// TODO: opção de lista inversa (se possível nas configs do usuário)
     session_start();
 
     if((!isset ($_SESSION['logado']) == true) and (!isset ($_SESSION['id']) == true)){
