@@ -73,6 +73,9 @@
     <div class="col s6">
         <canvas id="atendimentos_numero" width="400" height="400"></canvas>
     </div>
+    <div class="col s6">
+        <canvas id="tipo_cliente" width="400" height="400"></canvas>
+    </div>
 </div>
 
 
@@ -91,6 +94,7 @@
 </script>
 <?php
 $grafico->GraficoNumeroDeAtendimentos(12,'atendimentos_numero');
+$grafico->GraficoTipoDeCliente(0,'tipo_cliente');
 
 ?>
 

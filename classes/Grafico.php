@@ -97,27 +97,30 @@ TAG;
 
     }
     public function GraficoTipoDeCliente($numeroDeMesesAntes = 0,$idDoCampo,$bgColor1 = 'rgba(63, 191, 63, 0.2)',$bgColor2 = 'rgba(63, 191, 191, 0.2)',$borderColor1 = 'rgba(63, 191, 63, 1)', $borderColor2 = 'rgba(63, 191, 191, 1)'){
-        echo "<script>var ctx = document.getElementById('".$idDoCampo."'); var myChart = new Chart(ctx, {type: 'bar', data: { labels: [";
+        echo "<script>var ctx = document.getElementById('".$idDoCampo."'); var myChart = new Chart(ctx, {type: 'pie', data: { labels: [";
         // nomes campos
-        $tipos = \TipoQuery::create()->find();
+        $tipos = $this->getTotalAtendimentosPorClasseMes(\TipoQuery::create()->find(),'getTipo','FilterByTipo',$numeroDeMesesAntes);
+        $n = count($tipos['nome']);
         $counter = 0;
-        echo "'";
-        foreach($tipos as $t){
-            echo $t->getTipo();
-            if($counter < count($tipos)){
-                echo "','";
+        foreach($tipos['nome'] as $t){
+            echo "'".$t."'";
+            if($counter < $n-1){
+                echo ",";
             }
             $counter++;
         }
-        echo "'],datasets: [{label: 'número de atendimentos',data: [";
+        echo "],datasets: [{label: 'Atendimentos por tipo de cliente',data: [";
         // dados dos campos
-        foreach ()){
-            echo $this->getTotalAtendimentosMesAnterior(($numeroDeMeses-$i));
-            echo ",";
+        $counter = 0;
+        foreach($tipos['quantidade'] as $q){
+            echo $q;
+            if($counter < $n-1){
+                echo ",";
+            }
+            $counter++;
         }
-        echo $this->getTotalAtendimentosMesAnterior();
         echo "],backgroundColor: [";
-        for($i=0;$i<$numeroDeMeses;$i++){
+        for($i=0;$i<$n;$i++){
             if($i % 2 == 0){
                 echo "'".$bgColor1."'";
             } else {
@@ -125,13 +128,13 @@ TAG;
             }
             echo ",";
         }
-        if($numeroDeMeses % 2 == 0){
+        if($n % 2 == 0){
             echo "'".$bgColor1."'";
         } else {
             echo "'".$bgColor2."'";
         }
         echo "],borderColor: [";
-        for ($i=0;$i<$numeroDeMeses;$i++){
+        for ($i=0;$i<$n;$i++){
             if($i % 2 == 0){
                 echo "'".$borderColor1."'";
             } else {
@@ -139,7 +142,7 @@ TAG;
             }
             echo ",";
         }
-        if($numeroDeMeses % 2 == 0){
+        if($n % 2 == 0){
             echo "'".$borderColor1."'";
         } else {
             echo "'".$borderColor2."'";
