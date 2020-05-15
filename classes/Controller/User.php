@@ -13,7 +13,7 @@ class User
         $usuario = AtendenteQuery::create()->findOneByLogin($login);
         if ($usuario != NULL) {
             if ($usuario->getLogin() == $login AND $usuario->getSenha() == md5($senha)) {
-                session_start();
+                if (!isset($_SESSION)) { session_start(); }
                 $_SESSION['logado'] = true;
                 $_SESSION['id'] = $usuario->getId();
                 $_SESSION['permissao'] = $usuario->getPermissao();
@@ -27,8 +27,8 @@ class User
     }
     public static function checkLogado()
     {
-        session_start();
-        if($_SESSION['logado']){
+        if (!isset($_SESSION)) { session_start(); }
+        if(isset($_SESSION['logado'])){
             return true;
         } else {
             return false;
@@ -36,7 +36,7 @@ class User
     }
     public static function checkPermission($permission)
     {
-        session_start();
+        if (!isset($_SESSION)) { session_start(); }
         if(User::checkLogado()){
             if($_SESSION['permissao'] >= $permission){
                 return true;
