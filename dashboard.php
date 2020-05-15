@@ -50,7 +50,7 @@
 </ul>
 <nav>
     <div class="nav-wrapper black">
-        <a href="#!" class="brand-logo"><img src="img/footerfinal.png" width="45" height="45" class="d-inline-block center"></a>
+        <a href="index.php" class="brand-logo"><img src="img/footerfinal.png" width="45" height="45" class="d-inline-block center"></a>
         <ul class="right hide-on-med-and-down">
             <li><a href="relatorio.php">Relatório</a></li>
             <li><a href="lista.php">Lista Inserção</a></li>

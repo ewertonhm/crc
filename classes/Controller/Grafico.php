@@ -170,4 +170,76 @@ TAG;
 
 
     }
+
+    public function GraficoTodos($arrayClasse,$getter,$filter,$numeroDeMesesAntes = 0,$idDoCampo,$label = 'Título do Gráfico',$bgColor1 = 'rgba(63, 191, 63, 0.2)',$bgColor2 = 'rgba(63, 191, 191, 0.2)',$borderColor1 = 'rgba(63, 191, 63, 1)', $borderColor2 = 'rgba(63, 191, 191, 1)'){
+        echo "<script>var ctx = document.getElementById('".$idDoCampo."'); var myChart = new Chart(ctx, {type: 'bar', data: { labels: [";
+        // nomes campos
+        $data = $this->getTotalAtendimentosPorClasseMes($arrayClasse,$getter,$filter,$numeroDeMesesAntes);
+        $n = count($data['nome']);
+        $counter = 0;
+        foreach($data['nome'] as $t){
+            echo "'".$t."'";
+            if($counter < $n-1){
+                echo ",";
+            }
+            $counter++;
+        }
+        echo "],datasets: [{label: '".$label."',data: [";
+        // dados dos campos
+        $counter = 0;
+        foreach($data['quantidade'] as $q){
+            echo $q;
+            if($counter < $n-1){
+                echo ",";
+            }
+            $counter++;
+        }
+        echo "],backgroundColor: [";
+        for($i=0;$i<$n;$i++){
+            if($i % 2 == 0){
+                echo "'".$bgColor1."'";
+            } else {
+                echo "'".$bgColor2."'";
+            }
+            echo ",";
+        }
+        if($n % 2 == 0){
+            echo "'".$bgColor1."'";
+        } else {
+            echo "'".$bgColor2."'";
+        }
+        echo "],borderColor: [";
+        for ($i=0;$i<$n;$i++){
+            if($i % 2 == 0){
+                echo "'".$borderColor1."'";
+            } else {
+                echo "'".$borderColor2."'";
+            }
+            echo ",";
+        }
+        if($n % 2 == 0){
+            echo "'".$borderColor1."'";
+        } else {
+            echo "'".$borderColor2."'";
+        }
+        echo <<<TAG
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+</script>
+TAG;
+
+
+    }
 }
