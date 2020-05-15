@@ -1,15 +1,10 @@
 <?php
-    session_start();
-    if((!isset ($_SESSION['logado']) == true) and (!isset ($_SESSION['id']) == true)){
-        var_dump($_SESSION['logado']);
-        var_dump($_SESSION['id']);
-        unset($_SESSION['logado']);
-        unset($_SESSION['id']);
-        header('location:index.php');
+    require_once 'config.php';
+    if(!\controller\User::checkPermission(0)){
+        header('location:warning.php');
     }
 
 if(isset($_POST['action'])){
-        require_once 'config.php';
         $atendimento = new Atendimento();
 
         $atendimento->setData(\Carbon\Carbon::parse(\Carbon\Carbon::now()->toDateTimeString())->isoFormat('D/MM/YYYY'));

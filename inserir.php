@@ -1,14 +1,8 @@
 <?php
 // TODO Opção de menu dropdown e autocompletar para cada campo (nas configurações do usuário)
-
-
-    session_start();
-    if((!isset ($_SESSION['logado']) == true) and (!isset ($_SESSION['id']) == true)){
-        var_dump($_SESSION['logado']);
-        var_dump($_SESSION['id']);
-        unset($_SESSION['logado']);
-        unset($_SESSION['id']);
-        header('location:index.php');
+    require_once 'config.php';
+    if(!\controller\User::checkPermission(0)){
+        header('location:warning.php');
     }
 ?>
 
@@ -28,7 +22,6 @@
 
     <title>Planilha do C.R.C - Inserir</title>
     <?php
-    require_once 'config.php';
     unset($_POST);
     $tipos = TipoQuery::create()->orderByTipo()->find();
     $bairros = BairroQuery::create()->orderByNome()->find();

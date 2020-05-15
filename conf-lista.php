@@ -1,11 +1,6 @@
 <?php
-    session_start();
-
-    if((!isset ($_SESSION['logado']) == true) and (!isset ($_SESSION['id']) == true)){
-        unset($_SESSION['logado']);
-        unset($_SESSION['id']);
-        header('location:index.php');
-    } elseif ($_SESSION['permissao'] < 1){
+    require_once 'config.php';
+    if(!\controller\User::checkPermission(1)){
         header('location:warning.php');
     }
 ?>
@@ -30,7 +25,6 @@
     <title>Planilha do C.R.C</title>
     <link rel="icon" href="img/footerfinal.png" sizes="16x16 32x32" type="image/png">
     <?php
-        require_once 'config.php';
         $atendimentos = '';
         if(AtendenteQuery::create()->findOneById($_SESSION['id'])->getLista() == 1){
             $atendimentos = AtendimentoQuery::create()->orderByData('desc')->orderByHora('desc')->orderById('desc')->where('atendimento.data like ?', \Carbon\Carbon::parse(\Carbon\Carbon::now()->toDateTimeString())->isoFormat('%MM/YYYY'))->find();

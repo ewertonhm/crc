@@ -1,14 +1,9 @@
 <?php
-
-
-session_start();
-if((!isset ($_SESSION['logado']) == true) and (!isset ($_SESSION['id']) == true)){
-    var_dump($_SESSION['logado']);
-    var_dump($_SESSION['id']);
-    unset($_SESSION['logado']);
-    unset($_SESSION['id']);
-    header('location:index.php');
-}
+    require_once 'config.php';
+    if(!\controller\User::checkPermission(0)){
+        header('location:warning.php');
+    }
+    $atendente = AtendenteQuery::create()->findOneById($_SESSION['id'])->getNome();
 ?>
 
 <!doctype html>
@@ -26,15 +21,6 @@ if((!isset ($_SESSION['logado']) == true) and (!isset ($_SESSION['id']) == true)
     <link rel="stylesheet" href="css/materialize/form.css">
 
     <title>Planilha do C.R.C - Inserir</title>
-    <?php
-    require_once 'config.php';
-
-    $atendente = AtendenteQuery::create()->findOneById($_SESSION['id'])->getNome();
-
-    $formManager = new \controller\Form();
-
-    ?>
-
 </head>
 <body>
 
