@@ -70,13 +70,13 @@
                     <label for="autocomplete-input">Atendente</label>
                 </div>
                 <div class="input-field col s3">
-                    <input autofocus type="text" name="cadastro" class="cadastro">
+                    <input autofocus required type="text" name="cadastro" class="cadastro">
                     <label for="autocomplete-input">Cadastro</label>
                 </div>
             </div>
             <div class="row">
                 <div class="input-field col s5">
-                    <input type="text" id="autocomplete-input" name="cliente" class="cliente">
+                    <input type="text" required id="autocomplete-input" name="cliente" class="cliente">
                     <label for="autocomplete-input">Cliente</label>
                 </div>
                 <div class="input-field col s2">
@@ -84,13 +84,13 @@
                     <label for="autocomplete-input">Tipo de Cliente</label>
                 </div>
                 <div class="input-field col s2">
-                    <input type="text" id="autocomplete-input" name="telefone" class="telefone">
+                    <input type="text" required id="autocomplete-input" name="telefone" class="telefone">
                     <label for="autocomplete-input">Telefone</label>
                 </div>
             </div>
             <div class="row">
                 <div class="input-field col s3">
-                    <input type="text" id="autocomplete-input" name="cidade" class="cidade">
+                    <input type="text" required id="autocomplete-input" name="cidade" class="cidade">
                     <label for="autocomplete-input">Cidade</label>
                 </div>
                 <!-- campo estado, removido para alterar o mesmo para preenchimento no backend
@@ -100,7 +100,7 @@
                 </div>
                 -->
                 <div class="input-field col s2">
-                    <input type="text" id="autocomplete-input" name="bairro" class="bairro">
+                    <input type="text" required id="autocomplete-input" name="bairro" class="bairro">
                     <label for="autocomplete-input">Bairro</label>
                 </div>
                 <div class="input-field col s2">
