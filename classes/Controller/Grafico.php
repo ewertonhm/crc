@@ -32,22 +32,25 @@ class Grafico
         // Retorna um array bidimensional com nome e quantidade
     }
 
-    public function GraficoNumeroDeAtendimentos($numeroDeMeses,$idDoCampo,$bgColor1 = 'rgba(63, 191, 63, 0.2)',$bgColor2 = 'rgba(63, 191, 191, 0.2)',$borderColor1 = 'rgba(63, 191, 63, 1)', $borderColor2 = 'rgba(63, 191, 191, 1)'){
+    public function GraficoNumeroDeAtendimentos($numeroDeMeses,$mesesAntes,$idDoCampo,$bgColor1 = 'rgba(63, 191, 63, 0.2)',$bgColor2 = 'rgba(63, 191, 191, 0.2)',$borderColor1 = 'rgba(63, 191, 63, 1)', $borderColor2 = 'rgba(63, 191, 191, 1)'){
         echo "<script>var ctx = document.getElementById('".$idDoCampo."'); var myChart = new Chart(ctx, {type: 'bar', data: { labels: [";
                 // nomes campos
                 echo "'";
                 for ($i=0;$i<$numeroDeMeses;$i++){
-                    echo \Carbon\Carbon::parse(\Carbon\Carbon::now()->subMonth(($numeroDeMeses-$i))->toDateTimeString())->isoFormat('MMM/Y');
-                    echo "','";
+                    echo \Carbon\Carbon::parse(\Carbon\Carbon::now()->subMonth(($numeroDeMeses-1-$i+$mesesAntes))->toDateTimeString())->isoFormat('MMM/Y');
+                    echo "'";
+                    if($i != $numeroDeMeses-1){
+                        echo ",'";
+                    }
                 }
-                echo \Carbon\Carbon::parse(\Carbon\Carbon::now()->toDateTimeString())->isoFormat('MMM/Y');
-                echo "'],datasets: [{label: 'número de atendimentos',data: [";
+                echo "],datasets: [{label: 'número de atendimentos',data: [";
                 // dados dos campos
                 for ($i=0;$i<$numeroDeMeses;$i++){
-                    echo $this->getTotalAtendimentosMesAnterior(($numeroDeMeses-$i));
-                    echo ",";
+                    echo $this->getTotalAtendimentosMesAnterior(($numeroDeMeses-1-$i+$mesesAntes));
+                    if($i != $numeroDeMeses-1){
+                        echo ",";
+                    }
                 }
-                    echo $this->getTotalAtendimentosMesAnterior();
                 echo "],backgroundColor: [";
                 for($i=0;$i<$numeroDeMeses;$i++){
                     if($i % 2 == 0){
