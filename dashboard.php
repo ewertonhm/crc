@@ -11,18 +11,11 @@
 // TODO: Maior tipo de atendimento por horário
 // TODO: Média de atendimentos por hora
 
-    session_start();
+    require_once 'config.php';
 
-    if((!isset ($_SESSION['logado']) == true) and (!isset ($_SESSION['id']) == true)){
-        unset($_SESSION['logado']);
-        unset($_SESSION['id']);
-        header('location:index.php');
-    } elseif ($_SESSION['permissao'] < 2){
+    if(!\controller\User::checkPermission(2)){
         header('location:warning.php');
     }
-
-
-    require_once 'config.php';
 
     $grafico = new \controller\Grafico();
 
@@ -70,10 +63,10 @@
 </nav>
 
 <div class="row">
-    <div class="col s6">
+    <div class="col s3">
         <canvas id="atendimentos_numero" width="400" height="400"></canvas>
     </div>
-    <div class="col s6">
+    <div class="col s3">
         <canvas id="tipo_cliente" width="400" height="400"></canvas>
     </div>
 </div>
@@ -93,7 +86,7 @@
 
 </script>
 <?php
-$grafico->GraficoNumeroDeAtendimentos(12,'atendimentos_numero');
+$grafico->GraficoNumeroDeAtendimentos(2,0,'atendimentos_numero');
 $grafico->GraficoTipoDeCliente(0,'tipo_cliente');
 
 ?>

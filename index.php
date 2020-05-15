@@ -1,8 +1,9 @@
 <?php
-session_start();
+
 require_once 'config.php';
+
 if(!isset($_POST['login'])){
-    if($_SESSION['logado'] == true){
+    if(\controller\User::checkLogado()){
         if($_SESSION['permissao'] == 0 OR $_SESSION['permissao'] == NULL){
             header('Location: lista.php');
         } elseif ($_SESSION['permissao'] == 1){
@@ -12,19 +13,12 @@ if(!isset($_POST['login'])){
         }
     }
 }
-/*
-if(!isset($_POST['login']) AND isset($_SESSION['logado'])){
-    if($_SESSION['logado'] = true){
-        if($_SESSION['permissao'] == 0 OR $_SESSION['permissao'] == NULL){
-            header('Location: lista.php');
-        } elseif ($_SESSION['permissao'] == 1){
-            header('location:conf-lista.php');
-        } elseif ($_SESSION['permissao'] == 2){
-            header('location:dashboard.php');
-        }
-    }
+
+if(isset($_POST['login']) AND isset($_POST['senha'])){
+    \controller\User::logar($_POST['login'],$_POST['senha']);
+    header('location:index.php');
 }
-*/
+
 ?>
 
 <!doctype html>
@@ -41,15 +35,7 @@ if(!isset($_POST['login']) AND isset($_SESSION['logado'])){
     <!--Import Google Icon Font-->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-    <!-- Materialize CSS -->
-    <!--<link rel="stylesheet" href="css/materialize/materialize.min.css">-->
-
-
     <title>Planilha do C.R.C - Login</title>
-    <?php
-        require_once 'config.php';
-        $atendimentos = AtendimentoQuery::create()->orderByData()->orderByHora()->find();
-    ?>
 </head>
 <body class="text-center">
 <form class="form-signin" action="index.php" method="POST">
@@ -60,30 +46,6 @@ if(!isset($_POST['login']) AND isset($_SESSION['logado'])){
     <label for="inputPassword" class="sr-only">Senha</label>
     <input type="password" id="inputPassword" name="senha" class="form-control" placeholder="Senha" required>
     <div class="checkbox mb-3">
-        <?php
-
-        if(isset($_POST['login']) AND isset($_POST['senha'])){
-            session_start();
-            $usuario = AtendenteQuery::create()->findOneByLogin($_POST['login']);
-            if($usuario != NULL){
-                if($usuario->getLogin() == $_POST['login'] AND $usuario->getSenha() == md5($_POST['senha'])){
-                    $_SESSION['logado'] = true;
-                    $_SESSION['id'] = $usuario->getId();
-                    $_SESSION['permissao'] = $usuario->getPermissao();
-                    if($_SESSION['permissao'] == 0 OR $_SESSION['permissao'] == NULL){
-                        header('Location: lista.php');
-                    } elseif ($_SESSION['permissao'] == 1){
-                        header('location:conf-lista.php');
-                    } elseif ($_SESSION['permissao'] == 2){
-                        header('location:dashboard.php');
-                    }
-                }
-            } else {
-                echo "<div class='table-responsive'><label>Usuário ou senha Incorreto</label></div>";
-            }
-        }
-
-        ?>
         <!--<label>
             <input type="checkbox" value="remember-me"> Remember me
         </label>-->
