@@ -22,8 +22,8 @@ class Form
     {
         echo "<select name='";
         echo $name;
-        echo "'>";
-        echo "<option value ='null' disabled selected>Selecione</option>";
+        echo "' required='required'>";
+        echo "<option value ='' disabled selected>Selecione</option>";
         foreach ($array as $a){
             echo "<option value='";
             echo $a->getId();
@@ -33,4 +33,5 @@ class Form
         }
         echo '</select>';
     }
+
 }

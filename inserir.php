@@ -51,7 +51,7 @@
 <body>
 
 <div class="row">
-    <form autocomplete="off" class="col s12" action="save.php" method="post">
+    <form autocomplete="off" name="form1" class="col s12" action="save.php" method="post">
         <div class="col s12">
             <div class="row ">
                 <h3 class="green-text">Inserção</h3>
@@ -145,6 +145,7 @@
 <!-- Compiled and minified JavaScript -->
 <script src="js/jquery-3.5.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
 
 
 
