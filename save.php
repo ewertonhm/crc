@@ -31,7 +31,19 @@ if(isset($_POST['action'])){
             $bairro = BairroQuery::create()->findOneByNome($_POST['bairro']);
             if($bairro != NULL){
                 $atendimento->setBairroId($bairro->getId());
+            } else {
+                $b = new Bairro();
+                if(isset($cidade)){
+                    if($cidade != NULL){
+                        $b->setCidadeId($atendimento->getCidadeId());
+                    }
+                }
+                $b->setNome($_POST['bairro']);
+                $b->save();
+                $atendimento->setBairroId($b->getId());
             }
+
+
         }
         if(isset($_POST['hora'])){
             $atendimento->setHora($_POST['hora']);
