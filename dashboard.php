@@ -55,9 +55,10 @@
             <li><a href="relatorio.php">Relatório</a></li>
             <li><a href="lista.php">Lista Inserção</a></li>
             <li><a href="conf-lista.php">Lista Consulta</a></li>
-            <li><a href="users.php">Usuários</a></li>
+            <li><a href="lista-usuarios.php">Usuários</a></li>
             <!-- Dropdown Trigger -->
             <li><a class="dropdown-trigger" href="#!" data-target="dropdown1">Dados Tabela<i class="material-icons right">arrow_drop_down</i></a></li>
+            <li><a href="logout.php">Logout</a></li>
         </ul>
     </div>
 </nav>
