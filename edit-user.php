@@ -24,26 +24,32 @@
 <body>
 
 <div class="row">
-    <form autocomplete="off" name="form1" class="col s12" action="save-user.php" method="post">
+    <form autocomplete="off" name="form1" class="col s12" action="save-user.php?id=<?php echo $_GET['id'];?>" method="post">
         <div class="col s12">
             <div class="row ">
                 <h3 class="green-text">Inserir Usuário</h3>
             </div>
             <div class="row">
                 <div class="input-field col s3">
-                    <input type="text" name="nome" class="nome" required>
+                    <input type="text" name="id" class="nome" value="<?php echo $_GET['id'];?>" disabled>
+                    <label for="autocomplete-input">ID</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s3">
+                    <input type="text" name="nome" class="nome">
                     <label for="autocomplete-input">Nome</label>
                 </div>
             </div>
             <div class="row">
                 <div class="input-field col s3">
-                    <input type="email" name="login" class="nome" required>
+                    <input type="email" name="login" class="nome">
                     <label for="autocomplete-input">Email</label>
                 </div>
             </div>
             <div class="row">
                 <div class="input-field col s3">
-                    <input type="password" name="senha" class="nome" required>
+                    <input type="password" name="senha" class="nome">
                     <label for="autocomplete-input">Senha</label>
                 </div>
             </div>
@@ -59,7 +65,7 @@
             </div>
             <div class="row">
                 <div class="input-field col s1">
-                    <button class="btn waves-effect waves-light green" type="submit" name="action">Salvar
+                    <button class="btn waves-effect waves-light green" type="submit" name="edit">Salvar
                         <i class="material-icons right">send</i>
                     </button>
                 </div>

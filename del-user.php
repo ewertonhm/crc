@@ -1,8 +1,8 @@
 <?php
-    require_once 'config.php';
-    if(!\controller\User::checkPermission(2)){
-        header('location:warning.php');
-    }
+require_once 'config.php';
+if(!\controller\User::checkPermission(2)){
+    header('location:warning.php');
+}
 ?>
 
 <!doctype html>
@@ -24,42 +24,32 @@
 <body>
 
 <div class="row">
-    <form autocomplete="off" name="form1" class="col s12" action="save-user.php" method="post">
+    <form autocomplete="off" name="form1" class="col s12" action="save-user.php?id=<?php echo $_GET['id'];?>" method="post">
         <div class="col s12">
             <div class="row ">
-                <h3 class="green-text">Inserir Usuário</h3>
+                <h3 class="green-text">Deletar Usuário</h3>
             </div>
             <div class="row">
                 <div class="input-field col s3">
-                    <input type="text" name="nome" class="nome" required>
+                    <input type="text" name="id" class="nome" value="<?php echo $_GET['id'];?>" disabled>
+                    <label for="autocomplete-input">ID</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s3">
+                    <input type="text" name="nome" disabled value="<?php echo AtendenteQuery::create()->findOneById((int)$_GET['id'])->getNome();?>" class="nome">
                     <label for="autocomplete-input">Nome</label>
                 </div>
             </div>
             <div class="row">
                 <div class="input-field col s3">
-                    <input type="email" name="login" class="nome" required>
+                    <input type="email" name="login" disabled value="<?php echo AtendenteQuery::create()->findOneById((int)$_GET['id'])->getLogin();?>" class="nome">
                     <label for="autocomplete-input">Email</label>
                 </div>
             </div>
             <div class="row">
-                <div class="input-field col s3">
-                    <input type="password" name="senha" class="nome" required>
-                    <label for="autocomplete-input">Senha</label>
-                </div>
-            </div>
-            <div class="row">
-                <div class="input-field col s3">
-                    <select name='permissao'>
-                        <option value ='0' selected>Atendente</option>
-                        <option value ='1'>Pós Atendimento</option>
-                        <option value ='2'>Administrador</option>
-                    </select>
-                    <label for="autocomplete-input">Tipo de usuário</label>
-                </div>
-            </div>
-            <div class="row">
                 <div class="input-field col s1">
-                    <button class="btn waves-effect waves-light green" type="submit" name="action">Salvar
+                    <button class="btn waves-effect waves-light green" type="submit" name="delete">Deletar
                         <i class="material-icons right">send</i>
                     </button>
                 </div>

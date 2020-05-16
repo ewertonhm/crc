@@ -33,5 +33,8 @@ require_once 'config.php';
 
 $g = new \controller\Grafico();
 
+$cidade = CidadeQuery::create()->filterByNome('União da Vitória')->find();
+echo count($cidade);
+var_dump($cidade);
 
-$g->GraficoTodos(CidadeQuery::create()->find(),'getNome','FilterByCidade',0,'teste');
+//$g->GraficoTodos(ContratoQuery::create()->find(),'getContrato','FilterByContrato',0,'teste','Atendimentos por Contrato');
