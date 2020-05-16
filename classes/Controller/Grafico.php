@@ -171,8 +171,8 @@ TAG;
 
     }
 
-    public function GraficoTodos($arrayClasse,$getter,$filter,$numeroDeMesesAntes = 0,$idDoCampo,$label = 'Título do Gráfico',$bgColor1 = 'rgba(63, 191, 63, 0.2)',$bgColor2 = 'rgba(63, 191, 191, 0.2)',$borderColor1 = 'rgba(63, 191, 63, 1)', $borderColor2 = 'rgba(63, 191, 191, 1)'){
-        echo "<script>var ctx = document.getElementById('".$idDoCampo."'); var myChart = new Chart(ctx, {type: 'bar', data: { labels: [";
+    public function GraficoTodos($arrayClasse,$getter,$filter,$numeroDeMesesAntes = 0,$idDoCampo,$label = 'Título do Gráfico',$tipo = 'bar',$bgColor1 = 'rgba(63, 191, 63, 0.2)',$bgColor2 = 'rgba(63, 191, 191, 0.2)',$borderColor1 = 'rgba(63, 191, 63, 1)', $borderColor2 = 'rgba(63, 191, 191, 1)'){
+        echo "<script>var ctx = document.getElementById('".$idDoCampo."'); var myChart = new Chart(ctx, {type: '".$tipo."', data: { labels: [";
         // nomes campos
         $data = $this->getTotalAtendimentosPorClasseMes($arrayClasse,$getter,$filter,$numeroDeMesesAntes);
         $n = count($data['nome']);
