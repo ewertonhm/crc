@@ -50,7 +50,7 @@
 </ul>
 <nav>
     <div class="nav-wrapper black">
-        <a href="index.php" class="brand-logo"><img src="img/footerfinal.png" width="45" height="45" class="d-inline-block center"></a>
+        <a href="index.php" class="brand-logo "><img src="img/footerfinal.png" width="45" height="45" class="d-inline-block valign-wrapper"></a>
         <ul class="right hide-on-med-and-down">
             <li><a href="relatorio.php">Relatório</a></li>
             <li><a href="lista.php">Lista Inserção</a></li>
@@ -76,14 +76,14 @@
         <ul class="collapsible">
                 <li>
                     <div class="collapsible-header">
-                        <i class="material-icons">all_inclusive</i>
+                        <i class="material-icons">date_range</i>
                         Total de atendimentos:
                         <span class="badge"><?php echo AtendimentoQuery::create()->count();?></span></div>
                     <div class="collapsible-body"><p>Total de atendimentos: <?php echo AtendimentoQuery::create()->count();?></p></div>
                 </li>
                 <li>
                     <div class="collapsible-header">
-                        <i class="material-icons">date_range</i>
+                        <i class="material-icons">today</i>
                         Atendimentos no mês:
                         <span class="badge"><?php echo $grafico->getTotalAtendimentosMesAnterior(0)?></p></span></div>
                     <div class="collapsible-body"><p>Atendimentos no mês: <?php echo $grafico->getTotalAtendimentosMesAnterior(0)?></p></div>
