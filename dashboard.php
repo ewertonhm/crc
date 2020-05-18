@@ -41,7 +41,7 @@
     <li><a href="lista-tipos.php">Tipo de Cliente</a></li>
     <li><a href="lista-bairros.php">Bairro</a></li>
     <li><a href="lista-cidades.php">Cidade</a></li>
-    <li><a href="#!">Estado</a></li>
+    <li><a href="lista-estados.php">Estado</a></li>
     <li><a href="#!">Contato</a></li>
     <li><a href="#!">Solicitação</a></li>
     <li><a href="#!">Motivo</a></li>
