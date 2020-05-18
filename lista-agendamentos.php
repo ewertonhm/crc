@@ -22,7 +22,7 @@
     <!-- Materialize CSS -->
     <link rel="stylesheet" href="css/materialize/materialize.min.css">
 
-    <title>Planilha do C.R.C - Usuários</title>
+    <title>Planilha do C.R.C - Agendamentos</title>
     <link rel="icon" href="img/footerfinal.png" sizes="16x16 32x32" type="image/png">
 
 </head>

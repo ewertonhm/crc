@@ -22,7 +22,7 @@
     <!-- Materialize CSS -->
     <link rel="stylesheet" href="css/materialize/materialize.min.css">
 
-    <title>Planilha do C.R.C - Usuários</title>
+    <title>Planilha do C.R.C - Contatos</title>
     <link rel="icon" href="img/footerfinal.png" sizes="16x16 32x32" type="image/png">
 
 </head>
@@ -76,7 +76,7 @@
         </table>
     </div>
     <div class="fixed-action-btn">
-        <a class="btn-floating btn-large green" href="add-user.php">
+        <a class="btn-floating btn-large green" href="add-contato.php">
             <i class="large material-icons">add</i>
         </a>
     </div>

@@ -74,7 +74,7 @@
         </table>
     </div>
     <div class="fixed-action-btn">
-        <a class="btn-floating btn-large green" href="add-user.php">
+        <a class="btn-floating btn-large green" href="add-tipo.php">
             <i class="large material-icons">add</i>
         </a>
     </div>

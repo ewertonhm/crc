@@ -22,7 +22,7 @@
     <!-- Materialize CSS -->
     <link rel="stylesheet" href="css/materialize/materialize.min.css">
 
-    <title>Planilha do C.R.C - Usuários</title>
+    <title>Planilha do C.R.C - Bairros</title>
     <link rel="icon" href="img/footerfinal.png" sizes="16x16 32x32" type="image/png">
 
 </head>
@@ -71,8 +71,8 @@
                                 <td>".$table1."</td>
                                 <td>".$table2."</td>
                                 <td>".$table3."</td>
-                                <td><a href='edit-tipo.php?id=".$table1."'><i class='small text-white material-icons'>edit</i></a></td>
-                                <td><a href='del-tipo.php?id=".$table1."'><i class='small text-white material-icons'>clear</i></a></td>
+                                <td><a href='edit-bairro.php?id=".$table1."'><i class='small text-white material-icons'>edit</i></a></td>
+                                <td><a href='del-bairro.php?id=".$table1."'><i class='small text-white material-icons'>clear</i></a></td>
                             </tr>
                         ";
                     }
@@ -81,7 +81,7 @@
         </table>
     </div>
     <div class="fixed-action-btn">
-        <a class="btn-floating btn-large green" href="add-user.php">
+        <a class="btn-floating btn-large green" href="add-bairro.php">
             <i class="large material-icons">add</i>
         </a>
     </div>

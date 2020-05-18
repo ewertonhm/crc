@@ -71,8 +71,8 @@
                                 <td>".$table1."</td>
                                 <td>".$table2."</td>
                                 <td>".$table3."</td>
-                                <td><a href='edit-tipo.php?id=".$table1."'><i class='small text-white material-icons'>edit</i></a></td>
-                                <td><a href='del-tipo.php?id=".$table1."'><i class='small text-white material-icons'>clear</i></a></td>
+                                <td><a href='edit-estado.php?id=".$table1."'><i class='small text-white material-icons'>edit</i></a></td>
+                                <td><a href='del-estado.php?id=".$table1."'><i class='small text-white material-icons'>clear</i></a></td>
                             </tr>
                         ";
                     }
@@ -81,7 +81,7 @@
         </table>
     </div>
     <div class="fixed-action-btn">
-        <a class="btn-floating btn-large green" href="add-user.php">
+        <a class="btn-floating btn-large green" href="add-estado.php">
             <i class="large material-icons">add</i>
         </a>
     </div>
