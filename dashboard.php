@@ -42,11 +42,11 @@
     <li><a href="lista-bairros.php">Bairro</a></li>
     <li><a href="lista-cidades.php">Cidade</a></li>
     <li><a href="lista-estados.php">Estado</a></li>
-    <li><a href="#!">Contato</a></li>
-    <li><a href="#!">Solicitação</a></li>
-    <li><a href="#!">Motivo</a></li>
-    <li><a href="#!">Contrato</a></li>
-    <li><a href="#!">Agendamento</a></li>
+    <li><a href="lista-contatos.php">Contato</a></li>
+    <li><a href="lista-solicitacoes.php">Solicitação</a></li>
+    <li><a href="lista-motivos.php">Motivo</a></li>
+    <li><a href="lista-contratos.php">Contrato</a></li>
+    <li><a href="lista-agendamentos.php">Agendamento</a></li>
 </ul>
 <nav>
     <div class="nav-wrapper black">
