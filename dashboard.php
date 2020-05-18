@@ -38,7 +38,7 @@
 <body>
 <!-- Dropdown Structure -->
 <ul id="dropdown1" class="dropdown-content">
-    <li><a href="#!">Tipo de Cliente</a></li>
+    <li><a href="lista-tipos.php">Tipo de Cliente</a></li>
     <li><a href="#!">Bairro</a></li>
     <li><a href="#!">Cidade</a></li>
     <li><a href="#!">Estado</a></li>
