@@ -1,8 +1,8 @@
 <?php
-    require_once 'config.php';
-    if(!\controller\User::checkPermission(2)){
-        header('location:warning.php');
-    }
+require_once 'config.php';
+if(!\controller\User::checkPermission(2)){
+    header('location:warning.php');
+}
 ?>
 
 <!doctype html>
@@ -19,25 +19,31 @@
     <link rel="stylesheet" href="css/materialize/materialize.min.css">
     <link rel="stylesheet" href="css/materialize/form.css">
 
-    <title>Planilha do C.R.C - Inserir Usuário</title>
+    <title>Planilha do C.R.C - Deletar Tipo de cliente</title>
 </head>
 <body>
 
 <div class="row">
-    <form autocomplete="off" name="form1" class="col s12" action="save-tipo.php" method="post">
+    <form autocomplete="off" name="form1" class="col s12" action="save-tipo.php?id=<?php echo $_GET['id'];?>" method="post">
         <div class="col s12">
             <div class="row ">
-                <h3 class="green-text">Inserir tipo de cliente</h3>
+                <h3 class="green-text">Deletar tipo de cliente</h3>
             </div>
             <div class="row">
                 <div class="input-field col s3">
-                    <input type="text" name="form1" class="form1" required>
+                    <input type="text" name="id" class="nome" value="<?php echo $_GET['id'];?>" disabled>
+                    <label for="autocomplete-input">ID</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s3">
+                    <input type="text" name="nome" disabled value="<?php echo TipoQuery::create()->findOneById((int)$_GET['id'])->getTipo();?>" class="nome">
                     <label for="autocomplete-input">Tipo</label>
                 </div>
             </div>
             <div class="row">
                 <div class="input-field col s1">
-                    <button class="btn waves-effect waves-light green" type="submit" name="action">Salvar
+                    <button class="btn waves-effect waves-light green" type="submit" name="delete">Deletar
                         <i class="material-icons right">send</i>
                     </button>
                 </div>
