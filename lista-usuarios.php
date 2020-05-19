@@ -67,7 +67,15 @@
                             $email = $u->getLogin();
                         }
                         if($u->getPermissao() != NULL){
-                            $permissao = $u->getPermissao();
+                            if($u->getPermissao() == 0){
+                                $permissao = 'Atendimento';
+                            } elseif ($u->getPermissao() == 1){
+                                $permissao = 'Pós Atendimento';
+                            } elseif ($u->getPermissao() == 2){
+                                $permissao = 'Administrador';
+                            }
+                        } else {
+                            $permissao = 'Atendimento';
                         }
 
                         echo "

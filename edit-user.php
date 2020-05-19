@@ -3,6 +3,8 @@
     if(!\controller\User::checkPermission(2)){
         header('location:warning.php');
     }
+    require_once 'config.php';
+    $dados = AtendenteQuery::create()->findOneById((int)$_GET['id']);
 ?>
 
 <!doctype html>
@@ -24,41 +26,41 @@
 <body>
 
 <div class="row">
-    <form autocomplete="off" name="form1" class="col s12" action="save-user.php?id=<?php echo $_GET['id'];?>" method="post">
+    <form autocomplete="off" name="form1" class="col s12" action="save-user.php?id=<?php echo $dados->getId();?>" method="post">
         <div class="col s12">
             <div class="row ">
-                <h3 class="green-text">Inserir Usuário</h3>
+                <h3 class="green-text">Editar Usuário</h3>
             </div>
             <div class="row">
                 <div class="input-field col s3">
-                    <input type="text" name="id" class="nome" value="<?php echo $_GET['id'];?>" disabled>
+                    <input type="text" name="id" class="nome" value="<?php echo $dados->getId();?>" disabled>
                     <label for="autocomplete-input">ID</label>
                 </div>
             </div>
             <div class="row">
                 <div class="input-field col s3">
-                    <input type="text" name="nome" class="nome">
+                    <input type="text" name="nome" class="nome" value="<?php echo $dados->getNome();?>">
                     <label for="autocomplete-input">Nome</label>
                 </div>
             </div>
             <div class="row">
                 <div class="input-field col s3">
-                    <input type="email" name="login" class="nome">
+                    <input type="email" name="login" class="nome" value="<?php echo $dados->getLogin();?>">
                     <label for="autocomplete-input">Email</label>
                 </div>
             </div>
             <div class="row">
                 <div class="input-field col s3">
                     <input type="password" name="senha" class="nome">
-                    <label for="autocomplete-input">Senha</label>
+                    <label for="autocomplete-input">Para alterar a senha digite a nova senha:</label>
                 </div>
             </div>
             <div class="row">
                 <div class="input-field col s3">
                     <select name='permissao'>
-                        <option value ='0' selected>Atendente</option>
-                        <option value ='1'>Pós Atendimento</option>
-                        <option value ='2'>Administrador</option>
+                        <option value ='0' <?php if($dados->getPermissao() == 0 OR $dados->getPermissao() == null){echo 'selected';} ?>>Atendimento</option>
+                        <option value ='1'  <?php if($dados->getPermissao() == 1){echo 'selected';} ?>>Pós Atendimento</option>
+                        <option value ='2'  <?php if($dados->getPermissao() == 2){echo 'selected';} ?>>Administrador</option>
                     </select>
                     <label for="autocomplete-input">Tipo de usuário</label>
                 </div>
