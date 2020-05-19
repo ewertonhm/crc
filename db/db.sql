@@ -14,7 +14,8 @@ INSERT INTO atendente (nome,login,senha,permissao,lista,form) VALUES ('Administr
 
 CREATE TABLE agendamento (
     id SERIAL PRIMARY KEY,
-    agendamento VARCHAR(45) NOT NULL
+    agendamento VARCHAR(45) NOT NULL,
+    desabilitado INTEGER
 );
 
 INSERT INTO agendamento (agendamento) VALUES ('Não');
@@ -23,7 +24,8 @@ INSERT INTO agendamento (agendamento) VALUES ('Instalação');
 
 CREATE TABLE contrato (
     id SERIAL PRIMARY KEY,
-    contrato VARCHAR(90) NOT NULL
+    contrato VARCHAR(90) NOT NULL,
+    desabilitado INTEGER
 );
 
 INSERT INTO contrato (contrato) VALUES ('Enterprise');
@@ -55,7 +57,8 @@ INSERT INTO contrato (contrato) VALUES ('Licitação/Contrato Exclusivo');
 
 CREATE TABLE contato (
     id SERIAL PRIMARY KEY,
-    contato VARCHAR(45) NOT NULL
+    contato VARCHAR(45) NOT NULL,
+    desabilitado INTEGER
 );
 
 INSERT INTO contato (contato) VALUES ('Presencial');
@@ -69,7 +72,8 @@ INSERT INTO contato (contato) VALUES ('Pipedrive');
 
 CREATE TABLE tipo (
     id SERIAL PRIMARY KEY,
-    tipo VARCHAR(45) NOT NULL
+    tipo VARCHAR(45) NOT NULL,
+    desabilitado INTEGER
 );
 
 INSERT INTO tipo (tipo) VALUES ('Pessoa Física');
@@ -77,7 +81,8 @@ INSERT INTO tipo (tipo) VALUES ('Pessoa Jurídica');
 
 CREATE TABLE motivo (
     id SERIAL PRIMARY KEY,
-    motivo VARCHAR(60) NOT NULL
+    motivo VARCHAR(60) NOT NULL,
+    desabilitado INTEGER
 );
 
 INSERT INTO motivo (motivo) VALUES ('Sem conexão');
@@ -102,12 +107,14 @@ INSERT INTO motivo (motivo) VALUES ('Venda');
 
 CREATE TABLE tag (
     id SERIAL PRIMARY KEY,
-    tag VARCHAR(45) NOT NULL
+    tag VARCHAR(45) NOT NULL,
+    desabilitado INTEGER
 );
 
 CREATE TABLE solicitacao (
     id SERIAL PRIMARY KEY,
-    solicitacao VARCHAR(60)
+    solicitacao VARCHAR(60),
+    desabilitado INTEGER
 );
 
 INSERT INTO solicitacao (solicitacao) VALUES ('Suporte');
@@ -128,7 +135,8 @@ INSERT INTO solicitacao (solicitacao) VALUES ('Retenção');
 CREATE TABLE estado (
     id SERIAL PRIMARY KEY,
     nome VARCHAR(45) NOT NULL,
-    uf VARCHAR(45) NOT NULL
+    uf VARCHAR(45) NOT NULL,
+    desabilitado INTEGER
 );
 
 INSERT INTO estado (nome, uf) VALUES ('Paraná', 'PR');
@@ -138,7 +146,8 @@ INSERT INTO estado (nome, uf) VALUES ('Santa Catarina', 'SC');
 CREATE TABLE cidade (
     id SERIAL PRIMARY KEY,
     nome VARCHAR(45) NOT NULL,
-    estado_id INT REFERENCES estado(id)
+    estado_id INT REFERENCES estado(id),
+    desabilitado INTEGER
 );
 
 INSERT INTO cidade (nome, estado_id) VALUES ('União da Vitória', 1);
@@ -153,7 +162,8 @@ INSERT INTO cidade (nome, estado_id) VALUES ('Curitiba', 1);
 CREATE TABLE bairro (
     id SERIAL PRIMARY KEY,
     nome VARCHAR(60) NOT NULL ,
-    cidade_id INT REFERENCES cidade(id)
+    cidade_id INT REFERENCES cidade(id),
+    desabilitado INTEGER
 );
 
 INSERT INTO bairro (nome, cidade_id) VALUES ('Bela Vista',1);
