@@ -15,6 +15,11 @@ if(isset($_POST['edit'])){
     if(isset($_POST['form2']) AND $_POST['form2'] != NULL AND $_POST['form2'] != ''){
         $u->setAgendamento($_POST['form2']);
     }
+    if(!isset($_POST['enable'])){
+        $u->setDesabilitado(1);
+    } else {
+        $u->setDesabilitado(0);
+    }
     $u->save();
 }
 

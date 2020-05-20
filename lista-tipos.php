@@ -40,6 +40,7 @@
         <table id="lista" class="table table-hover table-striped table-dark">
             <thead>
             <tr>
+                <th scope="col">Ativo</th>
                 <th scope="col">Id</th>
                 <th scope="col">Tipo</th>
                 <th scope="col">Editar</th>
@@ -60,12 +61,21 @@
                             $tipo = $u->getTipo();
                         }
 
+                        $ativo = '';
+
+                        if($u->getDesabilitado() == 1){
+                            $ativo = 'clear';
+                        } else {
+                            $ativo = 'check';
+                        }
+
                         echo "
                             <tr>
+                                <td><i class='small text-white material-icons'>".$ativo."</i></td>
                                 <td>".$id."</td>
                                 <td>".$tipo."</td>
                                 <td><a href='edit-tipo.php?id=".$id."'><i class='small text-white material-icons'>edit</i></a></td>
-                                <td><a href='del-tipo.php?id=".$id."'><i class='small text-white material-icons'>clear</i></a></td>
+                                <td><a href='del-tipo.php?id=".$id."'><i class='small text-white material-icons'>delete</i></a></td>
                             </tr>
                         ";
                     }

@@ -40,6 +40,7 @@
         <table id="lista" class="table table-hover table-striped table-dark">
             <thead>
             <tr>
+                <th scope="col">Ativo</th>
                 <th scope="col">Id</th>
                 <th scope="col">Contato</th>
                 <th scope="col">Editar</th>
@@ -52,6 +53,7 @@
                     foreach ($dados as $d){
                         $table1 = '';
                         $table2 = '';
+                        $ativo = '';
 
 
 
@@ -61,13 +63,18 @@
                         if($d->getContato() != NULL){
                             $table2 = $d->getContato();
                         }
-
+                        if($d->getDesabilitado() == 1){
+                            $ativo = 'clear';
+                        } else {
+                            $ativo = 'check';
+                        }
                         echo "
                             <tr>
+                                <td><i class='small text-white material-icons'>".$ativo."</i></td>
                                 <td>".$table1."</td>
                                 <td>".$table2."</td>
                                 <td><a href='edit-contato.php?id=".$table1."'><i class='small text-white material-icons'>edit</i></a></td>
-                                <td><a href='del-contato.php?id=".$table1."'><i class='small text-white material-icons'>clear</i></a></td>
+                                <td><a href='del-contato.php?id=".$table1."'><i class='small text-white material-icons'>delete</i></a></td>
                             </tr>
                         ";
                     }

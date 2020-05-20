@@ -40,6 +40,7 @@
         <table id="lista" class="table table-hover table-striped table-dark">
             <thead>
             <tr>
+                <th scope="col">Ativo</th>
                 <th scope="col">Id</th>
                 <th scope="col">Nome</th>
                 <th scope="col">UF</th>
@@ -54,6 +55,7 @@
                         $table1 = '';
                         $table2 = '';
                         $table3 = '';
+                        $ativo = '';
 
 
                         if($d->getId() != NULL){
@@ -65,14 +67,19 @@
                         if($d->getUf() != NULL){
                             $table3 = $d->getUf();
                         }
-
+                        if($d->getDesabilitado() == 1){
+                            $ativo = 'clear';
+                        } else {
+                            $ativo = 'check';
+                        }
                         echo "
                             <tr>
+                                <td><i class='small text-white material-icons'>".$ativo."</i></td>
                                 <td>".$table1."</td>
                                 <td>".$table2."</td>
                                 <td>".$table3."</td>
                                 <td><a href='edit-estado.php?id=".$table1."'><i class='small text-white material-icons'>edit</i></a></td>
-                                <td><a href='del-estado.php?id=".$table1."'><i class='small text-white material-icons'>clear</i></a></td>
+                                <td><a href='del-estado.php?id=".$table1."'><i class='small text-white material-icons'>delete</i></a></td>
                             </tr>
                         ";
                     }

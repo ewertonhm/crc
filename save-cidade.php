@@ -19,6 +19,11 @@ if(isset($_POST['edit'])){
     if(isset($_POST['form3']) AND $_POST['form3'] != NULL AND $_POST['form3'] != ''){
         $u->setEstadoId((int)$_POST['form3']);
     }
+    if(!isset($_POST['enable'])){
+        $u->setDesabilitado(1);
+    } else {
+        $u->setDesabilitado(0);
+    }
     $u->save();
 }
 
