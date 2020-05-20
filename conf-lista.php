@@ -84,6 +84,7 @@
                         $agendamento = '';
                         $atendente = '';
                         $telefone = '';
+                        $tag = '';
 
                         if($a->getData() != NULL){
                             $data = $a->getData();
@@ -150,9 +151,25 @@
                         if($a->getTelefone() != NULL){
                             $telefone = $a->getTelefone();
                         }
+                        if($a->getTagId() != NULL){
+                            if($a->getTagId() == 0){
+                                $tag = "class='red'";
+                            } elseif ($a->getTagId() == 1){
+                                $tag = "class='green'";
+                            } elseif ($a->getTagId() == 2){
+                                $tag = "class='blue'";
+                            } elseif ($a->getTagId() == 3){
+                                $tag = "class='yellow'";
+                            } elseif ($a->getTagId() == 4){
+                                $tag = "class='orange'";
+                            } elseif ($a->getTagId() == 5){
+                                $tag = "class='pink'";
+                            }
+
+                        }
 
                         echo "
-                            <tr>
+                            <tr".$tag.">
                                 <td>".$data."</td>
                                 <td>".$hora."</td>
                                 <td>".$cadastro."</td>
