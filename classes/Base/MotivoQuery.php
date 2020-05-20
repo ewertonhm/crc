@@ -22,9 +22,11 @@ use Propel\Runtime\Exception\PropelException;
  *
  * @method     ChildMotivoQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     ChildMotivoQuery orderByMotivo($order = Criteria::ASC) Order by the motivo column
+ * @method     ChildMotivoQuery orderByDesabilitado($order = Criteria::ASC) Order by the desabilitado column
  *
  * @method     ChildMotivoQuery groupById() Group by the id column
  * @method     ChildMotivoQuery groupByMotivo() Group by the motivo column
+ * @method     ChildMotivoQuery groupByDesabilitado() Group by the desabilitado column
  *
  * @method     ChildMotivoQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildMotivoQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -50,17 +52,20 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildMotivo findOneOrCreate(ConnectionInterface $con = null) Return the first ChildMotivo matching the query, or a new ChildMotivo object populated from the query conditions when no match is found
  *
  * @method     ChildMotivo findOneById(int $id) Return the first ChildMotivo filtered by the id column
- * @method     ChildMotivo findOneByMotivo(string $motivo) Return the first ChildMotivo filtered by the motivo column *
+ * @method     ChildMotivo findOneByMotivo(string $motivo) Return the first ChildMotivo filtered by the motivo column
+ * @method     ChildMotivo findOneByDesabilitado(int $desabilitado) Return the first ChildMotivo filtered by the desabilitado column *
 
  * @method     ChildMotivo requirePk($key, ConnectionInterface $con = null) Return the ChildMotivo by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildMotivo requireOne(ConnectionInterface $con = null) Return the first ChildMotivo matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildMotivo requireOneById(int $id) Return the first ChildMotivo filtered by the id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildMotivo requireOneByMotivo(string $motivo) Return the first ChildMotivo filtered by the motivo column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildMotivo requireOneByDesabilitado(int $desabilitado) Return the first ChildMotivo filtered by the desabilitado column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildMotivo[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildMotivo objects based on current ModelCriteria
  * @method     ChildMotivo[]|ObjectCollection findById(int $id) Return ChildMotivo objects filtered by the id column
  * @method     ChildMotivo[]|ObjectCollection findByMotivo(string $motivo) Return ChildMotivo objects filtered by the motivo column
+ * @method     ChildMotivo[]|ObjectCollection findByDesabilitado(int $desabilitado) Return ChildMotivo objects filtered by the desabilitado column
  * @method     ChildMotivo[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  *
  */
@@ -159,7 +164,7 @@ abstract class MotivoQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id, motivo FROM motivo WHERE id = :p0';
+        $sql = 'SELECT id, motivo, desabilitado FROM motivo WHERE id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -313,6 +318,47 @@ abstract class MotivoQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(MotivoTableMap::COL_MOTIVO, $motivo, $comparison);
+    }
+
+    /**
+     * Filter the query on the desabilitado column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByDesabilitado(1234); // WHERE desabilitado = 1234
+     * $query->filterByDesabilitado(array(12, 34)); // WHERE desabilitado IN (12, 34)
+     * $query->filterByDesabilitado(array('min' => 12)); // WHERE desabilitado > 12
+     * </code>
+     *
+     * @param     mixed $desabilitado The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildMotivoQuery The current query, for fluid interface
+     */
+    public function filterByDesabilitado($desabilitado = null, $comparison = null)
+    {
+        if (is_array($desabilitado)) {
+            $useMinMax = false;
+            if (isset($desabilitado['min'])) {
+                $this->addUsingAlias(MotivoTableMap::COL_DESABILITADO, $desabilitado['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($desabilitado['max'])) {
+                $this->addUsingAlias(MotivoTableMap::COL_DESABILITADO, $desabilitado['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(MotivoTableMap::COL_DESABILITADO, $desabilitado, $comparison);
     }
 
     /**

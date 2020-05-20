@@ -22,9 +22,11 @@ use Propel\Runtime\Exception\PropelException;
  *
  * @method     ChildTagQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     ChildTagQuery orderByTag($order = Criteria::ASC) Order by the tag column
+ * @method     ChildTagQuery orderByDesabilitado($order = Criteria::ASC) Order by the desabilitado column
  *
  * @method     ChildTagQuery groupById() Group by the id column
  * @method     ChildTagQuery groupByTag() Group by the tag column
+ * @method     ChildTagQuery groupByDesabilitado() Group by the desabilitado column
  *
  * @method     ChildTagQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildTagQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -50,17 +52,20 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildTag findOneOrCreate(ConnectionInterface $con = null) Return the first ChildTag matching the query, or a new ChildTag object populated from the query conditions when no match is found
  *
  * @method     ChildTag findOneById(int $id) Return the first ChildTag filtered by the id column
- * @method     ChildTag findOneByTag(string $tag) Return the first ChildTag filtered by the tag column *
+ * @method     ChildTag findOneByTag(string $tag) Return the first ChildTag filtered by the tag column
+ * @method     ChildTag findOneByDesabilitado(int $desabilitado) Return the first ChildTag filtered by the desabilitado column *
 
  * @method     ChildTag requirePk($key, ConnectionInterface $con = null) Return the ChildTag by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildTag requireOne(ConnectionInterface $con = null) Return the first ChildTag matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildTag requireOneById(int $id) Return the first ChildTag filtered by the id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildTag requireOneByTag(string $tag) Return the first ChildTag filtered by the tag column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildTag requireOneByDesabilitado(int $desabilitado) Return the first ChildTag filtered by the desabilitado column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildTag[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildTag objects based on current ModelCriteria
  * @method     ChildTag[]|ObjectCollection findById(int $id) Return ChildTag objects filtered by the id column
  * @method     ChildTag[]|ObjectCollection findByTag(string $tag) Return ChildTag objects filtered by the tag column
+ * @method     ChildTag[]|ObjectCollection findByDesabilitado(int $desabilitado) Return ChildTag objects filtered by the desabilitado column
  * @method     ChildTag[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  *
  */
@@ -159,7 +164,7 @@ abstract class TagQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id, tag FROM tag WHERE id = :p0';
+        $sql = 'SELECT id, tag, desabilitado FROM tag WHERE id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -313,6 +318,47 @@ abstract class TagQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(TagTableMap::COL_TAG, $tag, $comparison);
+    }
+
+    /**
+     * Filter the query on the desabilitado column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByDesabilitado(1234); // WHERE desabilitado = 1234
+     * $query->filterByDesabilitado(array(12, 34)); // WHERE desabilitado IN (12, 34)
+     * $query->filterByDesabilitado(array('min' => 12)); // WHERE desabilitado > 12
+     * </code>
+     *
+     * @param     mixed $desabilitado The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildTagQuery The current query, for fluid interface
+     */
+    public function filterByDesabilitado($desabilitado = null, $comparison = null)
+    {
+        if (is_array($desabilitado)) {
+            $useMinMax = false;
+            if (isset($desabilitado['min'])) {
+                $this->addUsingAlias(TagTableMap::COL_DESABILITADO, $desabilitado['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($desabilitado['max'])) {
+                $this->addUsingAlias(TagTableMap::COL_DESABILITADO, $desabilitado['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(TagTableMap::COL_DESABILITADO, $desabilitado, $comparison);
     }
 
     /**

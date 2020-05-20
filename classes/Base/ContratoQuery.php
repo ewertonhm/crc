@@ -22,9 +22,11 @@ use Propel\Runtime\Exception\PropelException;
  *
  * @method     ChildContratoQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     ChildContratoQuery orderByContrato($order = Criteria::ASC) Order by the contrato column
+ * @method     ChildContratoQuery orderByDesabilitado($order = Criteria::ASC) Order by the desabilitado column
  *
  * @method     ChildContratoQuery groupById() Group by the id column
  * @method     ChildContratoQuery groupByContrato() Group by the contrato column
+ * @method     ChildContratoQuery groupByDesabilitado() Group by the desabilitado column
  *
  * @method     ChildContratoQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildContratoQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -50,17 +52,20 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildContrato findOneOrCreate(ConnectionInterface $con = null) Return the first ChildContrato matching the query, or a new ChildContrato object populated from the query conditions when no match is found
  *
  * @method     ChildContrato findOneById(int $id) Return the first ChildContrato filtered by the id column
- * @method     ChildContrato findOneByContrato(string $contrato) Return the first ChildContrato filtered by the contrato column *
+ * @method     ChildContrato findOneByContrato(string $contrato) Return the first ChildContrato filtered by the contrato column
+ * @method     ChildContrato findOneByDesabilitado(int $desabilitado) Return the first ChildContrato filtered by the desabilitado column *
 
  * @method     ChildContrato requirePk($key, ConnectionInterface $con = null) Return the ChildContrato by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildContrato requireOne(ConnectionInterface $con = null) Return the first ChildContrato matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildContrato requireOneById(int $id) Return the first ChildContrato filtered by the id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildContrato requireOneByContrato(string $contrato) Return the first ChildContrato filtered by the contrato column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildContrato requireOneByDesabilitado(int $desabilitado) Return the first ChildContrato filtered by the desabilitado column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildContrato[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildContrato objects based on current ModelCriteria
  * @method     ChildContrato[]|ObjectCollection findById(int $id) Return ChildContrato objects filtered by the id column
  * @method     ChildContrato[]|ObjectCollection findByContrato(string $contrato) Return ChildContrato objects filtered by the contrato column
+ * @method     ChildContrato[]|ObjectCollection findByDesabilitado(int $desabilitado) Return ChildContrato objects filtered by the desabilitado column
  * @method     ChildContrato[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  *
  */
@@ -159,7 +164,7 @@ abstract class ContratoQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id, contrato FROM contrato WHERE id = :p0';
+        $sql = 'SELECT id, contrato, desabilitado FROM contrato WHERE id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -313,6 +318,47 @@ abstract class ContratoQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(ContratoTableMap::COL_CONTRATO, $contrato, $comparison);
+    }
+
+    /**
+     * Filter the query on the desabilitado column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByDesabilitado(1234); // WHERE desabilitado = 1234
+     * $query->filterByDesabilitado(array(12, 34)); // WHERE desabilitado IN (12, 34)
+     * $query->filterByDesabilitado(array('min' => 12)); // WHERE desabilitado > 12
+     * </code>
+     *
+     * @param     mixed $desabilitado The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildContratoQuery The current query, for fluid interface
+     */
+    public function filterByDesabilitado($desabilitado = null, $comparison = null)
+    {
+        if (is_array($desabilitado)) {
+            $useMinMax = false;
+            if (isset($desabilitado['min'])) {
+                $this->addUsingAlias(ContratoTableMap::COL_DESABILITADO, $desabilitado['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($desabilitado['max'])) {
+                $this->addUsingAlias(ContratoTableMap::COL_DESABILITADO, $desabilitado['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(ContratoTableMap::COL_DESABILITADO, $desabilitado, $comparison);
     }
 
     /**

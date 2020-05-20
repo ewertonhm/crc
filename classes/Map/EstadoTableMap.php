@@ -58,7 +58,7 @@ class EstadoTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 3;
+    const NUM_COLUMNS = 4;
 
     /**
      * The number of lazy-loaded columns
@@ -68,7 +68,7 @@ class EstadoTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 3;
+    const NUM_HYDRATE_COLUMNS = 4;
 
     /**
      * the column name for the id field
@@ -86,6 +86,11 @@ class EstadoTableMap extends TableMap
     const COL_UF = 'estado.uf';
 
     /**
+     * the column name for the desabilitado field
+     */
+    const COL_DESABILITADO = 'estado.desabilitado';
+
+    /**
      * The default string format for model objects of the related table
      */
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -97,11 +102,11 @@ class EstadoTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'Nome', 'Uf', ),
-        self::TYPE_CAMELNAME     => array('id', 'nome', 'uf', ),
-        self::TYPE_COLNAME       => array(EstadoTableMap::COL_ID, EstadoTableMap::COL_NOME, EstadoTableMap::COL_UF, ),
-        self::TYPE_FIELDNAME     => array('id', 'nome', 'uf', ),
-        self::TYPE_NUM           => array(0, 1, 2, )
+        self::TYPE_PHPNAME       => array('Id', 'Nome', 'Uf', 'Desabilitado', ),
+        self::TYPE_CAMELNAME     => array('id', 'nome', 'uf', 'desabilitado', ),
+        self::TYPE_COLNAME       => array(EstadoTableMap::COL_ID, EstadoTableMap::COL_NOME, EstadoTableMap::COL_UF, EstadoTableMap::COL_DESABILITADO, ),
+        self::TYPE_FIELDNAME     => array('id', 'nome', 'uf', 'desabilitado', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, )
     );
 
     /**
@@ -111,11 +116,11 @@ class EstadoTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'Nome' => 1, 'Uf' => 2, ),
-        self::TYPE_CAMELNAME     => array('id' => 0, 'nome' => 1, 'uf' => 2, ),
-        self::TYPE_COLNAME       => array(EstadoTableMap::COL_ID => 0, EstadoTableMap::COL_NOME => 1, EstadoTableMap::COL_UF => 2, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'nome' => 1, 'uf' => 2, ),
-        self::TYPE_NUM           => array(0, 1, 2, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'Nome' => 1, 'Uf' => 2, 'Desabilitado' => 3, ),
+        self::TYPE_CAMELNAME     => array('id' => 0, 'nome' => 1, 'uf' => 2, 'desabilitado' => 3, ),
+        self::TYPE_COLNAME       => array(EstadoTableMap::COL_ID => 0, EstadoTableMap::COL_NOME => 1, EstadoTableMap::COL_UF => 2, EstadoTableMap::COL_DESABILITADO => 3, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'nome' => 1, 'uf' => 2, 'desabilitado' => 3, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, )
     );
 
     /**
@@ -139,6 +144,7 @@ class EstadoTableMap extends TableMap
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
         $this->addColumn('nome', 'Nome', 'VARCHAR', true, 45, null);
         $this->addColumn('uf', 'Uf', 'VARCHAR', true, 45, null);
+        $this->addColumn('desabilitado', 'Desabilitado', 'INTEGER', false, null, null);
     } // initialize()
 
     /**
@@ -306,10 +312,12 @@ class EstadoTableMap extends TableMap
             $criteria->addSelectColumn(EstadoTableMap::COL_ID);
             $criteria->addSelectColumn(EstadoTableMap::COL_NOME);
             $criteria->addSelectColumn(EstadoTableMap::COL_UF);
+            $criteria->addSelectColumn(EstadoTableMap::COL_DESABILITADO);
         } else {
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.nome');
             $criteria->addSelectColumn($alias . '.uf');
+            $criteria->addSelectColumn($alias . '.desabilitado');
         }
     }
 

@@ -58,7 +58,7 @@ class BairroTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 3;
+    const NUM_COLUMNS = 4;
 
     /**
      * The number of lazy-loaded columns
@@ -68,7 +68,7 @@ class BairroTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 3;
+    const NUM_HYDRATE_COLUMNS = 4;
 
     /**
      * the column name for the id field
@@ -86,6 +86,11 @@ class BairroTableMap extends TableMap
     const COL_CIDADE_ID = 'bairro.cidade_id';
 
     /**
+     * the column name for the desabilitado field
+     */
+    const COL_DESABILITADO = 'bairro.desabilitado';
+
+    /**
      * The default string format for model objects of the related table
      */
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -97,11 +102,11 @@ class BairroTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'Nome', 'CidadeId', ),
-        self::TYPE_CAMELNAME     => array('id', 'nome', 'cidadeId', ),
-        self::TYPE_COLNAME       => array(BairroTableMap::COL_ID, BairroTableMap::COL_NOME, BairroTableMap::COL_CIDADE_ID, ),
-        self::TYPE_FIELDNAME     => array('id', 'nome', 'cidade_id', ),
-        self::TYPE_NUM           => array(0, 1, 2, )
+        self::TYPE_PHPNAME       => array('Id', 'Nome', 'CidadeId', 'Desabilitado', ),
+        self::TYPE_CAMELNAME     => array('id', 'nome', 'cidadeId', 'desabilitado', ),
+        self::TYPE_COLNAME       => array(BairroTableMap::COL_ID, BairroTableMap::COL_NOME, BairroTableMap::COL_CIDADE_ID, BairroTableMap::COL_DESABILITADO, ),
+        self::TYPE_FIELDNAME     => array('id', 'nome', 'cidade_id', 'desabilitado', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, )
     );
 
     /**
@@ -111,11 +116,11 @@ class BairroTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'Nome' => 1, 'CidadeId' => 2, ),
-        self::TYPE_CAMELNAME     => array('id' => 0, 'nome' => 1, 'cidadeId' => 2, ),
-        self::TYPE_COLNAME       => array(BairroTableMap::COL_ID => 0, BairroTableMap::COL_NOME => 1, BairroTableMap::COL_CIDADE_ID => 2, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'nome' => 1, 'cidade_id' => 2, ),
-        self::TYPE_NUM           => array(0, 1, 2, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'Nome' => 1, 'CidadeId' => 2, 'Desabilitado' => 3, ),
+        self::TYPE_CAMELNAME     => array('id' => 0, 'nome' => 1, 'cidadeId' => 2, 'desabilitado' => 3, ),
+        self::TYPE_COLNAME       => array(BairroTableMap::COL_ID => 0, BairroTableMap::COL_NOME => 1, BairroTableMap::COL_CIDADE_ID => 2, BairroTableMap::COL_DESABILITADO => 3, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'nome' => 1, 'cidade_id' => 2, 'desabilitado' => 3, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, )
     );
 
     /**
@@ -139,6 +144,7 @@ class BairroTableMap extends TableMap
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
         $this->addColumn('nome', 'Nome', 'VARCHAR', true, 60, null);
         $this->addForeignKey('cidade_id', 'CidadeId', 'INTEGER', 'cidade', 'id', false, null, null);
+        $this->addColumn('desabilitado', 'Desabilitado', 'INTEGER', false, null, null);
     } // initialize()
 
     /**
@@ -306,10 +312,12 @@ class BairroTableMap extends TableMap
             $criteria->addSelectColumn(BairroTableMap::COL_ID);
             $criteria->addSelectColumn(BairroTableMap::COL_NOME);
             $criteria->addSelectColumn(BairroTableMap::COL_CIDADE_ID);
+            $criteria->addSelectColumn(BairroTableMap::COL_DESABILITADO);
         } else {
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.nome');
             $criteria->addSelectColumn($alias . '.cidade_id');
+            $criteria->addSelectColumn($alias . '.desabilitado');
         }
     }
 

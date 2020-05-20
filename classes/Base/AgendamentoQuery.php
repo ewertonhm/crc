@@ -22,9 +22,11 @@ use Propel\Runtime\Exception\PropelException;
  *
  * @method     ChildAgendamentoQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     ChildAgendamentoQuery orderByAgendamento($order = Criteria::ASC) Order by the agendamento column
+ * @method     ChildAgendamentoQuery orderByDesabilitado($order = Criteria::ASC) Order by the desabilitado column
  *
  * @method     ChildAgendamentoQuery groupById() Group by the id column
  * @method     ChildAgendamentoQuery groupByAgendamento() Group by the agendamento column
+ * @method     ChildAgendamentoQuery groupByDesabilitado() Group by the desabilitado column
  *
  * @method     ChildAgendamentoQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildAgendamentoQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -50,17 +52,20 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildAgendamento findOneOrCreate(ConnectionInterface $con = null) Return the first ChildAgendamento matching the query, or a new ChildAgendamento object populated from the query conditions when no match is found
  *
  * @method     ChildAgendamento findOneById(int $id) Return the first ChildAgendamento filtered by the id column
- * @method     ChildAgendamento findOneByAgendamento(string $agendamento) Return the first ChildAgendamento filtered by the agendamento column *
+ * @method     ChildAgendamento findOneByAgendamento(string $agendamento) Return the first ChildAgendamento filtered by the agendamento column
+ * @method     ChildAgendamento findOneByDesabilitado(int $desabilitado) Return the first ChildAgendamento filtered by the desabilitado column *
 
  * @method     ChildAgendamento requirePk($key, ConnectionInterface $con = null) Return the ChildAgendamento by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildAgendamento requireOne(ConnectionInterface $con = null) Return the first ChildAgendamento matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildAgendamento requireOneById(int $id) Return the first ChildAgendamento filtered by the id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildAgendamento requireOneByAgendamento(string $agendamento) Return the first ChildAgendamento filtered by the agendamento column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildAgendamento requireOneByDesabilitado(int $desabilitado) Return the first ChildAgendamento filtered by the desabilitado column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildAgendamento[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildAgendamento objects based on current ModelCriteria
  * @method     ChildAgendamento[]|ObjectCollection findById(int $id) Return ChildAgendamento objects filtered by the id column
  * @method     ChildAgendamento[]|ObjectCollection findByAgendamento(string $agendamento) Return ChildAgendamento objects filtered by the agendamento column
+ * @method     ChildAgendamento[]|ObjectCollection findByDesabilitado(int $desabilitado) Return ChildAgendamento objects filtered by the desabilitado column
  * @method     ChildAgendamento[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  *
  */
@@ -159,7 +164,7 @@ abstract class AgendamentoQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id, agendamento FROM agendamento WHERE id = :p0';
+        $sql = 'SELECT id, agendamento, desabilitado FROM agendamento WHERE id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -313,6 +318,47 @@ abstract class AgendamentoQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(AgendamentoTableMap::COL_AGENDAMENTO, $agendamento, $comparison);
+    }
+
+    /**
+     * Filter the query on the desabilitado column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByDesabilitado(1234); // WHERE desabilitado = 1234
+     * $query->filterByDesabilitado(array(12, 34)); // WHERE desabilitado IN (12, 34)
+     * $query->filterByDesabilitado(array('min' => 12)); // WHERE desabilitado > 12
+     * </code>
+     *
+     * @param     mixed $desabilitado The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildAgendamentoQuery The current query, for fluid interface
+     */
+    public function filterByDesabilitado($desabilitado = null, $comparison = null)
+    {
+        if (is_array($desabilitado)) {
+            $useMinMax = false;
+            if (isset($desabilitado['min'])) {
+                $this->addUsingAlias(AgendamentoTableMap::COL_DESABILITADO, $desabilitado['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($desabilitado['max'])) {
+                $this->addUsingAlias(AgendamentoTableMap::COL_DESABILITADO, $desabilitado['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(AgendamentoTableMap::COL_DESABILITADO, $desabilitado, $comparison);
     }
 
     /**

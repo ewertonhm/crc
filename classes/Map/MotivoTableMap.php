@@ -58,7 +58,7 @@ class MotivoTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 2;
+    const NUM_COLUMNS = 3;
 
     /**
      * The number of lazy-loaded columns
@@ -68,7 +68,7 @@ class MotivoTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 2;
+    const NUM_HYDRATE_COLUMNS = 3;
 
     /**
      * the column name for the id field
@@ -79,6 +79,11 @@ class MotivoTableMap extends TableMap
      * the column name for the motivo field
      */
     const COL_MOTIVO = 'motivo.motivo';
+
+    /**
+     * the column name for the desabilitado field
+     */
+    const COL_DESABILITADO = 'motivo.desabilitado';
 
     /**
      * The default string format for model objects of the related table
@@ -92,11 +97,11 @@ class MotivoTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'Motivo', ),
-        self::TYPE_CAMELNAME     => array('id', 'motivo', ),
-        self::TYPE_COLNAME       => array(MotivoTableMap::COL_ID, MotivoTableMap::COL_MOTIVO, ),
-        self::TYPE_FIELDNAME     => array('id', 'motivo', ),
-        self::TYPE_NUM           => array(0, 1, )
+        self::TYPE_PHPNAME       => array('Id', 'Motivo', 'Desabilitado', ),
+        self::TYPE_CAMELNAME     => array('id', 'motivo', 'desabilitado', ),
+        self::TYPE_COLNAME       => array(MotivoTableMap::COL_ID, MotivoTableMap::COL_MOTIVO, MotivoTableMap::COL_DESABILITADO, ),
+        self::TYPE_FIELDNAME     => array('id', 'motivo', 'desabilitado', ),
+        self::TYPE_NUM           => array(0, 1, 2, )
     );
 
     /**
@@ -106,11 +111,11 @@ class MotivoTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'Motivo' => 1, ),
-        self::TYPE_CAMELNAME     => array('id' => 0, 'motivo' => 1, ),
-        self::TYPE_COLNAME       => array(MotivoTableMap::COL_ID => 0, MotivoTableMap::COL_MOTIVO => 1, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'motivo' => 1, ),
-        self::TYPE_NUM           => array(0, 1, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'Motivo' => 1, 'Desabilitado' => 2, ),
+        self::TYPE_CAMELNAME     => array('id' => 0, 'motivo' => 1, 'desabilitado' => 2, ),
+        self::TYPE_COLNAME       => array(MotivoTableMap::COL_ID => 0, MotivoTableMap::COL_MOTIVO => 1, MotivoTableMap::COL_DESABILITADO => 2, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'motivo' => 1, 'desabilitado' => 2, ),
+        self::TYPE_NUM           => array(0, 1, 2, )
     );
 
     /**
@@ -133,6 +138,7 @@ class MotivoTableMap extends TableMap
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
         $this->addColumn('motivo', 'Motivo', 'VARCHAR', true, 60, null);
+        $this->addColumn('desabilitado', 'Desabilitado', 'INTEGER', false, null, null);
     } // initialize()
 
     /**
@@ -292,9 +298,11 @@ class MotivoTableMap extends TableMap
         if (null === $alias) {
             $criteria->addSelectColumn(MotivoTableMap::COL_ID);
             $criteria->addSelectColumn(MotivoTableMap::COL_MOTIVO);
+            $criteria->addSelectColumn(MotivoTableMap::COL_DESABILITADO);
         } else {
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.motivo');
+            $criteria->addSelectColumn($alias . '.desabilitado');
         }
     }
 

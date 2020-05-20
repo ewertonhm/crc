@@ -88,6 +88,13 @@ abstract class Bairro implements ActiveRecordInterface
     protected $cidade_id;
 
     /**
+     * The value for the desabilitado field.
+     *
+     * @var        int
+     */
+    protected $desabilitado;
+
+    /**
      * @var        ChildCidade
      */
     protected $aCidade;
@@ -368,6 +375,16 @@ abstract class Bairro implements ActiveRecordInterface
     }
 
     /**
+     * Get the [desabilitado] column value.
+     *
+     * @return int
+     */
+    public function getDesabilitado()
+    {
+        return $this->desabilitado;
+    }
+
+    /**
      * Set the value of [id] column.
      *
      * @param int $v new value
@@ -432,6 +449,26 @@ abstract class Bairro implements ActiveRecordInterface
     } // setCidadeId()
 
     /**
+     * Set the value of [desabilitado] column.
+     *
+     * @param int $v new value
+     * @return $this|\Bairro The current object (for fluent API support)
+     */
+    public function setDesabilitado($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->desabilitado !== $v) {
+            $this->desabilitado = $v;
+            $this->modifiedColumns[BairroTableMap::COL_DESABILITADO] = true;
+        }
+
+        return $this;
+    } // setDesabilitado()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -475,6 +512,9 @@ abstract class Bairro implements ActiveRecordInterface
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : BairroTableMap::translateFieldName('CidadeId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->cidade_id = (null !== $col) ? (int) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : BairroTableMap::translateFieldName('Desabilitado', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->desabilitado = (null !== $col) ? (int) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -483,7 +523,7 @@ abstract class Bairro implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 3; // 3 = BairroTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 4; // 4 = BairroTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\Bairro'), 0, $e);
@@ -738,6 +778,9 @@ abstract class Bairro implements ActiveRecordInterface
         if ($this->isColumnModified(BairroTableMap::COL_CIDADE_ID)) {
             $modifiedColumns[':p' . $index++]  = 'cidade_id';
         }
+        if ($this->isColumnModified(BairroTableMap::COL_DESABILITADO)) {
+            $modifiedColumns[':p' . $index++]  = 'desabilitado';
+        }
 
         $sql = sprintf(
             'INSERT INTO bairro (%s) VALUES (%s)',
@@ -757,6 +800,9 @@ abstract class Bairro implements ActiveRecordInterface
                         break;
                     case 'cidade_id':
                         $stmt->bindValue($identifier, $this->cidade_id, PDO::PARAM_INT);
+                        break;
+                    case 'desabilitado':
+                        $stmt->bindValue($identifier, $this->desabilitado, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -822,6 +868,9 @@ abstract class Bairro implements ActiveRecordInterface
             case 2:
                 return $this->getCidadeId();
                 break;
+            case 3:
+                return $this->getDesabilitado();
+                break;
             default:
                 return null;
                 break;
@@ -855,6 +904,7 @@ abstract class Bairro implements ActiveRecordInterface
             $keys[0] => $this->getId(),
             $keys[1] => $this->getNome(),
             $keys[2] => $this->getCidadeId(),
+            $keys[3] => $this->getDesabilitado(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -935,6 +985,9 @@ abstract class Bairro implements ActiveRecordInterface
             case 2:
                 $this->setCidadeId($value);
                 break;
+            case 3:
+                $this->setDesabilitado($value);
+                break;
         } // switch()
 
         return $this;
@@ -969,6 +1022,9 @@ abstract class Bairro implements ActiveRecordInterface
         }
         if (array_key_exists($keys[2], $arr)) {
             $this->setCidadeId($arr[$keys[2]]);
+        }
+        if (array_key_exists($keys[3], $arr)) {
+            $this->setDesabilitado($arr[$keys[3]]);
         }
     }
 
@@ -1019,6 +1075,9 @@ abstract class Bairro implements ActiveRecordInterface
         }
         if ($this->isColumnModified(BairroTableMap::COL_CIDADE_ID)) {
             $criteria->add(BairroTableMap::COL_CIDADE_ID, $this->cidade_id);
+        }
+        if ($this->isColumnModified(BairroTableMap::COL_DESABILITADO)) {
+            $criteria->add(BairroTableMap::COL_DESABILITADO, $this->desabilitado);
         }
 
         return $criteria;
@@ -1108,6 +1167,7 @@ abstract class Bairro implements ActiveRecordInterface
     {
         $copyObj->setNome($this->getNome());
         $copyObj->setCidadeId($this->getCidadeId());
+        $copyObj->setDesabilitado($this->getDesabilitado());
 
         if ($deepCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1706,6 +1766,7 @@ abstract class Bairro implements ActiveRecordInterface
         $this->id = null;
         $this->nome = null;
         $this->cidade_id = null;
+        $this->desabilitado = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
         $this->resetModified();

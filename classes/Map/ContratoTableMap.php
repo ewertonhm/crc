@@ -58,7 +58,7 @@ class ContratoTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 2;
+    const NUM_COLUMNS = 3;
 
     /**
      * The number of lazy-loaded columns
@@ -68,7 +68,7 @@ class ContratoTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 2;
+    const NUM_HYDRATE_COLUMNS = 3;
 
     /**
      * the column name for the id field
@@ -79,6 +79,11 @@ class ContratoTableMap extends TableMap
      * the column name for the contrato field
      */
     const COL_CONTRATO = 'contrato.contrato';
+
+    /**
+     * the column name for the desabilitado field
+     */
+    const COL_DESABILITADO = 'contrato.desabilitado';
 
     /**
      * The default string format for model objects of the related table
@@ -92,11 +97,11 @@ class ContratoTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'Contrato', ),
-        self::TYPE_CAMELNAME     => array('id', 'contrato', ),
-        self::TYPE_COLNAME       => array(ContratoTableMap::COL_ID, ContratoTableMap::COL_CONTRATO, ),
-        self::TYPE_FIELDNAME     => array('id', 'contrato', ),
-        self::TYPE_NUM           => array(0, 1, )
+        self::TYPE_PHPNAME       => array('Id', 'Contrato', 'Desabilitado', ),
+        self::TYPE_CAMELNAME     => array('id', 'contrato', 'desabilitado', ),
+        self::TYPE_COLNAME       => array(ContratoTableMap::COL_ID, ContratoTableMap::COL_CONTRATO, ContratoTableMap::COL_DESABILITADO, ),
+        self::TYPE_FIELDNAME     => array('id', 'contrato', 'desabilitado', ),
+        self::TYPE_NUM           => array(0, 1, 2, )
     );
 
     /**
@@ -106,11 +111,11 @@ class ContratoTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'Contrato' => 1, ),
-        self::TYPE_CAMELNAME     => array('id' => 0, 'contrato' => 1, ),
-        self::TYPE_COLNAME       => array(ContratoTableMap::COL_ID => 0, ContratoTableMap::COL_CONTRATO => 1, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'contrato' => 1, ),
-        self::TYPE_NUM           => array(0, 1, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'Contrato' => 1, 'Desabilitado' => 2, ),
+        self::TYPE_CAMELNAME     => array('id' => 0, 'contrato' => 1, 'desabilitado' => 2, ),
+        self::TYPE_COLNAME       => array(ContratoTableMap::COL_ID => 0, ContratoTableMap::COL_CONTRATO => 1, ContratoTableMap::COL_DESABILITADO => 2, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'contrato' => 1, 'desabilitado' => 2, ),
+        self::TYPE_NUM           => array(0, 1, 2, )
     );
 
     /**
@@ -133,6 +138,7 @@ class ContratoTableMap extends TableMap
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
         $this->addColumn('contrato', 'Contrato', 'VARCHAR', true, 90, null);
+        $this->addColumn('desabilitado', 'Desabilitado', 'INTEGER', false, null, null);
     } // initialize()
 
     /**
@@ -292,9 +298,11 @@ class ContratoTableMap extends TableMap
         if (null === $alias) {
             $criteria->addSelectColumn(ContratoTableMap::COL_ID);
             $criteria->addSelectColumn(ContratoTableMap::COL_CONTRATO);
+            $criteria->addSelectColumn(ContratoTableMap::COL_DESABILITADO);
         } else {
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.contrato');
+            $criteria->addSelectColumn($alias . '.desabilitado');
         }
     }
 

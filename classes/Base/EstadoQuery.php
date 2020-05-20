@@ -23,10 +23,12 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildEstadoQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     ChildEstadoQuery orderByNome($order = Criteria::ASC) Order by the nome column
  * @method     ChildEstadoQuery orderByUf($order = Criteria::ASC) Order by the uf column
+ * @method     ChildEstadoQuery orderByDesabilitado($order = Criteria::ASC) Order by the desabilitado column
  *
  * @method     ChildEstadoQuery groupById() Group by the id column
  * @method     ChildEstadoQuery groupByNome() Group by the nome column
  * @method     ChildEstadoQuery groupByUf() Group by the uf column
+ * @method     ChildEstadoQuery groupByDesabilitado() Group by the desabilitado column
  *
  * @method     ChildEstadoQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildEstadoQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -63,7 +65,8 @@ use Propel\Runtime\Exception\PropelException;
  *
  * @method     ChildEstado findOneById(int $id) Return the first ChildEstado filtered by the id column
  * @method     ChildEstado findOneByNome(string $nome) Return the first ChildEstado filtered by the nome column
- * @method     ChildEstado findOneByUf(string $uf) Return the first ChildEstado filtered by the uf column *
+ * @method     ChildEstado findOneByUf(string $uf) Return the first ChildEstado filtered by the uf column
+ * @method     ChildEstado findOneByDesabilitado(int $desabilitado) Return the first ChildEstado filtered by the desabilitado column *
 
  * @method     ChildEstado requirePk($key, ConnectionInterface $con = null) Return the ChildEstado by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildEstado requireOne(ConnectionInterface $con = null) Return the first ChildEstado matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -71,11 +74,13 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildEstado requireOneById(int $id) Return the first ChildEstado filtered by the id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildEstado requireOneByNome(string $nome) Return the first ChildEstado filtered by the nome column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildEstado requireOneByUf(string $uf) Return the first ChildEstado filtered by the uf column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildEstado requireOneByDesabilitado(int $desabilitado) Return the first ChildEstado filtered by the desabilitado column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildEstado[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildEstado objects based on current ModelCriteria
  * @method     ChildEstado[]|ObjectCollection findById(int $id) Return ChildEstado objects filtered by the id column
  * @method     ChildEstado[]|ObjectCollection findByNome(string $nome) Return ChildEstado objects filtered by the nome column
  * @method     ChildEstado[]|ObjectCollection findByUf(string $uf) Return ChildEstado objects filtered by the uf column
+ * @method     ChildEstado[]|ObjectCollection findByDesabilitado(int $desabilitado) Return ChildEstado objects filtered by the desabilitado column
  * @method     ChildEstado[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  *
  */
@@ -174,7 +179,7 @@ abstract class EstadoQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id, nome, uf FROM estado WHERE id = :p0';
+        $sql = 'SELECT id, nome, uf, desabilitado FROM estado WHERE id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -353,6 +358,47 @@ abstract class EstadoQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(EstadoTableMap::COL_UF, $uf, $comparison);
+    }
+
+    /**
+     * Filter the query on the desabilitado column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByDesabilitado(1234); // WHERE desabilitado = 1234
+     * $query->filterByDesabilitado(array(12, 34)); // WHERE desabilitado IN (12, 34)
+     * $query->filterByDesabilitado(array('min' => 12)); // WHERE desabilitado > 12
+     * </code>
+     *
+     * @param     mixed $desabilitado The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildEstadoQuery The current query, for fluid interface
+     */
+    public function filterByDesabilitado($desabilitado = null, $comparison = null)
+    {
+        if (is_array($desabilitado)) {
+            $useMinMax = false;
+            if (isset($desabilitado['min'])) {
+                $this->addUsingAlias(EstadoTableMap::COL_DESABILITADO, $desabilitado['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($desabilitado['max'])) {
+                $this->addUsingAlias(EstadoTableMap::COL_DESABILITADO, $desabilitado['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(EstadoTableMap::COL_DESABILITADO, $desabilitado, $comparison);
     }
 
     /**

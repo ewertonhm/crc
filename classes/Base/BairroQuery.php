@@ -23,10 +23,12 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildBairroQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     ChildBairroQuery orderByNome($order = Criteria::ASC) Order by the nome column
  * @method     ChildBairroQuery orderByCidadeId($order = Criteria::ASC) Order by the cidade_id column
+ * @method     ChildBairroQuery orderByDesabilitado($order = Criteria::ASC) Order by the desabilitado column
  *
  * @method     ChildBairroQuery groupById() Group by the id column
  * @method     ChildBairroQuery groupByNome() Group by the nome column
  * @method     ChildBairroQuery groupByCidadeId() Group by the cidade_id column
+ * @method     ChildBairroQuery groupByDesabilitado() Group by the desabilitado column
  *
  * @method     ChildBairroQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildBairroQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -63,7 +65,8 @@ use Propel\Runtime\Exception\PropelException;
  *
  * @method     ChildBairro findOneById(int $id) Return the first ChildBairro filtered by the id column
  * @method     ChildBairro findOneByNome(string $nome) Return the first ChildBairro filtered by the nome column
- * @method     ChildBairro findOneByCidadeId(int $cidade_id) Return the first ChildBairro filtered by the cidade_id column *
+ * @method     ChildBairro findOneByCidadeId(int $cidade_id) Return the first ChildBairro filtered by the cidade_id column
+ * @method     ChildBairro findOneByDesabilitado(int $desabilitado) Return the first ChildBairro filtered by the desabilitado column *
 
  * @method     ChildBairro requirePk($key, ConnectionInterface $con = null) Return the ChildBairro by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildBairro requireOne(ConnectionInterface $con = null) Return the first ChildBairro matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -71,11 +74,13 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildBairro requireOneById(int $id) Return the first ChildBairro filtered by the id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildBairro requireOneByNome(string $nome) Return the first ChildBairro filtered by the nome column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildBairro requireOneByCidadeId(int $cidade_id) Return the first ChildBairro filtered by the cidade_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildBairro requireOneByDesabilitado(int $desabilitado) Return the first ChildBairro filtered by the desabilitado column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildBairro[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildBairro objects based on current ModelCriteria
  * @method     ChildBairro[]|ObjectCollection findById(int $id) Return ChildBairro objects filtered by the id column
  * @method     ChildBairro[]|ObjectCollection findByNome(string $nome) Return ChildBairro objects filtered by the nome column
  * @method     ChildBairro[]|ObjectCollection findByCidadeId(int $cidade_id) Return ChildBairro objects filtered by the cidade_id column
+ * @method     ChildBairro[]|ObjectCollection findByDesabilitado(int $desabilitado) Return ChildBairro objects filtered by the desabilitado column
  * @method     ChildBairro[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  *
  */
@@ -174,7 +179,7 @@ abstract class BairroQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id, nome, cidade_id FROM bairro WHERE id = :p0';
+        $sql = 'SELECT id, nome, cidade_id, desabilitado FROM bairro WHERE id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -371,6 +376,47 @@ abstract class BairroQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(BairroTableMap::COL_CIDADE_ID, $cidadeId, $comparison);
+    }
+
+    /**
+     * Filter the query on the desabilitado column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByDesabilitado(1234); // WHERE desabilitado = 1234
+     * $query->filterByDesabilitado(array(12, 34)); // WHERE desabilitado IN (12, 34)
+     * $query->filterByDesabilitado(array('min' => 12)); // WHERE desabilitado > 12
+     * </code>
+     *
+     * @param     mixed $desabilitado The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildBairroQuery The current query, for fluid interface
+     */
+    public function filterByDesabilitado($desabilitado = null, $comparison = null)
+    {
+        if (is_array($desabilitado)) {
+            $useMinMax = false;
+            if (isset($desabilitado['min'])) {
+                $this->addUsingAlias(BairroTableMap::COL_DESABILITADO, $desabilitado['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($desabilitado['max'])) {
+                $this->addUsingAlias(BairroTableMap::COL_DESABILITADO, $desabilitado['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(BairroTableMap::COL_DESABILITADO, $desabilitado, $comparison);
     }
 
     /**

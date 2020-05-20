@@ -89,6 +89,13 @@ abstract class Estado implements ActiveRecordInterface
     protected $uf;
 
     /**
+     * The value for the desabilitado field.
+     *
+     * @var        int
+     */
+    protected $desabilitado;
+
+    /**
      * @var        ObjectCollection|ChildAtendimento[] Collection to store aggregation of ChildAtendimento objects.
      */
     protected $collAtendimentos;
@@ -376,6 +383,16 @@ abstract class Estado implements ActiveRecordInterface
     }
 
     /**
+     * Get the [desabilitado] column value.
+     *
+     * @return int
+     */
+    public function getDesabilitado()
+    {
+        return $this->desabilitado;
+    }
+
+    /**
      * Set the value of [id] column.
      *
      * @param int $v new value
@@ -436,6 +453,26 @@ abstract class Estado implements ActiveRecordInterface
     } // setUf()
 
     /**
+     * Set the value of [desabilitado] column.
+     *
+     * @param int $v new value
+     * @return $this|\Estado The current object (for fluent API support)
+     */
+    public function setDesabilitado($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->desabilitado !== $v) {
+            $this->desabilitado = $v;
+            $this->modifiedColumns[EstadoTableMap::COL_DESABILITADO] = true;
+        }
+
+        return $this;
+    } // setDesabilitado()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -479,6 +516,9 @@ abstract class Estado implements ActiveRecordInterface
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : EstadoTableMap::translateFieldName('Uf', TableMap::TYPE_PHPNAME, $indexType)];
             $this->uf = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : EstadoTableMap::translateFieldName('Desabilitado', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->desabilitado = (null !== $col) ? (int) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -487,7 +527,7 @@ abstract class Estado implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 3; // 3 = EstadoTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 4; // 4 = EstadoTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\Estado'), 0, $e);
@@ -746,6 +786,9 @@ abstract class Estado implements ActiveRecordInterface
         if ($this->isColumnModified(EstadoTableMap::COL_UF)) {
             $modifiedColumns[':p' . $index++]  = 'uf';
         }
+        if ($this->isColumnModified(EstadoTableMap::COL_DESABILITADO)) {
+            $modifiedColumns[':p' . $index++]  = 'desabilitado';
+        }
 
         $sql = sprintf(
             'INSERT INTO estado (%s) VALUES (%s)',
@@ -765,6 +808,9 @@ abstract class Estado implements ActiveRecordInterface
                         break;
                     case 'uf':
                         $stmt->bindValue($identifier, $this->uf, PDO::PARAM_STR);
+                        break;
+                    case 'desabilitado':
+                        $stmt->bindValue($identifier, $this->desabilitado, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -830,6 +876,9 @@ abstract class Estado implements ActiveRecordInterface
             case 2:
                 return $this->getUf();
                 break;
+            case 3:
+                return $this->getDesabilitado();
+                break;
             default:
                 return null;
                 break;
@@ -863,6 +912,7 @@ abstract class Estado implements ActiveRecordInterface
             $keys[0] => $this->getId(),
             $keys[1] => $this->getNome(),
             $keys[2] => $this->getUf(),
+            $keys[3] => $this->getDesabilitado(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -943,6 +993,9 @@ abstract class Estado implements ActiveRecordInterface
             case 2:
                 $this->setUf($value);
                 break;
+            case 3:
+                $this->setDesabilitado($value);
+                break;
         } // switch()
 
         return $this;
@@ -977,6 +1030,9 @@ abstract class Estado implements ActiveRecordInterface
         }
         if (array_key_exists($keys[2], $arr)) {
             $this->setUf($arr[$keys[2]]);
+        }
+        if (array_key_exists($keys[3], $arr)) {
+            $this->setDesabilitado($arr[$keys[3]]);
         }
     }
 
@@ -1027,6 +1083,9 @@ abstract class Estado implements ActiveRecordInterface
         }
         if ($this->isColumnModified(EstadoTableMap::COL_UF)) {
             $criteria->add(EstadoTableMap::COL_UF, $this->uf);
+        }
+        if ($this->isColumnModified(EstadoTableMap::COL_DESABILITADO)) {
+            $criteria->add(EstadoTableMap::COL_DESABILITADO, $this->desabilitado);
         }
 
         return $criteria;
@@ -1116,6 +1175,7 @@ abstract class Estado implements ActiveRecordInterface
     {
         $copyObj->setNome($this->getNome());
         $copyObj->setUf($this->getUf());
+        $copyObj->setDesabilitado($this->getDesabilitado());
 
         if ($deepCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1895,6 +1955,7 @@ abstract class Estado implements ActiveRecordInterface
         $this->id = null;
         $this->nome = null;
         $this->uf = null;
+        $this->desabilitado = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
         $this->resetModified();

@@ -23,10 +23,12 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildCidadeQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     ChildCidadeQuery orderByNome($order = Criteria::ASC) Order by the nome column
  * @method     ChildCidadeQuery orderByEstadoId($order = Criteria::ASC) Order by the estado_id column
+ * @method     ChildCidadeQuery orderByDesabilitado($order = Criteria::ASC) Order by the desabilitado column
  *
  * @method     ChildCidadeQuery groupById() Group by the id column
  * @method     ChildCidadeQuery groupByNome() Group by the nome column
  * @method     ChildCidadeQuery groupByEstadoId() Group by the estado_id column
+ * @method     ChildCidadeQuery groupByDesabilitado() Group by the desabilitado column
  *
  * @method     ChildCidadeQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildCidadeQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -73,7 +75,8 @@ use Propel\Runtime\Exception\PropelException;
  *
  * @method     ChildCidade findOneById(int $id) Return the first ChildCidade filtered by the id column
  * @method     ChildCidade findOneByNome(string $nome) Return the first ChildCidade filtered by the nome column
- * @method     ChildCidade findOneByEstadoId(int $estado_id) Return the first ChildCidade filtered by the estado_id column *
+ * @method     ChildCidade findOneByEstadoId(int $estado_id) Return the first ChildCidade filtered by the estado_id column
+ * @method     ChildCidade findOneByDesabilitado(int $desabilitado) Return the first ChildCidade filtered by the desabilitado column *
 
  * @method     ChildCidade requirePk($key, ConnectionInterface $con = null) Return the ChildCidade by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildCidade requireOne(ConnectionInterface $con = null) Return the first ChildCidade matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -81,11 +84,13 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildCidade requireOneById(int $id) Return the first ChildCidade filtered by the id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildCidade requireOneByNome(string $nome) Return the first ChildCidade filtered by the nome column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildCidade requireOneByEstadoId(int $estado_id) Return the first ChildCidade filtered by the estado_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildCidade requireOneByDesabilitado(int $desabilitado) Return the first ChildCidade filtered by the desabilitado column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildCidade[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildCidade objects based on current ModelCriteria
  * @method     ChildCidade[]|ObjectCollection findById(int $id) Return ChildCidade objects filtered by the id column
  * @method     ChildCidade[]|ObjectCollection findByNome(string $nome) Return ChildCidade objects filtered by the nome column
  * @method     ChildCidade[]|ObjectCollection findByEstadoId(int $estado_id) Return ChildCidade objects filtered by the estado_id column
+ * @method     ChildCidade[]|ObjectCollection findByDesabilitado(int $desabilitado) Return ChildCidade objects filtered by the desabilitado column
  * @method     ChildCidade[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  *
  */
@@ -184,7 +189,7 @@ abstract class CidadeQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id, nome, estado_id FROM cidade WHERE id = :p0';
+        $sql = 'SELECT id, nome, estado_id, desabilitado FROM cidade WHERE id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -381,6 +386,47 @@ abstract class CidadeQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(CidadeTableMap::COL_ESTADO_ID, $estadoId, $comparison);
+    }
+
+    /**
+     * Filter the query on the desabilitado column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByDesabilitado(1234); // WHERE desabilitado = 1234
+     * $query->filterByDesabilitado(array(12, 34)); // WHERE desabilitado IN (12, 34)
+     * $query->filterByDesabilitado(array('min' => 12)); // WHERE desabilitado > 12
+     * </code>
+     *
+     * @param     mixed $desabilitado The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildCidadeQuery The current query, for fluid interface
+     */
+    public function filterByDesabilitado($desabilitado = null, $comparison = null)
+    {
+        if (is_array($desabilitado)) {
+            $useMinMax = false;
+            if (isset($desabilitado['min'])) {
+                $this->addUsingAlias(CidadeTableMap::COL_DESABILITADO, $desabilitado['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($desabilitado['max'])) {
+                $this->addUsingAlias(CidadeTableMap::COL_DESABILITADO, $desabilitado['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(CidadeTableMap::COL_DESABILITADO, $desabilitado, $comparison);
     }
 
     /**

@@ -58,7 +58,7 @@ class TagTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 2;
+    const NUM_COLUMNS = 3;
 
     /**
      * The number of lazy-loaded columns
@@ -68,7 +68,7 @@ class TagTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 2;
+    const NUM_HYDRATE_COLUMNS = 3;
 
     /**
      * the column name for the id field
@@ -79,6 +79,11 @@ class TagTableMap extends TableMap
      * the column name for the tag field
      */
     const COL_TAG = 'tag.tag';
+
+    /**
+     * the column name for the desabilitado field
+     */
+    const COL_DESABILITADO = 'tag.desabilitado';
 
     /**
      * The default string format for model objects of the related table
@@ -92,11 +97,11 @@ class TagTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'Tag', ),
-        self::TYPE_CAMELNAME     => array('id', 'tag', ),
-        self::TYPE_COLNAME       => array(TagTableMap::COL_ID, TagTableMap::COL_TAG, ),
-        self::TYPE_FIELDNAME     => array('id', 'tag', ),
-        self::TYPE_NUM           => array(0, 1, )
+        self::TYPE_PHPNAME       => array('Id', 'Tag', 'Desabilitado', ),
+        self::TYPE_CAMELNAME     => array('id', 'tag', 'desabilitado', ),
+        self::TYPE_COLNAME       => array(TagTableMap::COL_ID, TagTableMap::COL_TAG, TagTableMap::COL_DESABILITADO, ),
+        self::TYPE_FIELDNAME     => array('id', 'tag', 'desabilitado', ),
+        self::TYPE_NUM           => array(0, 1, 2, )
     );
 
     /**
@@ -106,11 +111,11 @@ class TagTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'Tag' => 1, ),
-        self::TYPE_CAMELNAME     => array('id' => 0, 'tag' => 1, ),
-        self::TYPE_COLNAME       => array(TagTableMap::COL_ID => 0, TagTableMap::COL_TAG => 1, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'tag' => 1, ),
-        self::TYPE_NUM           => array(0, 1, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'Tag' => 1, 'Desabilitado' => 2, ),
+        self::TYPE_CAMELNAME     => array('id' => 0, 'tag' => 1, 'desabilitado' => 2, ),
+        self::TYPE_COLNAME       => array(TagTableMap::COL_ID => 0, TagTableMap::COL_TAG => 1, TagTableMap::COL_DESABILITADO => 2, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'tag' => 1, 'desabilitado' => 2, ),
+        self::TYPE_NUM           => array(0, 1, 2, )
     );
 
     /**
@@ -133,6 +138,7 @@ class TagTableMap extends TableMap
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
         $this->addColumn('tag', 'Tag', 'VARCHAR', true, 45, null);
+        $this->addColumn('desabilitado', 'Desabilitado', 'INTEGER', false, null, null);
     } // initialize()
 
     /**
@@ -292,9 +298,11 @@ class TagTableMap extends TableMap
         if (null === $alias) {
             $criteria->addSelectColumn(TagTableMap::COL_ID);
             $criteria->addSelectColumn(TagTableMap::COL_TAG);
+            $criteria->addSelectColumn(TagTableMap::COL_DESABILITADO);
         } else {
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.tag');
+            $criteria->addSelectColumn($alias . '.desabilitado');
         }
     }
 

@@ -58,7 +58,7 @@ class ContatoTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 2;
+    const NUM_COLUMNS = 3;
 
     /**
      * The number of lazy-loaded columns
@@ -68,7 +68,7 @@ class ContatoTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 2;
+    const NUM_HYDRATE_COLUMNS = 3;
 
     /**
      * the column name for the id field
@@ -79,6 +79,11 @@ class ContatoTableMap extends TableMap
      * the column name for the contato field
      */
     const COL_CONTATO = 'contato.contato';
+
+    /**
+     * the column name for the desabilitado field
+     */
+    const COL_DESABILITADO = 'contato.desabilitado';
 
     /**
      * The default string format for model objects of the related table
@@ -92,11 +97,11 @@ class ContatoTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'Contato', ),
-        self::TYPE_CAMELNAME     => array('id', 'contato', ),
-        self::TYPE_COLNAME       => array(ContatoTableMap::COL_ID, ContatoTableMap::COL_CONTATO, ),
-        self::TYPE_FIELDNAME     => array('id', 'contato', ),
-        self::TYPE_NUM           => array(0, 1, )
+        self::TYPE_PHPNAME       => array('Id', 'Contato', 'Desabilitado', ),
+        self::TYPE_CAMELNAME     => array('id', 'contato', 'desabilitado', ),
+        self::TYPE_COLNAME       => array(ContatoTableMap::COL_ID, ContatoTableMap::COL_CONTATO, ContatoTableMap::COL_DESABILITADO, ),
+        self::TYPE_FIELDNAME     => array('id', 'contato', 'desabilitado', ),
+        self::TYPE_NUM           => array(0, 1, 2, )
     );
 
     /**
@@ -106,11 +111,11 @@ class ContatoTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'Contato' => 1, ),
-        self::TYPE_CAMELNAME     => array('id' => 0, 'contato' => 1, ),
-        self::TYPE_COLNAME       => array(ContatoTableMap::COL_ID => 0, ContatoTableMap::COL_CONTATO => 1, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'contato' => 1, ),
-        self::TYPE_NUM           => array(0, 1, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'Contato' => 1, 'Desabilitado' => 2, ),
+        self::TYPE_CAMELNAME     => array('id' => 0, 'contato' => 1, 'desabilitado' => 2, ),
+        self::TYPE_COLNAME       => array(ContatoTableMap::COL_ID => 0, ContatoTableMap::COL_CONTATO => 1, ContatoTableMap::COL_DESABILITADO => 2, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'contato' => 1, 'desabilitado' => 2, ),
+        self::TYPE_NUM           => array(0, 1, 2, )
     );
 
     /**
@@ -133,6 +138,7 @@ class ContatoTableMap extends TableMap
         // columns
         $this->addPrimaryKey('id', 'Id', 'INTEGER', true, null, null);
         $this->addColumn('contato', 'Contato', 'VARCHAR', true, 45, null);
+        $this->addColumn('desabilitado', 'Desabilitado', 'INTEGER', false, null, null);
     } // initialize()
 
     /**
@@ -292,9 +298,11 @@ class ContatoTableMap extends TableMap
         if (null === $alias) {
             $criteria->addSelectColumn(ContatoTableMap::COL_ID);
             $criteria->addSelectColumn(ContatoTableMap::COL_CONTATO);
+            $criteria->addSelectColumn(ContatoTableMap::COL_DESABILITADO);
         } else {
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.contato');
+            $criteria->addSelectColumn($alias . '.desabilitado');
         }
     }
 

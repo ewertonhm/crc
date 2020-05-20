@@ -11,6 +11,7 @@ CREATE TABLE "agendamento"
 (
     "id" serial NOT NULL,
     "agendamento" VARCHAR(45) NOT NULL,
+    "desabilitado" INTEGER,
     PRIMARY KEY ("id")
 );
 
@@ -71,6 +72,7 @@ CREATE TABLE "bairro"
     "id" serial NOT NULL,
     "nome" VARCHAR(60) NOT NULL,
     "cidade_id" INTEGER,
+    "desabilitado" INTEGER,
     PRIMARY KEY ("id")
 );
 
@@ -85,6 +87,7 @@ CREATE TABLE "cidade"
     "id" serial NOT NULL,
     "nome" VARCHAR(45) NOT NULL,
     "estado_id" INTEGER,
+    "desabilitado" INTEGER,
     PRIMARY KEY ("id")
 );
 
@@ -98,6 +101,7 @@ CREATE TABLE "contato"
 (
     "id" serial NOT NULL,
     "contato" VARCHAR(45) NOT NULL,
+    "desabilitado" INTEGER,
     PRIMARY KEY ("id")
 );
 
@@ -111,6 +115,7 @@ CREATE TABLE "contrato"
 (
     "id" serial NOT NULL,
     "contrato" VARCHAR(90) NOT NULL,
+    "desabilitado" INTEGER,
     PRIMARY KEY ("id")
 );
 
@@ -125,6 +130,7 @@ CREATE TABLE "estado"
     "id" serial NOT NULL,
     "nome" VARCHAR(45) NOT NULL,
     "uf" VARCHAR(45) NOT NULL,
+    "desabilitado" INTEGER,
     PRIMARY KEY ("id")
 );
 
@@ -138,6 +144,7 @@ CREATE TABLE "motivo"
 (
     "id" serial NOT NULL,
     "motivo" VARCHAR(60) NOT NULL,
+    "desabilitado" INTEGER,
     PRIMARY KEY ("id")
 );
 
@@ -151,6 +158,7 @@ CREATE TABLE "solicitacao"
 (
     "id" serial NOT NULL,
     "solicitacao" VARCHAR(60),
+    "desabilitado" INTEGER,
     PRIMARY KEY ("id")
 );
 
@@ -164,6 +172,7 @@ CREATE TABLE "tag"
 (
     "id" serial NOT NULL,
     "tag" VARCHAR(45) NOT NULL,
+    "desabilitado" INTEGER,
     PRIMARY KEY ("id")
 );
 
@@ -177,6 +186,7 @@ CREATE TABLE "tipo"
 (
     "id" serial NOT NULL,
     "tipo" VARCHAR(45) NOT NULL,
+    "desabilitado" INTEGER,
     PRIMARY KEY ("id")
 );
 

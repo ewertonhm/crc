@@ -79,6 +79,13 @@ abstract class Motivo implements ActiveRecordInterface
     protected $motivo;
 
     /**
+     * The value for the desabilitado field.
+     *
+     * @var        int
+     */
+    protected $desabilitado;
+
+    /**
      * @var        ObjectCollection|ChildAtendimento[] Collection to store aggregation of ChildAtendimento objects.
      */
     protected $collAtendimentos;
@@ -344,6 +351,16 @@ abstract class Motivo implements ActiveRecordInterface
     }
 
     /**
+     * Get the [desabilitado] column value.
+     *
+     * @return int
+     */
+    public function getDesabilitado()
+    {
+        return $this->desabilitado;
+    }
+
+    /**
      * Set the value of [id] column.
      *
      * @param int $v new value
@@ -382,6 +399,26 @@ abstract class Motivo implements ActiveRecordInterface
 
         return $this;
     } // setMotivo()
+
+    /**
+     * Set the value of [desabilitado] column.
+     *
+     * @param int $v new value
+     * @return $this|\Motivo The current object (for fluent API support)
+     */
+    public function setDesabilitado($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->desabilitado !== $v) {
+            $this->desabilitado = $v;
+            $this->modifiedColumns[MotivoTableMap::COL_DESABILITADO] = true;
+        }
+
+        return $this;
+    } // setDesabilitado()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -424,6 +461,9 @@ abstract class Motivo implements ActiveRecordInterface
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : MotivoTableMap::translateFieldName('Motivo', TableMap::TYPE_PHPNAME, $indexType)];
             $this->motivo = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : MotivoTableMap::translateFieldName('Desabilitado', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->desabilitado = (null !== $col) ? (int) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -432,7 +472,7 @@ abstract class Motivo implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 2; // 2 = MotivoTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 3; // 3 = MotivoTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\Motivo'), 0, $e);
@@ -668,6 +708,9 @@ abstract class Motivo implements ActiveRecordInterface
         if ($this->isColumnModified(MotivoTableMap::COL_MOTIVO)) {
             $modifiedColumns[':p' . $index++]  = 'motivo';
         }
+        if ($this->isColumnModified(MotivoTableMap::COL_DESABILITADO)) {
+            $modifiedColumns[':p' . $index++]  = 'desabilitado';
+        }
 
         $sql = sprintf(
             'INSERT INTO motivo (%s) VALUES (%s)',
@@ -684,6 +727,9 @@ abstract class Motivo implements ActiveRecordInterface
                         break;
                     case 'motivo':
                         $stmt->bindValue($identifier, $this->motivo, PDO::PARAM_STR);
+                        break;
+                    case 'desabilitado':
+                        $stmt->bindValue($identifier, $this->desabilitado, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -746,6 +792,9 @@ abstract class Motivo implements ActiveRecordInterface
             case 1:
                 return $this->getMotivo();
                 break;
+            case 2:
+                return $this->getDesabilitado();
+                break;
             default:
                 return null;
                 break;
@@ -778,6 +827,7 @@ abstract class Motivo implements ActiveRecordInterface
         $result = array(
             $keys[0] => $this->getId(),
             $keys[1] => $this->getMotivo(),
+            $keys[2] => $this->getDesabilitado(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -840,6 +890,9 @@ abstract class Motivo implements ActiveRecordInterface
             case 1:
                 $this->setMotivo($value);
                 break;
+            case 2:
+                $this->setDesabilitado($value);
+                break;
         } // switch()
 
         return $this;
@@ -871,6 +924,9 @@ abstract class Motivo implements ActiveRecordInterface
         }
         if (array_key_exists($keys[1], $arr)) {
             $this->setMotivo($arr[$keys[1]]);
+        }
+        if (array_key_exists($keys[2], $arr)) {
+            $this->setDesabilitado($arr[$keys[2]]);
         }
     }
 
@@ -918,6 +974,9 @@ abstract class Motivo implements ActiveRecordInterface
         }
         if ($this->isColumnModified(MotivoTableMap::COL_MOTIVO)) {
             $criteria->add(MotivoTableMap::COL_MOTIVO, $this->motivo);
+        }
+        if ($this->isColumnModified(MotivoTableMap::COL_DESABILITADO)) {
+            $criteria->add(MotivoTableMap::COL_DESABILITADO, $this->desabilitado);
         }
 
         return $criteria;
@@ -1006,6 +1065,7 @@ abstract class Motivo implements ActiveRecordInterface
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
         $copyObj->setMotivo($this->getMotivo());
+        $copyObj->setDesabilitado($this->getDesabilitado());
 
         if ($deepCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1549,6 +1609,7 @@ abstract class Motivo implements ActiveRecordInterface
     {
         $this->id = null;
         $this->motivo = null;
+        $this->desabilitado = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
         $this->resetModified();

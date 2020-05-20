@@ -22,9 +22,11 @@ use Propel\Runtime\Exception\PropelException;
  *
  * @method     ChildTipoQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     ChildTipoQuery orderByTipo($order = Criteria::ASC) Order by the tipo column
+ * @method     ChildTipoQuery orderByDesabilitado($order = Criteria::ASC) Order by the desabilitado column
  *
  * @method     ChildTipoQuery groupById() Group by the id column
  * @method     ChildTipoQuery groupByTipo() Group by the tipo column
+ * @method     ChildTipoQuery groupByDesabilitado() Group by the desabilitado column
  *
  * @method     ChildTipoQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildTipoQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -50,17 +52,20 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildTipo findOneOrCreate(ConnectionInterface $con = null) Return the first ChildTipo matching the query, or a new ChildTipo object populated from the query conditions when no match is found
  *
  * @method     ChildTipo findOneById(int $id) Return the first ChildTipo filtered by the id column
- * @method     ChildTipo findOneByTipo(string $tipo) Return the first ChildTipo filtered by the tipo column *
+ * @method     ChildTipo findOneByTipo(string $tipo) Return the first ChildTipo filtered by the tipo column
+ * @method     ChildTipo findOneByDesabilitado(int $desabilitado) Return the first ChildTipo filtered by the desabilitado column *
 
  * @method     ChildTipo requirePk($key, ConnectionInterface $con = null) Return the ChildTipo by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildTipo requireOne(ConnectionInterface $con = null) Return the first ChildTipo matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildTipo requireOneById(int $id) Return the first ChildTipo filtered by the id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildTipo requireOneByTipo(string $tipo) Return the first ChildTipo filtered by the tipo column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildTipo requireOneByDesabilitado(int $desabilitado) Return the first ChildTipo filtered by the desabilitado column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildTipo[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildTipo objects based on current ModelCriteria
  * @method     ChildTipo[]|ObjectCollection findById(int $id) Return ChildTipo objects filtered by the id column
  * @method     ChildTipo[]|ObjectCollection findByTipo(string $tipo) Return ChildTipo objects filtered by the tipo column
+ * @method     ChildTipo[]|ObjectCollection findByDesabilitado(int $desabilitado) Return ChildTipo objects filtered by the desabilitado column
  * @method     ChildTipo[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  *
  */
@@ -159,7 +164,7 @@ abstract class TipoQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id, tipo FROM tipo WHERE id = :p0';
+        $sql = 'SELECT id, tipo, desabilitado FROM tipo WHERE id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -313,6 +318,47 @@ abstract class TipoQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(TipoTableMap::COL_TIPO, $tipo, $comparison);
+    }
+
+    /**
+     * Filter the query on the desabilitado column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByDesabilitado(1234); // WHERE desabilitado = 1234
+     * $query->filterByDesabilitado(array(12, 34)); // WHERE desabilitado IN (12, 34)
+     * $query->filterByDesabilitado(array('min' => 12)); // WHERE desabilitado > 12
+     * </code>
+     *
+     * @param     mixed $desabilitado The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildTipoQuery The current query, for fluid interface
+     */
+    public function filterByDesabilitado($desabilitado = null, $comparison = null)
+    {
+        if (is_array($desabilitado)) {
+            $useMinMax = false;
+            if (isset($desabilitado['min'])) {
+                $this->addUsingAlias(TipoTableMap::COL_DESABILITADO, $desabilitado['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($desabilitado['max'])) {
+                $this->addUsingAlias(TipoTableMap::COL_DESABILITADO, $desabilitado['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(TipoTableMap::COL_DESABILITADO, $desabilitado, $comparison);
     }
 
     /**

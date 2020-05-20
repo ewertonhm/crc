@@ -79,6 +79,13 @@ abstract class Tipo implements ActiveRecordInterface
     protected $tipo;
 
     /**
+     * The value for the desabilitado field.
+     *
+     * @var        int
+     */
+    protected $desabilitado;
+
+    /**
      * @var        ObjectCollection|ChildAtendimento[] Collection to store aggregation of ChildAtendimento objects.
      */
     protected $collAtendimentos;
@@ -344,6 +351,16 @@ abstract class Tipo implements ActiveRecordInterface
     }
 
     /**
+     * Get the [desabilitado] column value.
+     *
+     * @return int
+     */
+    public function getDesabilitado()
+    {
+        return $this->desabilitado;
+    }
+
+    /**
      * Set the value of [id] column.
      *
      * @param int $v new value
@@ -382,6 +399,26 @@ abstract class Tipo implements ActiveRecordInterface
 
         return $this;
     } // setTipo()
+
+    /**
+     * Set the value of [desabilitado] column.
+     *
+     * @param int $v new value
+     * @return $this|\Tipo The current object (for fluent API support)
+     */
+    public function setDesabilitado($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->desabilitado !== $v) {
+            $this->desabilitado = $v;
+            $this->modifiedColumns[TipoTableMap::COL_DESABILITADO] = true;
+        }
+
+        return $this;
+    } // setDesabilitado()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -424,6 +461,9 @@ abstract class Tipo implements ActiveRecordInterface
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : TipoTableMap::translateFieldName('Tipo', TableMap::TYPE_PHPNAME, $indexType)];
             $this->tipo = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : TipoTableMap::translateFieldName('Desabilitado', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->desabilitado = (null !== $col) ? (int) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -432,7 +472,7 @@ abstract class Tipo implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 2; // 2 = TipoTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 3; // 3 = TipoTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\Tipo'), 0, $e);
@@ -668,6 +708,9 @@ abstract class Tipo implements ActiveRecordInterface
         if ($this->isColumnModified(TipoTableMap::COL_TIPO)) {
             $modifiedColumns[':p' . $index++]  = 'tipo';
         }
+        if ($this->isColumnModified(TipoTableMap::COL_DESABILITADO)) {
+            $modifiedColumns[':p' . $index++]  = 'desabilitado';
+        }
 
         $sql = sprintf(
             'INSERT INTO tipo (%s) VALUES (%s)',
@@ -684,6 +727,9 @@ abstract class Tipo implements ActiveRecordInterface
                         break;
                     case 'tipo':
                         $stmt->bindValue($identifier, $this->tipo, PDO::PARAM_STR);
+                        break;
+                    case 'desabilitado':
+                        $stmt->bindValue($identifier, $this->desabilitado, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -746,6 +792,9 @@ abstract class Tipo implements ActiveRecordInterface
             case 1:
                 return $this->getTipo();
                 break;
+            case 2:
+                return $this->getDesabilitado();
+                break;
             default:
                 return null;
                 break;
@@ -778,6 +827,7 @@ abstract class Tipo implements ActiveRecordInterface
         $result = array(
             $keys[0] => $this->getId(),
             $keys[1] => $this->getTipo(),
+            $keys[2] => $this->getDesabilitado(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -840,6 +890,9 @@ abstract class Tipo implements ActiveRecordInterface
             case 1:
                 $this->setTipo($value);
                 break;
+            case 2:
+                $this->setDesabilitado($value);
+                break;
         } // switch()
 
         return $this;
@@ -871,6 +924,9 @@ abstract class Tipo implements ActiveRecordInterface
         }
         if (array_key_exists($keys[1], $arr)) {
             $this->setTipo($arr[$keys[1]]);
+        }
+        if (array_key_exists($keys[2], $arr)) {
+            $this->setDesabilitado($arr[$keys[2]]);
         }
     }
 
@@ -918,6 +974,9 @@ abstract class Tipo implements ActiveRecordInterface
         }
         if ($this->isColumnModified(TipoTableMap::COL_TIPO)) {
             $criteria->add(TipoTableMap::COL_TIPO, $this->tipo);
+        }
+        if ($this->isColumnModified(TipoTableMap::COL_DESABILITADO)) {
+            $criteria->add(TipoTableMap::COL_DESABILITADO, $this->desabilitado);
         }
 
         return $criteria;
@@ -1006,6 +1065,7 @@ abstract class Tipo implements ActiveRecordInterface
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
         $copyObj->setTipo($this->getTipo());
+        $copyObj->setDesabilitado($this->getDesabilitado());
 
         if ($deepCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1549,6 +1609,7 @@ abstract class Tipo implements ActiveRecordInterface
     {
         $this->id = null;
         $this->tipo = null;
+        $this->desabilitado = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
         $this->resetModified();

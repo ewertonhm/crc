@@ -22,9 +22,11 @@ use Propel\Runtime\Exception\PropelException;
  *
  * @method     ChildContatoQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     ChildContatoQuery orderByContato($order = Criteria::ASC) Order by the contato column
+ * @method     ChildContatoQuery orderByDesabilitado($order = Criteria::ASC) Order by the desabilitado column
  *
  * @method     ChildContatoQuery groupById() Group by the id column
  * @method     ChildContatoQuery groupByContato() Group by the contato column
+ * @method     ChildContatoQuery groupByDesabilitado() Group by the desabilitado column
  *
  * @method     ChildContatoQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildContatoQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -50,17 +52,20 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildContato findOneOrCreate(ConnectionInterface $con = null) Return the first ChildContato matching the query, or a new ChildContato object populated from the query conditions when no match is found
  *
  * @method     ChildContato findOneById(int $id) Return the first ChildContato filtered by the id column
- * @method     ChildContato findOneByContato(string $contato) Return the first ChildContato filtered by the contato column *
+ * @method     ChildContato findOneByContato(string $contato) Return the first ChildContato filtered by the contato column
+ * @method     ChildContato findOneByDesabilitado(int $desabilitado) Return the first ChildContato filtered by the desabilitado column *
 
  * @method     ChildContato requirePk($key, ConnectionInterface $con = null) Return the ChildContato by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildContato requireOne(ConnectionInterface $con = null) Return the first ChildContato matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildContato requireOneById(int $id) Return the first ChildContato filtered by the id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildContato requireOneByContato(string $contato) Return the first ChildContato filtered by the contato column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildContato requireOneByDesabilitado(int $desabilitado) Return the first ChildContato filtered by the desabilitado column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildContato[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildContato objects based on current ModelCriteria
  * @method     ChildContato[]|ObjectCollection findById(int $id) Return ChildContato objects filtered by the id column
  * @method     ChildContato[]|ObjectCollection findByContato(string $contato) Return ChildContato objects filtered by the contato column
+ * @method     ChildContato[]|ObjectCollection findByDesabilitado(int $desabilitado) Return ChildContato objects filtered by the desabilitado column
  * @method     ChildContato[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  *
  */
@@ -159,7 +164,7 @@ abstract class ContatoQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id, contato FROM contato WHERE id = :p0';
+        $sql = 'SELECT id, contato, desabilitado FROM contato WHERE id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -313,6 +318,47 @@ abstract class ContatoQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(ContatoTableMap::COL_CONTATO, $contato, $comparison);
+    }
+
+    /**
+     * Filter the query on the desabilitado column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByDesabilitado(1234); // WHERE desabilitado = 1234
+     * $query->filterByDesabilitado(array(12, 34)); // WHERE desabilitado IN (12, 34)
+     * $query->filterByDesabilitado(array('min' => 12)); // WHERE desabilitado > 12
+     * </code>
+     *
+     * @param     mixed $desabilitado The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildContatoQuery The current query, for fluid interface
+     */
+    public function filterByDesabilitado($desabilitado = null, $comparison = null)
+    {
+        if (is_array($desabilitado)) {
+            $useMinMax = false;
+            if (isset($desabilitado['min'])) {
+                $this->addUsingAlias(ContatoTableMap::COL_DESABILITADO, $desabilitado['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($desabilitado['max'])) {
+                $this->addUsingAlias(ContatoTableMap::COL_DESABILITADO, $desabilitado['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(ContatoTableMap::COL_DESABILITADO, $desabilitado, $comparison);
     }
 
     /**

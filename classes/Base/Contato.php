@@ -79,6 +79,13 @@ abstract class Contato implements ActiveRecordInterface
     protected $contato;
 
     /**
+     * The value for the desabilitado field.
+     *
+     * @var        int
+     */
+    protected $desabilitado;
+
+    /**
      * @var        ObjectCollection|ChildAtendimento[] Collection to store aggregation of ChildAtendimento objects.
      */
     protected $collAtendimentos;
@@ -344,6 +351,16 @@ abstract class Contato implements ActiveRecordInterface
     }
 
     /**
+     * Get the [desabilitado] column value.
+     *
+     * @return int
+     */
+    public function getDesabilitado()
+    {
+        return $this->desabilitado;
+    }
+
+    /**
      * Set the value of [id] column.
      *
      * @param int $v new value
@@ -382,6 +399,26 @@ abstract class Contato implements ActiveRecordInterface
 
         return $this;
     } // setContato()
+
+    /**
+     * Set the value of [desabilitado] column.
+     *
+     * @param int $v new value
+     * @return $this|\Contato The current object (for fluent API support)
+     */
+    public function setDesabilitado($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->desabilitado !== $v) {
+            $this->desabilitado = $v;
+            $this->modifiedColumns[ContatoTableMap::COL_DESABILITADO] = true;
+        }
+
+        return $this;
+    } // setDesabilitado()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -424,6 +461,9 @@ abstract class Contato implements ActiveRecordInterface
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : ContatoTableMap::translateFieldName('Contato', TableMap::TYPE_PHPNAME, $indexType)];
             $this->contato = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : ContatoTableMap::translateFieldName('Desabilitado', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->desabilitado = (null !== $col) ? (int) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -432,7 +472,7 @@ abstract class Contato implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 2; // 2 = ContatoTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 3; // 3 = ContatoTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\Contato'), 0, $e);
@@ -668,6 +708,9 @@ abstract class Contato implements ActiveRecordInterface
         if ($this->isColumnModified(ContatoTableMap::COL_CONTATO)) {
             $modifiedColumns[':p' . $index++]  = 'contato';
         }
+        if ($this->isColumnModified(ContatoTableMap::COL_DESABILITADO)) {
+            $modifiedColumns[':p' . $index++]  = 'desabilitado';
+        }
 
         $sql = sprintf(
             'INSERT INTO contato (%s) VALUES (%s)',
@@ -684,6 +727,9 @@ abstract class Contato implements ActiveRecordInterface
                         break;
                     case 'contato':
                         $stmt->bindValue($identifier, $this->contato, PDO::PARAM_STR);
+                        break;
+                    case 'desabilitado':
+                        $stmt->bindValue($identifier, $this->desabilitado, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -746,6 +792,9 @@ abstract class Contato implements ActiveRecordInterface
             case 1:
                 return $this->getContato();
                 break;
+            case 2:
+                return $this->getDesabilitado();
+                break;
             default:
                 return null;
                 break;
@@ -778,6 +827,7 @@ abstract class Contato implements ActiveRecordInterface
         $result = array(
             $keys[0] => $this->getId(),
             $keys[1] => $this->getContato(),
+            $keys[2] => $this->getDesabilitado(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -840,6 +890,9 @@ abstract class Contato implements ActiveRecordInterface
             case 1:
                 $this->setContato($value);
                 break;
+            case 2:
+                $this->setDesabilitado($value);
+                break;
         } // switch()
 
         return $this;
@@ -871,6 +924,9 @@ abstract class Contato implements ActiveRecordInterface
         }
         if (array_key_exists($keys[1], $arr)) {
             $this->setContato($arr[$keys[1]]);
+        }
+        if (array_key_exists($keys[2], $arr)) {
+            $this->setDesabilitado($arr[$keys[2]]);
         }
     }
 
@@ -918,6 +974,9 @@ abstract class Contato implements ActiveRecordInterface
         }
         if ($this->isColumnModified(ContatoTableMap::COL_CONTATO)) {
             $criteria->add(ContatoTableMap::COL_CONTATO, $this->contato);
+        }
+        if ($this->isColumnModified(ContatoTableMap::COL_DESABILITADO)) {
+            $criteria->add(ContatoTableMap::COL_DESABILITADO, $this->desabilitado);
         }
 
         return $criteria;
@@ -1006,6 +1065,7 @@ abstract class Contato implements ActiveRecordInterface
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
         $copyObj->setContato($this->getContato());
+        $copyObj->setDesabilitado($this->getDesabilitado());
 
         if ($deepCopy) {
             // important: temporarily setNew(false) because this affects the behavior of
@@ -1549,6 +1609,7 @@ abstract class Contato implements ActiveRecordInterface
     {
         $this->id = null;
         $this->contato = null;
+        $this->desabilitado = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
         $this->resetModified();

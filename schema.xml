@@ -3,6 +3,7 @@
   <table name="agendamento" idMethod="native" phpName="Agendamento">
     <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="agendamento" phpName="Agendamento" type="VARCHAR" size="45" required="true"/>
+    <column name="desabilitado" phpName="Desabilitado" type="INTEGER"/>
   </table>
   <table name="atendente" idMethod="native" phpName="Atendente">
     <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
@@ -69,6 +70,7 @@
     <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="nome" phpName="Nome" type="VARCHAR" size="60" required="true"/>
     <column name="cidade_id" phpName="CidadeId" type="INTEGER"/>
+    <column name="desabilitado" phpName="Desabilitado" type="INTEGER"/>
     <foreign-key foreignTable="cidade" name="bairro_cidade_id_fkey">
       <reference local="cidade_id" foreign="id"/>
     </foreign-key>
@@ -77,6 +79,7 @@
     <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="nome" phpName="Nome" type="VARCHAR" size="45" required="true"/>
     <column name="estado_id" phpName="EstadoId" type="INTEGER"/>
+    <column name="desabilitado" phpName="Desabilitado" type="INTEGER"/>
     <foreign-key foreignTable="estado" name="cidade_estado_id_fkey">
       <reference local="estado_id" foreign="id"/>
     </foreign-key>
@@ -84,30 +87,37 @@
   <table name="contato" idMethod="native" phpName="Contato">
     <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="contato" phpName="Contato" type="VARCHAR" size="45" required="true"/>
+    <column name="desabilitado" phpName="Desabilitado" type="INTEGER"/>
   </table>
   <table name="contrato" idMethod="native" phpName="Contrato">
     <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="contrato" phpName="Contrato" type="VARCHAR" size="90" required="true"/>
+    <column name="desabilitado" phpName="Desabilitado" type="INTEGER"/>
   </table>
   <table name="estado" idMethod="native" phpName="Estado">
     <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="nome" phpName="Nome" type="VARCHAR" size="45" required="true"/>
     <column name="uf" phpName="Uf" type="VARCHAR" size="45" required="true"/>
+    <column name="desabilitado" phpName="Desabilitado" type="INTEGER"/>
   </table>
   <table name="motivo" idMethod="native" phpName="Motivo">
     <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="motivo" phpName="Motivo" type="VARCHAR" size="60" required="true"/>
+    <column name="desabilitado" phpName="Desabilitado" type="INTEGER"/>
   </table>
   <table name="solicitacao" idMethod="native" phpName="Solicitacao">
     <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="solicitacao" phpName="Solicitacao" type="VARCHAR" size="60"/>
+    <column name="desabilitado" phpName="Desabilitado" type="INTEGER"/>
   </table>
   <table name="tag" idMethod="native" phpName="Tag">
     <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="tag" phpName="Tag" type="VARCHAR" size="45" required="true"/>
+    <column name="desabilitado" phpName="Desabilitado" type="INTEGER"/>
   </table>
   <table name="tipo" idMethod="native" phpName="Tipo">
     <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>
     <column name="tipo" phpName="Tipo" type="VARCHAR" size="45" required="true"/>
+    <column name="desabilitado" phpName="Desabilitado" type="INTEGER"/>
   </table>
 </database>
