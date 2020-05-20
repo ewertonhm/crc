@@ -20,7 +20,7 @@
     <link rel="stylesheet" href="css/materialize/materialize.min.css">
     <link rel="stylesheet" href="css/materialize/form.css">
 
-    <title>Planilha do C.R.C - Inserir</title>
+    <title>Planilha do C.R.C - Configurações - Senha</title>
 </head>
 <body>
 
@@ -28,7 +28,7 @@
     <form autocomplete="off" class="col s12" action="save.php" method="post">
         <div class="col s12">
             <div class="row ">
-                <h3 class="green-text">Configurações</h3>
+                <h3 class="green-text">Aterar Senha</h3>
             </div>
             <div class="row">
                 <div class="input-field col s3">
@@ -38,37 +38,24 @@
             </div>
             <div class="row">
                 <div class="input-field col s3">
-                    <select name='lista'>
-                        <option value ='0' <?php if (AtendenteQuery::create()->findOneById($_SESSION['id'])->getLista() == 0) { echo "selected";}?>>Decrescente</option>
-                        <option value ='1' <?php if (AtendenteQuery::create()->findOneById($_SESSION['id'])->getLista() == 1) { echo "selected";}?>>Crescente</option>
-                    </select>
-                    <label for="autocomplete-input">Orientação da lista</label>
+                    <input required type="password" id="password" name="senha" class="atendente">
+                    <label for="autocomplete-input">Senha</label>
                 </div>
             </div>
             <div class="row">
                 <div class="input-field col s3">
-                    <select name='insert'>
-                        <option value ='0' <?php if (AtendenteQuery::create()->findOneById($_SESSION['id'])->getForm() == 0) { echo "selected";}?>>Padrão</option>
-                        <option value ='1' <?php if (AtendenteQuery::create()->findOneById($_SESSION['id'])->getForm() == 1) { echo "selected";}?>>Autocomplete</option>
-                        <option value ='2' <?php if (AtendenteQuery::create()->findOneById($_SESSION['id'])->getForm() == 2) { echo "selected";}?>>Dropdown</option>
-                    </select>
-                    <label for="autocomplete-input">Formato dos campos de inserção</label>
+                    <input required type="password" id="confirm_password" name="csenha" class="atendente">
+                    <label for="autocomplete-input">Confirme a senha</label>
                 </div>
             </div>
             <div class="row">
                 <div class="input-field col s1">
-                    <button class="btn waves-effect waves-light green" type="submit" name="config">Salvar
+                    <button class="btn waves-effect waves-light green" type="submit" name="config-senha">Salvar
                         <i class="material-icons right">send</i>
                     </button>
                 </div>
             </div>
     </form>
-    <div class="row">
-        <div class="col s2">
-            <a href="userconfig-pass.php">Alterar Senha</a>
-        </div>
-    </div>
-
 </div>
 
 
@@ -82,6 +69,20 @@
     $(document).ready(function(){
         $('select').formSelect();
     });
+
+    var password = document.getElementById("password")
+        , confirm_password = document.getElementById("confirm_password");
+
+    function validatePassword(){
+        if(password.value != confirm_password.value) {
+            confirm_password.setCustomValidity("As senhas não são iguais");
+        } else {
+            confirm_password.setCustomValidity('');
+        }
+    }
+
+    password.onchange = validatePassword;
+    confirm_password.onkeyup = validatePassword;
 
 </script>
 </body>

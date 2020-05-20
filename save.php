@@ -90,6 +90,11 @@ if(isset($_POST['action'])){
         }
         $atendente->save();
         header('location:index.php');
+    } elseif(isset($_POST['config-senha'])){
+        $atendente = AtendenteQuery::create()->findOneById($_SESSION['id']);
+        $atendente->setSenha(md5($_POST['senha']));
+        $atendente->save();
+        header('location:index.php');
     } else {
         header('location:index.php');
     }
