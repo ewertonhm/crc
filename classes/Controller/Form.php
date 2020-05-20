@@ -11,10 +11,12 @@ class Form
         $quantidade = count($array);
         $contador = 0;
         foreach ($array as $a) {
-            echo "\"".$a->{$function}()."\": null";
-            if($contador < $quantidade-1){
-                echo ",";
-                $contador++;
+            if ($a->getDesabilitado() != 1){
+                echo "\"".$a->{$function}()."\": null";
+                if($contador < $quantidade-1){
+                    echo ",";
+                    $contador++;
+                }
             }
         }
     }
@@ -25,11 +27,13 @@ class Form
         echo "' required='required'>";
         echo "<option value ='' disabled selected>Selecione</option>";
         foreach ($array as $a){
-            echo "<option value='";
-            echo $a->getId();
-            echo "'>";
-            echo $a->{$function}();
-            echo "</option>";
+            if ($a->getDesabilitado() != 1) {
+                echo "<option value='";
+                echo $a->getId();
+                echo "'>";
+                echo $a->{$function}();
+                echo "</option>";
+            }
         }
         echo '</select>';
     }
