@@ -9,6 +9,7 @@ if(isset($_POST['action'])){
     $u->setNome($_POST['form1']);
     $u->setEstadoId((int)$_POST['form2']);
     $u->save();
+
 }
 
 if(isset($_POST['edit'])){
