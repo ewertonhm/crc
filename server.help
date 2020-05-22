@@ -1,0 +1,7 @@
+Algumas alterações necessárias no servidor
+
+// Configurar data, hora e fuso horário corretamente
+sudo timedatectl set-timezone America/Sao_Paulo
+
+// Aumentar o lifetime da session no php.ini de 20min para 4horas
+session.gc_maxlifetime = 14400
