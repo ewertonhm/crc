@@ -110,7 +110,7 @@
                     <label for="autocomplete-input">Telefone</label>
                 </div>
                 <div class="input-field col s3">
-                    <select name='form3'>
+                    <select name='tag'>
                         <?php
                             $tags = TagQuery::create()->find();
                             foreach ($tags as $tag){

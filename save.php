@@ -97,9 +97,14 @@ if(isset($_POST['action'])){
         header('location:index.php');
     } else if (isset($_POST['conferir'])){
         $atendimento = AtendimentoQuery::create()->findOneById($_SESSION['id']);
-        $atendimento->setTag((int)$_POST['form3']);
-        if(isset($_POST['enabled'])){
+        if(isset($_POST['tag']) != NULL){
+            $atendimento->setTagId((int)$_POST['tag']);
+        }
+        if(isset($_POST['enable'])){
             $atendimento->setConferido(1);
+        }
+        if(isset($_POST['obs'])){
+            $atendimento->setObs($_POST['obs']);
         }
         $atendimento->save();
         header('location:conf-lista.php');
