@@ -164,21 +164,22 @@
                         if($a->getTelefone() != NULL){
                             $telefone = $a->getTelefone();
                         }
-                        if($a->getTagId() != NULL){
-                            if($a->getTagId() == 0){
-                                $tag = "class='red'";
-                            } elseif ($a->getTagId() == 1){
-                                $tag = "class='green'";
-                            } elseif ($a->getTagId() == 2){
-                                $tag = "class='blue'";
-                            } elseif ($a->getTagId() == 3){
-                                $tag = "class='yellow'";
-                            } elseif ($a->getTagId() == 4){
-                                $tag = "class='orange'";
-                            } elseif ($a->getTagId() == 5){
-                                $tag = "class='pink'";
+                        if($a->getTag() != NULL){
+                            if($a->getTag()->getId() != NULL){
+                                if($a->getTag()->getId() == 1){
+                                    $tag = "class='red'";
+                                } elseif ($a->getTagId() == 2){
+                                    $tag = "class='green'";
+                                } elseif ($a->getTagId() == 3){
+                                    $tag = "class='blue'";
+                                } elseif ($a->getTagId() == 4){
+                                    $tag = "class='yellow'";
+                                } elseif ($a->getTagId() == 5){
+                                    $tag = "class='orange'";
+                                } elseif ($a->getTagId() == 6){
+                                    $tag = "class='pink'";
+                                }
                             }
-
                         }
 
                         echo "
