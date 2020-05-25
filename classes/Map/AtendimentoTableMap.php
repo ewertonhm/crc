@@ -58,7 +58,7 @@ class AtendimentoTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 18;
+    const NUM_COLUMNS = 19;
 
     /**
      * The number of lazy-loaded columns
@@ -68,7 +68,7 @@ class AtendimentoTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 18;
+    const NUM_HYDRATE_COLUMNS = 19;
 
     /**
      * the column name for the id field
@@ -156,6 +156,11 @@ class AtendimentoTableMap extends TableMap
     const COL_TAG_ID = 'atendimento.tag_id';
 
     /**
+     * the column name for the obs field
+     */
+    const COL_OBS = 'atendimento.obs';
+
+    /**
      * the column name for the conferido field
      */
     const COL_CONFERIDO = 'atendimento.conferido';
@@ -172,11 +177,11 @@ class AtendimentoTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'Data', 'Hora', 'Cadastro', 'Cliente', 'TipoId', 'BairroId', 'CidadeId', 'EstadoId', 'ContatoId', 'SolicitacaoId', 'MotivoId', 'ContratoId', 'AgendamentoId', 'AtendenteId', 'Telefone', 'TagId', 'Conferido', ),
-        self::TYPE_CAMELNAME     => array('id', 'data', 'hora', 'cadastro', 'cliente', 'tipoId', 'bairroId', 'cidadeId', 'estadoId', 'contatoId', 'solicitacaoId', 'motivoId', 'contratoId', 'agendamentoId', 'atendenteId', 'telefone', 'tagId', 'conferido', ),
-        self::TYPE_COLNAME       => array(AtendimentoTableMap::COL_ID, AtendimentoTableMap::COL_DATA, AtendimentoTableMap::COL_HORA, AtendimentoTableMap::COL_CADASTRO, AtendimentoTableMap::COL_CLIENTE, AtendimentoTableMap::COL_TIPO_ID, AtendimentoTableMap::COL_BAIRRO_ID, AtendimentoTableMap::COL_CIDADE_ID, AtendimentoTableMap::COL_ESTADO_ID, AtendimentoTableMap::COL_CONTATO_ID, AtendimentoTableMap::COL_SOLICITACAO_ID, AtendimentoTableMap::COL_MOTIVO_ID, AtendimentoTableMap::COL_CONTRATO_ID, AtendimentoTableMap::COL_AGENDAMENTO_ID, AtendimentoTableMap::COL_ATENDENTE_ID, AtendimentoTableMap::COL_TELEFONE, AtendimentoTableMap::COL_TAG_ID, AtendimentoTableMap::COL_CONFERIDO, ),
-        self::TYPE_FIELDNAME     => array('id', 'data', 'hora', 'cadastro', 'cliente', 'tipo_id', 'bairro_id', 'cidade_id', 'estado_id', 'contato_id', 'solicitacao_id', 'motivo_id', 'contrato_id', 'agendamento_id', 'atendente_id', 'telefone', 'tag_id', 'conferido', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, )
+        self::TYPE_PHPNAME       => array('Id', 'Data', 'Hora', 'Cadastro', 'Cliente', 'TipoId', 'BairroId', 'CidadeId', 'EstadoId', 'ContatoId', 'SolicitacaoId', 'MotivoId', 'ContratoId', 'AgendamentoId', 'AtendenteId', 'Telefone', 'TagId', 'Obs', 'Conferido', ),
+        self::TYPE_CAMELNAME     => array('id', 'data', 'hora', 'cadastro', 'cliente', 'tipoId', 'bairroId', 'cidadeId', 'estadoId', 'contatoId', 'solicitacaoId', 'motivoId', 'contratoId', 'agendamentoId', 'atendenteId', 'telefone', 'tagId', 'obs', 'conferido', ),
+        self::TYPE_COLNAME       => array(AtendimentoTableMap::COL_ID, AtendimentoTableMap::COL_DATA, AtendimentoTableMap::COL_HORA, AtendimentoTableMap::COL_CADASTRO, AtendimentoTableMap::COL_CLIENTE, AtendimentoTableMap::COL_TIPO_ID, AtendimentoTableMap::COL_BAIRRO_ID, AtendimentoTableMap::COL_CIDADE_ID, AtendimentoTableMap::COL_ESTADO_ID, AtendimentoTableMap::COL_CONTATO_ID, AtendimentoTableMap::COL_SOLICITACAO_ID, AtendimentoTableMap::COL_MOTIVO_ID, AtendimentoTableMap::COL_CONTRATO_ID, AtendimentoTableMap::COL_AGENDAMENTO_ID, AtendimentoTableMap::COL_ATENDENTE_ID, AtendimentoTableMap::COL_TELEFONE, AtendimentoTableMap::COL_TAG_ID, AtendimentoTableMap::COL_OBS, AtendimentoTableMap::COL_CONFERIDO, ),
+        self::TYPE_FIELDNAME     => array('id', 'data', 'hora', 'cadastro', 'cliente', 'tipo_id', 'bairro_id', 'cidade_id', 'estado_id', 'contato_id', 'solicitacao_id', 'motivo_id', 'contrato_id', 'agendamento_id', 'atendente_id', 'telefone', 'tag_id', 'obs', 'conferido', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, )
     );
 
     /**
@@ -186,11 +191,11 @@ class AtendimentoTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'Data' => 1, 'Hora' => 2, 'Cadastro' => 3, 'Cliente' => 4, 'TipoId' => 5, 'BairroId' => 6, 'CidadeId' => 7, 'EstadoId' => 8, 'ContatoId' => 9, 'SolicitacaoId' => 10, 'MotivoId' => 11, 'ContratoId' => 12, 'AgendamentoId' => 13, 'AtendenteId' => 14, 'Telefone' => 15, 'TagId' => 16, 'Conferido' => 17, ),
-        self::TYPE_CAMELNAME     => array('id' => 0, 'data' => 1, 'hora' => 2, 'cadastro' => 3, 'cliente' => 4, 'tipoId' => 5, 'bairroId' => 6, 'cidadeId' => 7, 'estadoId' => 8, 'contatoId' => 9, 'solicitacaoId' => 10, 'motivoId' => 11, 'contratoId' => 12, 'agendamentoId' => 13, 'atendenteId' => 14, 'telefone' => 15, 'tagId' => 16, 'conferido' => 17, ),
-        self::TYPE_COLNAME       => array(AtendimentoTableMap::COL_ID => 0, AtendimentoTableMap::COL_DATA => 1, AtendimentoTableMap::COL_HORA => 2, AtendimentoTableMap::COL_CADASTRO => 3, AtendimentoTableMap::COL_CLIENTE => 4, AtendimentoTableMap::COL_TIPO_ID => 5, AtendimentoTableMap::COL_BAIRRO_ID => 6, AtendimentoTableMap::COL_CIDADE_ID => 7, AtendimentoTableMap::COL_ESTADO_ID => 8, AtendimentoTableMap::COL_CONTATO_ID => 9, AtendimentoTableMap::COL_SOLICITACAO_ID => 10, AtendimentoTableMap::COL_MOTIVO_ID => 11, AtendimentoTableMap::COL_CONTRATO_ID => 12, AtendimentoTableMap::COL_AGENDAMENTO_ID => 13, AtendimentoTableMap::COL_ATENDENTE_ID => 14, AtendimentoTableMap::COL_TELEFONE => 15, AtendimentoTableMap::COL_TAG_ID => 16, AtendimentoTableMap::COL_CONFERIDO => 17, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'data' => 1, 'hora' => 2, 'cadastro' => 3, 'cliente' => 4, 'tipo_id' => 5, 'bairro_id' => 6, 'cidade_id' => 7, 'estado_id' => 8, 'contato_id' => 9, 'solicitacao_id' => 10, 'motivo_id' => 11, 'contrato_id' => 12, 'agendamento_id' => 13, 'atendente_id' => 14, 'telefone' => 15, 'tag_id' => 16, 'conferido' => 17, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'Data' => 1, 'Hora' => 2, 'Cadastro' => 3, 'Cliente' => 4, 'TipoId' => 5, 'BairroId' => 6, 'CidadeId' => 7, 'EstadoId' => 8, 'ContatoId' => 9, 'SolicitacaoId' => 10, 'MotivoId' => 11, 'ContratoId' => 12, 'AgendamentoId' => 13, 'AtendenteId' => 14, 'Telefone' => 15, 'TagId' => 16, 'Obs' => 17, 'Conferido' => 18, ),
+        self::TYPE_CAMELNAME     => array('id' => 0, 'data' => 1, 'hora' => 2, 'cadastro' => 3, 'cliente' => 4, 'tipoId' => 5, 'bairroId' => 6, 'cidadeId' => 7, 'estadoId' => 8, 'contatoId' => 9, 'solicitacaoId' => 10, 'motivoId' => 11, 'contratoId' => 12, 'agendamentoId' => 13, 'atendenteId' => 14, 'telefone' => 15, 'tagId' => 16, 'obs' => 17, 'conferido' => 18, ),
+        self::TYPE_COLNAME       => array(AtendimentoTableMap::COL_ID => 0, AtendimentoTableMap::COL_DATA => 1, AtendimentoTableMap::COL_HORA => 2, AtendimentoTableMap::COL_CADASTRO => 3, AtendimentoTableMap::COL_CLIENTE => 4, AtendimentoTableMap::COL_TIPO_ID => 5, AtendimentoTableMap::COL_BAIRRO_ID => 6, AtendimentoTableMap::COL_CIDADE_ID => 7, AtendimentoTableMap::COL_ESTADO_ID => 8, AtendimentoTableMap::COL_CONTATO_ID => 9, AtendimentoTableMap::COL_SOLICITACAO_ID => 10, AtendimentoTableMap::COL_MOTIVO_ID => 11, AtendimentoTableMap::COL_CONTRATO_ID => 12, AtendimentoTableMap::COL_AGENDAMENTO_ID => 13, AtendimentoTableMap::COL_ATENDENTE_ID => 14, AtendimentoTableMap::COL_TELEFONE => 15, AtendimentoTableMap::COL_TAG_ID => 16, AtendimentoTableMap::COL_OBS => 17, AtendimentoTableMap::COL_CONFERIDO => 18, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'data' => 1, 'hora' => 2, 'cadastro' => 3, 'cliente' => 4, 'tipo_id' => 5, 'bairro_id' => 6, 'cidade_id' => 7, 'estado_id' => 8, 'contato_id' => 9, 'solicitacao_id' => 10, 'motivo_id' => 11, 'contrato_id' => 12, 'agendamento_id' => 13, 'atendente_id' => 14, 'telefone' => 15, 'tag_id' => 16, 'obs' => 17, 'conferido' => 18, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, )
     );
 
     /**
@@ -228,6 +233,7 @@ class AtendimentoTableMap extends TableMap
         $this->addForeignKey('atendente_id', 'AtendenteId', 'INTEGER', 'atendente', 'id', false, null, null);
         $this->addColumn('telefone', 'Telefone', 'VARCHAR', true, 40, null);
         $this->addForeignKey('tag_id', 'TagId', 'INTEGER', 'tag', 'id', false, null, null);
+        $this->addColumn('obs', 'Obs', 'VARCHAR', false, null, null);
         $this->addColumn('conferido', 'Conferido', 'INTEGER', false, null, null);
     } // initialize()
 
@@ -473,6 +479,7 @@ class AtendimentoTableMap extends TableMap
             $criteria->addSelectColumn(AtendimentoTableMap::COL_ATENDENTE_ID);
             $criteria->addSelectColumn(AtendimentoTableMap::COL_TELEFONE);
             $criteria->addSelectColumn(AtendimentoTableMap::COL_TAG_ID);
+            $criteria->addSelectColumn(AtendimentoTableMap::COL_OBS);
             $criteria->addSelectColumn(AtendimentoTableMap::COL_CONFERIDO);
         } else {
             $criteria->addSelectColumn($alias . '.id');
@@ -492,6 +499,7 @@ class AtendimentoTableMap extends TableMap
             $criteria->addSelectColumn($alias . '.atendente_id');
             $criteria->addSelectColumn($alias . '.telefone');
             $criteria->addSelectColumn($alias . '.tag_id');
+            $criteria->addSelectColumn($alias . '.obs');
             $criteria->addSelectColumn($alias . '.conferido');
         }
     }

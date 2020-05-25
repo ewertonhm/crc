@@ -335,5 +335,6 @@ CREATE TABLE atendimento (
     atendente_id INT REFERENCES atendente(id),
     telefone VARCHAR(40) NOT NULL,
     tag_id INT REFERENCES tag(id),
+    obs VARCHAR,
     conferido INT
 );

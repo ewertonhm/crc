@@ -42,7 +42,15 @@
                 <a class="brand-logo center"><img src="img/footerfinal.png" width="45" height="45" class="d-inline-block" alt=""></a>
                 <ul id="nav-mobile" class="right hide-on-med-and-down">
                     <li class="black-text"><a href="userconfig.php"><i class="large material-icons">build</i></a></li>
-                    <li class="black-text"><a href="logout.php"><i class="large material-icons">exit_to_app</i></a></li>
+                    <li class="black-text"><a href="
+                    <?php
+                        if(\controller\User::checkPermission(2)){
+                            echo "dashboard.php";
+                        } else {
+                            echo "logout.php";
+                        }
+                        ?>
+                                                   "><i class="large material-icons">exit_to_app</i></a></li>
                 </ul>
             </div>
         </nav>
@@ -64,7 +72,7 @@
                 <th scope="col">Agendamento</th>
                 <th scope="col">Atendente</th>
                 <th scope="col">Telefone</th>
-                <th scope="col">Conferir</th>
+                <th scope="col">Verificado</th>
             </tr>
             </thead>
             <tbody>

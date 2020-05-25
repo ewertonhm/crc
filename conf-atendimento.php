@@ -26,7 +26,7 @@
 <body>
 
 <div class="row">
-    <form autocomplete="off" name="form1" class="col s12" action="save-bairro.php?id=<?php echo $dados->getId();?>" method="post">
+    <form autocomplete="off" name="form1" class="col s12" action="save.php?id=<?php echo $dados->getId();?>" method="post">
         <div class="col s12">
             <div class="row ">
                 <h3 class="green-text">Pós Atendimento</h3>
@@ -124,10 +124,22 @@
                     </select>
                     <label for="autocomplete-input">Tag</label>
                 </div>
+                <div class="input-field col s3">
+                    <label>
+                        <input type="checkbox" name="enable" class="filled-in" <?php if($dados->getConferido() == 1){ echo "checked='checked'";}  ?>/>
+                        <span>Conferido</span>
+                    </label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s9">
+                    <textarea id="textarea2" class="materialize-textarea" name='obs' data-length="500"></textarea>
+                    <label for="textarea2">Observações</label>
+                </div>
             </div>
             <div class="row">
                 <div class="input-field col s1">
-                    <button class="btn waves-effect waves-light green" type="submit" name="edit">Salvar
+                    <button class="btn waves-effect waves-light green" type="submit" name="conferir">Salvar
                         <i class="material-icons right">send</i>
                     </button>
                 </div>
@@ -146,6 +158,9 @@
 <script type='text/javascript'>
     $(document).ready(function(){
         $('select').formSelect();
+    });
+    $(document).ready(function() {
+        $('input#input_text, textarea#textarea2').characterCounter();
     });
 
 </script>

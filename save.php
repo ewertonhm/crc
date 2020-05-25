@@ -95,7 +95,16 @@ if(isset($_POST['action'])){
         $atendente->setSenha(md5($_POST['senha']));
         $atendente->save();
         header('location:index.php');
-    } else {
+    } else if (isset($_POST['conferir'])){
+        $atendimento = AtendimentoQuery::create()->findOneById($_SESSION['id']);
+        $atendimento->setTag((int)$_POST['form3']);
+        if(isset($_POST['enabled'])){
+            $atendimento->setConferido(1);
+        }
+        $atendimento->save();
+        header('location:conf-lista.php');
+    }
+    else {
         header('location:index.php');
     }
 ?>

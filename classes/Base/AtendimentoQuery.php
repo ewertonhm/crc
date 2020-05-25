@@ -37,6 +37,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildAtendimentoQuery orderByAtendenteId($order = Criteria::ASC) Order by the atendente_id column
  * @method     ChildAtendimentoQuery orderByTelefone($order = Criteria::ASC) Order by the telefone column
  * @method     ChildAtendimentoQuery orderByTagId($order = Criteria::ASC) Order by the tag_id column
+ * @method     ChildAtendimentoQuery orderByObs($order = Criteria::ASC) Order by the obs column
  * @method     ChildAtendimentoQuery orderByConferido($order = Criteria::ASC) Order by the conferido column
  *
  * @method     ChildAtendimentoQuery groupById() Group by the id column
@@ -56,6 +57,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildAtendimentoQuery groupByAtendenteId() Group by the atendente_id column
  * @method     ChildAtendimentoQuery groupByTelefone() Group by the telefone column
  * @method     ChildAtendimentoQuery groupByTagId() Group by the tag_id column
+ * @method     ChildAtendimentoQuery groupByObs() Group by the obs column
  * @method     ChildAtendimentoQuery groupByConferido() Group by the conferido column
  *
  * @method     ChildAtendimentoQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
@@ -198,6 +200,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildAtendimento findOneByAtendenteId(int $atendente_id) Return the first ChildAtendimento filtered by the atendente_id column
  * @method     ChildAtendimento findOneByTelefone(string $telefone) Return the first ChildAtendimento filtered by the telefone column
  * @method     ChildAtendimento findOneByTagId(int $tag_id) Return the first ChildAtendimento filtered by the tag_id column
+ * @method     ChildAtendimento findOneByObs(string $obs) Return the first ChildAtendimento filtered by the obs column
  * @method     ChildAtendimento findOneByConferido(int $conferido) Return the first ChildAtendimento filtered by the conferido column *
 
  * @method     ChildAtendimento requirePk($key, ConnectionInterface $con = null) Return the ChildAtendimento by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -220,6 +223,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildAtendimento requireOneByAtendenteId(int $atendente_id) Return the first ChildAtendimento filtered by the atendente_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildAtendimento requireOneByTelefone(string $telefone) Return the first ChildAtendimento filtered by the telefone column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildAtendimento requireOneByTagId(int $tag_id) Return the first ChildAtendimento filtered by the tag_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildAtendimento requireOneByObs(string $obs) Return the first ChildAtendimento filtered by the obs column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildAtendimento requireOneByConferido(int $conferido) Return the first ChildAtendimento filtered by the conferido column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildAtendimento[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildAtendimento objects based on current ModelCriteria
@@ -240,6 +244,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildAtendimento[]|ObjectCollection findByAtendenteId(int $atendente_id) Return ChildAtendimento objects filtered by the atendente_id column
  * @method     ChildAtendimento[]|ObjectCollection findByTelefone(string $telefone) Return ChildAtendimento objects filtered by the telefone column
  * @method     ChildAtendimento[]|ObjectCollection findByTagId(int $tag_id) Return ChildAtendimento objects filtered by the tag_id column
+ * @method     ChildAtendimento[]|ObjectCollection findByObs(string $obs) Return ChildAtendimento objects filtered by the obs column
  * @method     ChildAtendimento[]|ObjectCollection findByConferido(int $conferido) Return ChildAtendimento objects filtered by the conferido column
  * @method     ChildAtendimento[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  *
@@ -339,7 +344,7 @@ abstract class AtendimentoQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id, data, hora, cadastro, cliente, tipo_id, bairro_id, cidade_id, estado_id, contato_id, solicitacao_id, motivo_id, contrato_id, agendamento_id, atendente_id, telefone, tag_id, conferido FROM atendimento WHERE id = :p0';
+        $sql = 'SELECT id, data, hora, cadastro, cliente, tipo_id, bairro_id, cidade_id, estado_id, contato_id, solicitacao_id, motivo_id, contrato_id, agendamento_id, atendente_id, telefone, tag_id, obs, conferido FROM atendimento WHERE id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -1082,6 +1087,31 @@ abstract class AtendimentoQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(AtendimentoTableMap::COL_TAG_ID, $tagId, $comparison);
+    }
+
+    /**
+     * Filter the query on the obs column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByObs('fooValue');   // WHERE obs = 'fooValue'
+     * $query->filterByObs('%fooValue%', Criteria::LIKE); // WHERE obs LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $obs The value to use as filter.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildAtendimentoQuery The current query, for fluid interface
+     */
+    public function filterByObs($obs = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($obs)) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(AtendimentoTableMap::COL_OBS, $obs, $comparison);
     }
 
     /**

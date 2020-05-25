@@ -32,6 +32,7 @@
     <column name="atendente_id" phpName="AtendenteId" type="INTEGER"/>
     <column name="telefone" phpName="Telefone" type="VARCHAR" size="40" required="true"/>
     <column name="tag_id" phpName="TagId" type="INTEGER"/>
+    <column name="obs" phpName="Obs" type="VARCHAR"/>
     <column name="conferido" phpName="Conferido" type="INTEGER"/>
     <foreign-key foreignTable="agendamento" name="atendimento_agendamento_id_fkey">
       <reference local="agendamento_id" foreign="id"/>
