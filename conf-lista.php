@@ -64,11 +64,13 @@
                 <th scope="col">Agendamento</th>
                 <th scope="col">Atendente</th>
                 <th scope="col">Telefone</th>
+                <th scope="col">Conferir</th>
             </tr>
             </thead>
             <tbody>
                 <?php
                     foreach ($atendimentos as $a){
+                        $id = '';
                         $data = '';
                         $hora = '';
                         $cadastro = '';
@@ -86,6 +88,9 @@
                         $telefone = '';
                         $tag = '';
 
+                        if ($a->getId() != NULL){
+                            $id = $a->getId();
+                        }
                         if($a->getData() != NULL){
                             $data = $a->getData();
                         }
@@ -185,6 +190,7 @@
                                 <td>".$agendamento."</td>
                                 <td>".$atendente."</td>
                                 <td>".$telefone."</td>
+                                <td><a href='conf-atendimento.php?id=".$id."' target='_blank'><i class='small text-white material-icons'>check_box_outline_blank</i></a></td>
                             </tr>
                         ";
                     }
@@ -193,19 +199,6 @@
         </table>
     </div>
     <div class="fixed-action-btn">
-        <a class="btn-floating btn-large green" href="
-        <?php
-        if(AtendenteQuery::create()->findOneById($_SESSION['id'])->getForm() == 0){
-            echo "inserir.php";
-        } elseif(AtendenteQuery::create()->findOneById($_SESSION['id'])->getForm() == 1) {
-            echo "inserir-autocomplete.php";
-        } elseif(AtendenteQuery::create()->findOneById($_SESSION['id'])->getForm() == 2) {
-            echo "inserir-dropdown.php";
-        }
-        ?>
-        ">
-            <i class="large material-icons">add</i>
-        </a>
         <button class="btn-floating btn-large green" onClick="scrollToBottom()"><i class="large material-icons">arrow_downward</i></button>
     </div>
 
