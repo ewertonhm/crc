@@ -111,6 +111,15 @@ CREATE TABLE tag (
     desabilitado INTEGER
 );
 
+INSERT INTO tag (tag) VALUES ('Vermelho');
+INSERT INTO tag (tag) VALUES ('Verde');
+INSERT INTO tag (tag) VALUES ('Azul');
+INSERT INTO tag (tag) VALUES ('Amarelo');
+INSERT INTO tag (tag) VALUES ('Laranjado');
+INSERT INTO tag (tag) VALUES ('Rosa');
+
+
+
 CREATE TABLE solicitacao (
     id SERIAL PRIMARY KEY,
     solicitacao VARCHAR(60),
@@ -325,5 +334,6 @@ CREATE TABLE atendimento (
     agendamento_id INT REFERENCES agendamento(id),
     atendente_id INT REFERENCES atendente(id),
     telefone VARCHAR(40) NOT NULL,
-    tag_id INT REFERENCES tag(id)
+    tag_id INT REFERENCES tag(id),
+    conferido INT
 );
