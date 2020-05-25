@@ -37,6 +37,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildAtendimentoQuery orderByAtendenteId($order = Criteria::ASC) Order by the atendente_id column
  * @method     ChildAtendimentoQuery orderByTelefone($order = Criteria::ASC) Order by the telefone column
  * @method     ChildAtendimentoQuery orderByTagId($order = Criteria::ASC) Order by the tag_id column
+ * @method     ChildAtendimentoQuery orderByConferido($order = Criteria::ASC) Order by the conferido column
  *
  * @method     ChildAtendimentoQuery groupById() Group by the id column
  * @method     ChildAtendimentoQuery groupByData() Group by the data column
@@ -55,6 +56,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildAtendimentoQuery groupByAtendenteId() Group by the atendente_id column
  * @method     ChildAtendimentoQuery groupByTelefone() Group by the telefone column
  * @method     ChildAtendimentoQuery groupByTagId() Group by the tag_id column
+ * @method     ChildAtendimentoQuery groupByConferido() Group by the conferido column
  *
  * @method     ChildAtendimentoQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildAtendimentoQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -195,7 +197,8 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildAtendimento findOneByAgendamentoId(int $agendamento_id) Return the first ChildAtendimento filtered by the agendamento_id column
  * @method     ChildAtendimento findOneByAtendenteId(int $atendente_id) Return the first ChildAtendimento filtered by the atendente_id column
  * @method     ChildAtendimento findOneByTelefone(string $telefone) Return the first ChildAtendimento filtered by the telefone column
- * @method     ChildAtendimento findOneByTagId(int $tag_id) Return the first ChildAtendimento filtered by the tag_id column *
+ * @method     ChildAtendimento findOneByTagId(int $tag_id) Return the first ChildAtendimento filtered by the tag_id column
+ * @method     ChildAtendimento findOneByConferido(int $conferido) Return the first ChildAtendimento filtered by the conferido column *
 
  * @method     ChildAtendimento requirePk($key, ConnectionInterface $con = null) Return the ChildAtendimento by primary key and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildAtendimento requireOne(ConnectionInterface $con = null) Return the first ChildAtendimento matching the query and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
@@ -217,6 +220,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildAtendimento requireOneByAtendenteId(int $atendente_id) Return the first ChildAtendimento filtered by the atendente_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildAtendimento requireOneByTelefone(string $telefone) Return the first ChildAtendimento filtered by the telefone column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  * @method     ChildAtendimento requireOneByTagId(int $tag_id) Return the first ChildAtendimento filtered by the tag_id column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
+ * @method     ChildAtendimento requireOneByConferido(int $conferido) Return the first ChildAtendimento filtered by the conferido column and throws \Propel\Runtime\Exception\EntityNotFoundException when not found
  *
  * @method     ChildAtendimento[]|ObjectCollection find(ConnectionInterface $con = null) Return ChildAtendimento objects based on current ModelCriteria
  * @method     ChildAtendimento[]|ObjectCollection findById(int $id) Return ChildAtendimento objects filtered by the id column
@@ -236,6 +240,7 @@ use Propel\Runtime\Exception\PropelException;
  * @method     ChildAtendimento[]|ObjectCollection findByAtendenteId(int $atendente_id) Return ChildAtendimento objects filtered by the atendente_id column
  * @method     ChildAtendimento[]|ObjectCollection findByTelefone(string $telefone) Return ChildAtendimento objects filtered by the telefone column
  * @method     ChildAtendimento[]|ObjectCollection findByTagId(int $tag_id) Return ChildAtendimento objects filtered by the tag_id column
+ * @method     ChildAtendimento[]|ObjectCollection findByConferido(int $conferido) Return ChildAtendimento objects filtered by the conferido column
  * @method     ChildAtendimento[]|\Propel\Runtime\Util\PropelModelPager paginate($page = 1, $maxPerPage = 10, ConnectionInterface $con = null) Issue a SELECT query based on the current ModelCriteria and uses a page and a maximum number of results per page to compute an offset and a limit
  *
  */
@@ -334,7 +339,7 @@ abstract class AtendimentoQuery extends ModelCriteria
      */
     protected function findPkSimple($key, ConnectionInterface $con)
     {
-        $sql = 'SELECT id, data, hora, cadastro, cliente, tipo_id, bairro_id, cidade_id, estado_id, contato_id, solicitacao_id, motivo_id, contrato_id, agendamento_id, atendente_id, telefone, tag_id FROM atendimento WHERE id = :p0';
+        $sql = 'SELECT id, data, hora, cadastro, cliente, tipo_id, bairro_id, cidade_id, estado_id, contato_id, solicitacao_id, motivo_id, contrato_id, agendamento_id, atendente_id, telefone, tag_id, conferido FROM atendimento WHERE id = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -1077,6 +1082,47 @@ abstract class AtendimentoQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(AtendimentoTableMap::COL_TAG_ID, $tagId, $comparison);
+    }
+
+    /**
+     * Filter the query on the conferido column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByConferido(1234); // WHERE conferido = 1234
+     * $query->filterByConferido(array(12, 34)); // WHERE conferido IN (12, 34)
+     * $query->filterByConferido(array('min' => 12)); // WHERE conferido > 12
+     * </code>
+     *
+     * @param     mixed $conferido The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return $this|ChildAtendimentoQuery The current query, for fluid interface
+     */
+    public function filterByConferido($conferido = null, $comparison = null)
+    {
+        if (is_array($conferido)) {
+            $useMinMax = false;
+            if (isset($conferido['min'])) {
+                $this->addUsingAlias(AtendimentoTableMap::COL_CONFERIDO, $conferido['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($conferido['max'])) {
+                $this->addUsingAlias(AtendimentoTableMap::COL_CONFERIDO, $conferido['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(AtendimentoTableMap::COL_CONFERIDO, $conferido, $comparison);
     }
 
     /**

@@ -201,6 +201,13 @@ abstract class Atendimento implements ActiveRecordInterface
     protected $tag_id;
 
     /**
+     * The value for the conferido field.
+     *
+     * @var        int
+     */
+    protected $conferido;
+
+    /**
      * @var        ChildAgendamento
      */
     protected $aAgendamento;
@@ -659,6 +666,16 @@ abstract class Atendimento implements ActiveRecordInterface
     }
 
     /**
+     * Get the [conferido] column value.
+     *
+     * @return int
+     */
+    public function getConferido()
+    {
+        return $this->conferido;
+    }
+
+    /**
      * Set the value of [id] column.
      *
      * @param int $v new value
@@ -1043,6 +1060,26 @@ abstract class Atendimento implements ActiveRecordInterface
     } // setTagId()
 
     /**
+     * Set the value of [conferido] column.
+     *
+     * @param int $v new value
+     * @return $this|\Atendimento The current object (for fluent API support)
+     */
+    public function setConferido($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->conferido !== $v) {
+            $this->conferido = $v;
+            $this->modifiedColumns[AtendimentoTableMap::COL_CONFERIDO] = true;
+        }
+
+        return $this;
+    } // setConferido()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -1128,6 +1165,9 @@ abstract class Atendimento implements ActiveRecordInterface
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 16 + $startcol : AtendimentoTableMap::translateFieldName('TagId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->tag_id = (null !== $col) ? (int) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 17 + $startcol : AtendimentoTableMap::translateFieldName('Conferido', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->conferido = (null !== $col) ? (int) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -1136,7 +1176,7 @@ abstract class Atendimento implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 17; // 17 = AtendimentoTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 18; // 18 = AtendimentoTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException(sprintf('Error populating %s object', '\\Atendimento'), 0, $e);
@@ -1523,6 +1563,9 @@ abstract class Atendimento implements ActiveRecordInterface
         if ($this->isColumnModified(AtendimentoTableMap::COL_TAG_ID)) {
             $modifiedColumns[':p' . $index++]  = 'tag_id';
         }
+        if ($this->isColumnModified(AtendimentoTableMap::COL_CONFERIDO)) {
+            $modifiedColumns[':p' . $index++]  = 'conferido';
+        }
 
         $sql = sprintf(
             'INSERT INTO atendimento (%s) VALUES (%s)',
@@ -1584,6 +1627,9 @@ abstract class Atendimento implements ActiveRecordInterface
                         break;
                     case 'tag_id':
                         $stmt->bindValue($identifier, $this->tag_id, PDO::PARAM_INT);
+                        break;
+                    case 'conferido':
+                        $stmt->bindValue($identifier, $this->conferido, PDO::PARAM_INT);
                         break;
                 }
             }
@@ -1691,6 +1737,9 @@ abstract class Atendimento implements ActiveRecordInterface
             case 16:
                 return $this->getTagId();
                 break;
+            case 17:
+                return $this->getConferido();
+                break;
             default:
                 return null;
                 break;
@@ -1738,6 +1787,7 @@ abstract class Atendimento implements ActiveRecordInterface
             $keys[14] => $this->getAtendenteId(),
             $keys[15] => $this->getTelefone(),
             $keys[16] => $this->getTagId(),
+            $keys[17] => $this->getConferido(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1995,6 +2045,9 @@ abstract class Atendimento implements ActiveRecordInterface
             case 16:
                 $this->setTagId($value);
                 break;
+            case 17:
+                $this->setConferido($value);
+                break;
         } // switch()
 
         return $this;
@@ -2071,6 +2124,9 @@ abstract class Atendimento implements ActiveRecordInterface
         }
         if (array_key_exists($keys[16], $arr)) {
             $this->setTagId($arr[$keys[16]]);
+        }
+        if (array_key_exists($keys[17], $arr)) {
+            $this->setConferido($arr[$keys[17]]);
         }
     }
 
@@ -2163,6 +2219,9 @@ abstract class Atendimento implements ActiveRecordInterface
         }
         if ($this->isColumnModified(AtendimentoTableMap::COL_TAG_ID)) {
             $criteria->add(AtendimentoTableMap::COL_TAG_ID, $this->tag_id);
+        }
+        if ($this->isColumnModified(AtendimentoTableMap::COL_CONFERIDO)) {
+            $criteria->add(AtendimentoTableMap::COL_CONFERIDO, $this->conferido);
         }
 
         return $criteria;
@@ -2266,6 +2325,7 @@ abstract class Atendimento implements ActiveRecordInterface
         $copyObj->setAtendenteId($this->getAtendenteId());
         $copyObj->setTelefone($this->getTelefone());
         $copyObj->setTagId($this->getTagId());
+        $copyObj->setConferido($this->getConferido());
         if ($makeNew) {
             $copyObj->setNew(true);
             $copyObj->setId(NULL); // this is a auto-increment column, so set to default value
@@ -2912,6 +2972,7 @@ abstract class Atendimento implements ActiveRecordInterface
         $this->atendente_id = null;
         $this->telefone = null;
         $this->tag_id = null;
+        $this->conferido = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
         $this->resetModified();

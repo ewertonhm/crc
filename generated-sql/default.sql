@@ -58,6 +58,7 @@ CREATE TABLE "atendimento"
     "atendente_id" INTEGER,
     "telefone" VARCHAR(40) NOT NULL,
     "tag_id" INTEGER,
+    "conferido" INTEGER,
     PRIMARY KEY ("id")
 );
 
