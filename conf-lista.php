@@ -52,11 +52,13 @@
                         ?>
                                                    "><i class="large material-icons">exit_to_app</i></a></li>
                 </ul>
+                <form action="" method="get">
+                    Periodo:
+                    <input type="month" class="datepicker">
+                    <input type="submit" name="filtar" value="filtrar">
+                </form>
             </div>
         </nav>
-        <form action="" method="get">
-            <input type="text" class="datepicker">
-        </form>
         <table id="lista" class="table table-hover table-striped table-sm table-dark">
             <thead>
             <tr>
@@ -234,6 +236,14 @@
     </div> -->
 </div>
 
+<!-- jQuery first, then Popper.js, then Bootstrap JS, then Materialize -->
+<script src="js/jquery-3.4.1.slim.min.js"></script>
+<script src="js/popper.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/materialize.min.js"></script>
+<script src="js/jquery-3.5.1.min.js"></script>
+
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         var elems = document.querySelectorAll('.fixed-action-btn');
@@ -250,13 +260,10 @@
         $('html,body').animate({scrollTop: document.body.scrollHeight},"fast");
     }
 
-
+    $(document).ready(function(){
+        $('.datepicker').datepicker();
+    });
 </script>
-<!-- jQuery first, then Popper.js, then Bootstrap JS, then Materialize -->
-<script src="js/jquery-3.4.1.slim.min.js"></script>
-<script src="js/popper.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script src="js/materialize.min.js"></script>
-<script src="js/jquery-3.5.1.min.js"></script>
+
 </body>
 </html>
