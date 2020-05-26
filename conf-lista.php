@@ -54,6 +54,9 @@
                 </ul>
             </div>
         </nav>
+        <form action="" method="get">
+            <input type="text" class="datepicker">
+        </form>
         <table id="lista" class="table table-hover table-striped table-sm table-dark">
             <thead>
             <tr>
