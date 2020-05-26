@@ -26,10 +26,21 @@
     <link rel="icon" href="img/footerfinal.png" sizes="16x16 32x32" type="image/png">
     <?php
         $atendimentos = '';
-        if(AtendenteQuery::create()->findOneById($_SESSION['id'])->getLista() == 1){
-            $atendimentos = AtendimentoQuery::create()->orderByData('desc')->orderByHora('desc')->orderById('desc')->where('atendimento.data like ?', \Carbon\Carbon::parse(\Carbon\Carbon::now()->toDateTimeString())->isoFormat('%MM/YYYY'))->find();
+        $data = '';
+        if(isset($_GET['periodo'])){
+            $mes = substr($_GET['periodo'], -2);
+            $ano = substr($_GET['periodo'], 0, -3);
+            $periodo = "%".$mes."/".$ano;
+            $periodoValue = $_GET['periodo'];
         } else {
-            $atendimentos = AtendimentoQuery::create()->orderByData()->orderByHora()->orderById()->where('atendimento.data like ?', \Carbon\Carbon::parse(\Carbon\Carbon::now()->toDateTimeString())->isoFormat('%MM/YYYY'))->find();
+            $periodo =  \Carbon\Carbon::parse(\Carbon\Carbon::now()->toDateTimeString())->isoFormat('%MM/YYYY');
+            $periodoValue = \Carbon\Carbon::parse(\Carbon\Carbon::now()->toDateTimeString())->isoFormat('YYYY-MM');
+        }
+
+        if(AtendenteQuery::create()->findOneById($_SESSION['id'])->getLista() == 1){
+            $atendimentos = AtendimentoQuery::create()->orderByData('desc')->orderByHora('desc')->orderById('desc')->where('atendimento.data like ?',$periodo)->find();
+        } else {
+            $atendimentos = AtendimentoQuery::create()->orderByData()->orderByHora()->orderById()->where('atendimento.data like ?',$periodo)->find();
         }
     ?>
 
@@ -53,9 +64,12 @@
                                                    "><i class="large material-icons">exit_to_app</i></a></li>
                 </ul>
                 <form action="" method="get">
-                    Periodo:
-                    <input type="month" class="datepicker">
-                    <input type="submit" name="filtar" value="filtrar">
+                    <div class="col">
+                        Período:
+                        <input type="month" name="periodo" class="datepicker" pattern="[0-9]{4}-[0-9]{2}" value="<?php echo $periodoValue;?>">
+                        <input type="submit" value="filtrar">
+                    </div>
+
                 </form>
             </div>
         </nav>
