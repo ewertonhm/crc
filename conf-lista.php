@@ -95,6 +95,7 @@
                         $atendente = '';
                         $telefone = '';
                         $tag = '';
+                        $verificado = '';
 
                         if ($a->getId() != NULL){
                             $id = $a->getId();
@@ -166,24 +167,31 @@
                         }
                         if($a->getTag() != NULL){
                             if($a->getTag()->getId() != NULL){
-                                if($a->getTag()->getId() == 1){
-                                    $tag = "class='red'";
-                                } elseif ($a->getTagId() == 2){
+                                if($a->getTag()->getTag() == 'Padrão'){
+                                    $tag = "class=''";
+                                } elseif ($a->getTag()->getTag() == 'Verde'){
                                     $tag = "class='green'";
-                                } elseif ($a->getTagId() == 3){
+                                } elseif ($a->getTag()->getTag() == 'Azul'){
                                     $tag = "class='blue'";
-                                } elseif ($a->getTagId() == 4){
+                                } elseif ($a->getTag()->getTag() == 'Amarelo'){
                                     $tag = "class='yellow'";
-                                } elseif ($a->getTagId() == 5){
+                                } elseif ($a->getTag()->getTag() == 'Laranjado'){
                                     $tag = "class='orange'";
-                                } elseif ($a->getTagId() == 6){
+                                } elseif ($a->getTag()->getTag() == 'Rosa'){
                                     $tag = "class='pink'";
+                                } elseif ($a->getTag()->getTag() == 'Vermelho'){
+                                    $tag = "class='red'";
                                 }
                             }
                         }
+                        if($a->getConferido() == 1){
+                            $verificado = 'check_box';
+                        } else {
+                            $verificado = 'check_box_outline_blank';
+                        }
 
                         echo "
-                            <tr".$tag.">
+                            <tr ".$tag.">
                                 <td>".$data."</td>
                                 <td>".$hora."</td>
                                 <td>".$cadastro."</td>
@@ -199,7 +207,7 @@
                                 <td>".$agendamento."</td>
                                 <td>".$atendente."</td>
                                 <td>".$telefone."</td>
-                                <td><a href='conf-atendimento.php?id=".$id."' target='_blank'><i class='small text-white material-icons'>check_box_outline_blank</i></a></td>
+                                <td><a href='conf-atendimento.php?id=".$id."' target='_blank'><i class='small text-white material-icons'>".$verificado."</i></a></td>
                             </tr>
                         ";
                     }

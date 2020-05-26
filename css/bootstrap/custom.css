@@ -12,6 +12,9 @@ th     { background:#00c853; }
     padding-right:0px !important;
     padding-left:0px !important;
 }
+body {
+    font-size: 95% !important;
+}
 
 /* Botão pesquisar e Mais Botões
 .btnPesquisar, .btnMaisBotoes{

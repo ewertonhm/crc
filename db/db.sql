@@ -111,6 +111,7 @@ CREATE TABLE tag (
     desabilitado INTEGER
 );
 
+INSERT INTO tag (tag) VALUES ('Padrão');
 INSERT INTO tag (tag) VALUES ('Vermelho');
 INSERT INTO tag (tag) VALUES ('Verde');
 INSERT INTO tag (tag) VALUES ('Azul');

@@ -96,7 +96,7 @@ if(isset($_POST['action'])){
         $atendente->save();
         header('location:index.php');
     } else if (isset($_POST['conferir'])){
-        $atendimento = AtendimentoQuery::create()->findOneById($_SESSION['id']);
+        $atendimento = AtendimentoQuery::create()->findOneById((int)$_GET['id']);
         if(isset($_POST['tag']) != NULL){
             $atendimento->setTagId((int)$_POST['tag']);
         }
@@ -106,6 +106,8 @@ if(isset($_POST['action'])){
         if(isset($_POST['obs'])){
             $atendimento->setObs($_POST['obs']);
         }
+        $test = (int)$_GET['id'];
+        var_dump($atendimento);
         $atendimento->save();
         header('location:conf-lista.php');
     }

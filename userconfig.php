@@ -1,4 +1,5 @@
 <?php
+//TODO: font size changer
     require_once 'config.php';
     if(!\controller\User::checkPermission(0)){
         header('location:warning.php');

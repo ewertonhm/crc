@@ -115,8 +115,10 @@
                             $tags = TagQuery::create()->find();
                             foreach ($tags as $tag){
                                 echo "<option value ='".$tag->getId()."'";
-                                if($dados->getTag() == $tag->getId()){
-                                    echo "selected";
+                                if($dados->getTag() != null){
+                                    if($dados->getTag()->getId() == $tag->getId()){
+                                        echo "selected";
+                                    }
                                 }
                                 echo ">".$tag->getTag()."</option>";
                             }
@@ -133,7 +135,7 @@
             </div>
             <div class="row">
                 <div class="input-field col s9">
-                    <textarea id="textarea2" class="materialize-textarea" name='obs' data-length="500"></textarea>
+                    <textarea id="textarea2" class="materialize-textarea" name='obs' data-length="500"><?php if($dados->getObs() != NULL){echo $dados->getObs();}?></textarea>
                     <label for="textarea2">Observações</label>
                 </div>
             </div>
