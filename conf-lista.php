@@ -63,13 +63,15 @@
                         ?>
                                                    "><i class="large material-icons">exit_to_app</i></a></li>
                 </ul>
+
+            </div>
+            <div class="right">
                 <form action="" method="get">
                     <div class="col">
                         Período:
                         <input type="month" name="periodo" class="datepicker" pattern="[0-9]{4}-[0-9]{2}" value="<?php echo $periodoValue;?>">
                         <input type="submit" value="filtrar">
                     </div>
-
                 </form>
             </div>
         </nav>

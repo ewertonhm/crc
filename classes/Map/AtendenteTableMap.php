@@ -58,7 +58,7 @@ class AtendenteTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 7;
+    const NUM_COLUMNS = 9;
 
     /**
      * The number of lazy-loaded columns
@@ -68,7 +68,7 @@ class AtendenteTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 7;
+    const NUM_HYDRATE_COLUMNS = 9;
 
     /**
      * the column name for the id field
@@ -106,6 +106,16 @@ class AtendenteTableMap extends TableMap
     const COL_FORM = 'atendente.form';
 
     /**
+     * the column name for the tentativas field
+     */
+    const COL_TENTATIVAS = 'atendente.tentativas';
+
+    /**
+     * the column name for the desabilitado field
+     */
+    const COL_DESABILITADO = 'atendente.desabilitado';
+
+    /**
      * The default string format for model objects of the related table
      */
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -117,11 +127,11 @@ class AtendenteTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'Nome', 'Login', 'Senha', 'Permissao', 'Lista', 'Form', ),
-        self::TYPE_CAMELNAME     => array('id', 'nome', 'login', 'senha', 'permissao', 'lista', 'form', ),
-        self::TYPE_COLNAME       => array(AtendenteTableMap::COL_ID, AtendenteTableMap::COL_NOME, AtendenteTableMap::COL_LOGIN, AtendenteTableMap::COL_SENHA, AtendenteTableMap::COL_PERMISSAO, AtendenteTableMap::COL_LISTA, AtendenteTableMap::COL_FORM, ),
-        self::TYPE_FIELDNAME     => array('id', 'nome', 'login', 'senha', 'permissao', 'lista', 'form', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, )
+        self::TYPE_PHPNAME       => array('Id', 'Nome', 'Login', 'Senha', 'Permissao', 'Lista', 'Form', 'Tentativas', 'Desabilitado', ),
+        self::TYPE_CAMELNAME     => array('id', 'nome', 'login', 'senha', 'permissao', 'lista', 'form', 'tentativas', 'desabilitado', ),
+        self::TYPE_COLNAME       => array(AtendenteTableMap::COL_ID, AtendenteTableMap::COL_NOME, AtendenteTableMap::COL_LOGIN, AtendenteTableMap::COL_SENHA, AtendenteTableMap::COL_PERMISSAO, AtendenteTableMap::COL_LISTA, AtendenteTableMap::COL_FORM, AtendenteTableMap::COL_TENTATIVAS, AtendenteTableMap::COL_DESABILITADO, ),
+        self::TYPE_FIELDNAME     => array('id', 'nome', 'login', 'senha', 'permissao', 'lista', 'form', 'tentativas', 'desabilitado', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, )
     );
 
     /**
@@ -131,11 +141,11 @@ class AtendenteTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'Nome' => 1, 'Login' => 2, 'Senha' => 3, 'Permissao' => 4, 'Lista' => 5, 'Form' => 6, ),
-        self::TYPE_CAMELNAME     => array('id' => 0, 'nome' => 1, 'login' => 2, 'senha' => 3, 'permissao' => 4, 'lista' => 5, 'form' => 6, ),
-        self::TYPE_COLNAME       => array(AtendenteTableMap::COL_ID => 0, AtendenteTableMap::COL_NOME => 1, AtendenteTableMap::COL_LOGIN => 2, AtendenteTableMap::COL_SENHA => 3, AtendenteTableMap::COL_PERMISSAO => 4, AtendenteTableMap::COL_LISTA => 5, AtendenteTableMap::COL_FORM => 6, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'nome' => 1, 'login' => 2, 'senha' => 3, 'permissao' => 4, 'lista' => 5, 'form' => 6, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'Nome' => 1, 'Login' => 2, 'Senha' => 3, 'Permissao' => 4, 'Lista' => 5, 'Form' => 6, 'Tentativas' => 7, 'Desabilitado' => 8, ),
+        self::TYPE_CAMELNAME     => array('id' => 0, 'nome' => 1, 'login' => 2, 'senha' => 3, 'permissao' => 4, 'lista' => 5, 'form' => 6, 'tentativas' => 7, 'desabilitado' => 8, ),
+        self::TYPE_COLNAME       => array(AtendenteTableMap::COL_ID => 0, AtendenteTableMap::COL_NOME => 1, AtendenteTableMap::COL_LOGIN => 2, AtendenteTableMap::COL_SENHA => 3, AtendenteTableMap::COL_PERMISSAO => 4, AtendenteTableMap::COL_LISTA => 5, AtendenteTableMap::COL_FORM => 6, AtendenteTableMap::COL_TENTATIVAS => 7, AtendenteTableMap::COL_DESABILITADO => 8, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'nome' => 1, 'login' => 2, 'senha' => 3, 'permissao' => 4, 'lista' => 5, 'form' => 6, 'tentativas' => 7, 'desabilitado' => 8, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, )
     );
 
     /**
@@ -163,6 +173,8 @@ class AtendenteTableMap extends TableMap
         $this->addColumn('permissao', 'Permissao', 'INTEGER', false, null, null);
         $this->addColumn('lista', 'Lista', 'INTEGER', false, null, null);
         $this->addColumn('form', 'Form', 'INTEGER', false, null, null);
+        $this->addColumn('tentativas', 'Tentativas', 'INTEGER', false, null, null);
+        $this->addColumn('desabilitado', 'Desabilitado', 'INTEGER', false, null, null);
     } // initialize()
 
     /**
@@ -327,6 +339,8 @@ class AtendenteTableMap extends TableMap
             $criteria->addSelectColumn(AtendenteTableMap::COL_PERMISSAO);
             $criteria->addSelectColumn(AtendenteTableMap::COL_LISTA);
             $criteria->addSelectColumn(AtendenteTableMap::COL_FORM);
+            $criteria->addSelectColumn(AtendenteTableMap::COL_TENTATIVAS);
+            $criteria->addSelectColumn(AtendenteTableMap::COL_DESABILITADO);
         } else {
             $criteria->addSelectColumn($alias . '.id');
             $criteria->addSelectColumn($alias . '.nome');
@@ -335,6 +349,8 @@ class AtendenteTableMap extends TableMap
             $criteria->addSelectColumn($alias . '.permissao');
             $criteria->addSelectColumn($alias . '.lista');
             $criteria->addSelectColumn($alias . '.form');
+            $criteria->addSelectColumn($alias . '.tentativas');
+            $criteria->addSelectColumn($alias . '.desabilitado');
         }
     }
 

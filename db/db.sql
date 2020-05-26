@@ -6,7 +6,9 @@ CREATE TABLE atendente (
     senha VARCHAR(32) NOT NULL,
     permissao INTEGER,
     lista INTEGER,
-    form INTEGER
+    form INTEGER,
+    tentativas INTEGER,
+    desabilitado INTEGER
 );
 
 

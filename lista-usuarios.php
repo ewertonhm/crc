@@ -40,6 +40,7 @@
         <table id="lista" class="table table-hover table-striped table-dark">
             <thead>
             <tr>
+                <th scope="col">Ativo</th>
                 <th scope="col">Id</th>
                 <th scope="col">Nome</th>
                 <th scope="col">Email</th>
@@ -56,6 +57,7 @@
                         $nome = '';
                         $email = '';
                         $permissao = '';
+                        $ativo = '';
 
                         if($u->getId() != NULL){
                             $id = $u->getId();
@@ -77,9 +79,14 @@
                         } else {
                             $permissao = 'Atendimento';
                         }
-
+                        if($u->getDesabilitado() == 1){
+                            $ativo = 'clear';
+                        } else {
+                            $ativo = 'check';
+                        }
                         echo "
                             <tr>
+                                <td><i class='small text-white material-icons'>".$ativo."</i></td>
                                 <td>".$id."</td>
                                 <td>".$nome."</td>
                                 <td>".$email."</td>

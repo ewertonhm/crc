@@ -15,8 +15,11 @@ if(!isset($_POST['login'])){
 }
 
 if(isset($_POST['login']) AND isset($_POST['senha'])){
-    \controller\User::logar($_POST['login'],$_POST['senha']);
-    header('location:index.php');
+    if(\controller\User::logar($_POST['login'],$_POST['senha'])){
+        header('location:index.php');
+    } else {
+        header('location:index.php?error');
+    }
 }
 
 ?>
@@ -46,9 +49,13 @@ if(isset($_POST['login']) AND isset($_POST['senha'])){
     <label for="inputPassword" class="sr-only">Senha</label>
     <input type="password" id="inputPassword" name="senha" class="form-control" placeholder="Senha" required>
     <div class="checkbox mb-3">
-        <!--<label>
-            <input type="checkbox" value="remember-me"> Remember me
-        </label>-->
+
+        <?php
+            if(isset($_GET['error'])){
+                echo "<p style='color: red'>Erro no acesso!</p>";
+            }
+        ?>
+
     </div>
     <button class="btn btn-lg btn-success btn-block" type="submit">Entrar</button>
 </form>

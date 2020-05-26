@@ -27,6 +27,11 @@ if(isset($_POST['edit'])){
     if(isset($_POST['permissao']) AND $_POST['permissao'] != NULL AND $_POST['permissao'] != ''){
         $u->setPermissao((int)$_POST['permissao']);
     }
+    if(!isset($_POST['enable'])){
+        $u->setDesabilitado(1);
+    } else {
+        $u->setDesabilitado(0);
+    }
     $u->save();
 }
 

@@ -66,6 +66,14 @@
                 </div>
             </div>
             <div class="row">
+                <div class="input-field col s3">
+                    <label>
+                        <input type="checkbox" name="enable" class="filled-in" <?php if($dados->getDesabilitado() != 1){ echo "checked='checked'";}  ?>/>
+                        <span>Ativo</span>
+                    </label>
+                </div>
+            </div>
+            <div class="row">
                 <div class="input-field col s1">
                     <button class="btn waves-effect waves-light green" type="submit" name="edit">Salvar
                         <i class="material-icons right">send</i>

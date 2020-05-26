@@ -13,6 +13,8 @@
     <column name="permissao" phpName="Permissao" type="INTEGER"/>
     <column name="lista" phpName="Lista" type="INTEGER"/>
     <column name="form" phpName="Form" type="INTEGER"/>
+    <column name="tentativas" phpName="Tentativas" type="INTEGER"/>
+    <column name="desabilitado" phpName="Desabilitado" type="INTEGER"/>
   </table>
   <table name="atendimento" idMethod="native" phpName="Atendimento">
     <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true"/>

@@ -1,6 +1,5 @@
 <?php
 
-
 namespace controller;
 
 
@@ -12,14 +11,20 @@ class User
     {
         $usuario = AtendenteQuery::create()->findOneByLogin($login);
         if ($usuario != NULL) {
-            if ($usuario->getLogin() == $login AND $usuario->getSenha() == md5($senha)) {
-                if (!isset($_SESSION)) { session_start(); }
-                $_SESSION['logado'] = true;
-                $_SESSION['id'] = $usuario->getId();
-                $_SESSION['permissao'] = $usuario->getPermissao();
-                return true;
-            } else {
-                return false;
+            if($usuario->getTentativas() < 3){
+                if ($usuario->getLogin() == $login AND $usuario->getSenha() == md5($senha) AND $usuario->getDesabilitado() != 1) {
+                    if (!isset($_SESSION)) { session_start(); }
+                    $_SESSION['logado'] = true;
+                    $_SESSION['id'] = $usuario->getId();
+                    $_SESSION['permissao'] = $usuario->getPermissao();
+                    $usuario->setTentativas(0);
+                    $usuario->save();
+                    return true;
+                } else {
+                    $usuario->setTentativas($usuario->getTentativas()+1);
+                    $usuario->save();
+                    return false;
+                }
             }
         } else {
             return false;
@@ -46,5 +51,11 @@ class User
         } else {
             return false;
         }
+    }
+    public static function cleanLoginErrorCounter($id){
+        $usuario = AtendenteQuery::create()->findOneById($id);
+        $usuario->setTentativas(0);
+        $usuario->save();
+        return true;
     }
 }

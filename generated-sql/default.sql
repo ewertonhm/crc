@@ -30,6 +30,8 @@ CREATE TABLE "atendente"
     "permissao" INTEGER,
     "lista" INTEGER,
     "form" INTEGER,
+    "tentativas" INTEGER,
+    "desabilitado" INTEGER,
     PRIMARY KEY ("id")
 );
 
