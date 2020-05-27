@@ -63,13 +63,13 @@ $mesAtendimentos = AtendimentoQuery::create()->where('atendimento.data like ?', 
 <div class="center-align">
     <div class="row">
         <div class="col s12 dont-break">
-            <h4>Relatório do C.R.C</h4>
+            <h4>Relatório de atendimentos do C.R.C</h4>
             <h6><?php echo $periodoValue ;?></h6>
         </div>
     </div>
     <div class="row">
-        <div class="col s12 dont-break">
-            <h5>Atendimentos totais</h5>
+        <div class="col s6 dont-break">
+            <h5>Total</h5>
             <ul class="collapsible">
                 <li>
                     <div class="collapsible-header">
@@ -93,11 +93,7 @@ $mesAtendimentos = AtendimentoQuery::create()->where('atendimento.data like ?', 
                     </div>
                 </li>
             </ul>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col s12 dont-break">
-            <h5>Atendimentos por tipo de cliente no mês</h5>
+            <h5>Por tipo de cliente no mês</h5>
             <ul class="collapsible">
                 <?php
                 $as = TipoQuery::create()->find();
@@ -117,13 +113,11 @@ $mesAtendimentos = AtendimentoQuery::create()->where('atendimento.data like ?', 
                 ?>
             </ul>
         </div>
-    </div>
-    <div class="row">
-        <div class="col s12 dont-break">
-            <h5>Atendimentos por atendente no mês</h5>
+        <div class="col s6 dont-break">
+            <h5>Por atendente no mês</h5>
             <ul class="collapsible">
                 <?php
-                $as = AtendenteQuery::create()->find();
+                $as = AtendenteQuery::create()->orderByNome()->find();
                 foreach ($as as $a){
                     $icon = 'account_box';
 
@@ -138,24 +132,57 @@ $mesAtendimentos = AtendimentoQuery::create()->where('atendimento.data like ?', 
         </div>
     </div>
     <div class="row">
-        <div class="col s12 dont-break">
+        <div class="col s6 dont-break">
             <h5>Atendimentos por cidade no mês</h5>
             <ul class="collapsible">
                 <?php
-                    $as = CidadeQuery::create()->find();
-                    foreach ($as as $a){
-                        echo "<li><div class='collapsible-header'><i class='material-icons'>location_city</i>";
-                        echo $a->getNome();
-                        echo "<span class='badge'>";
-                        echo AtendimentoQuery::create()->filterByCidade($a)->where('atendimento.data like ?', $periodoMes)->find()->count();
-                        echo "</span></div></li>";
-                    }
+                $as = CidadeQuery::create()->find();
+                foreach ($as as $a){
+                    echo "<li><div class='collapsible-header'><i class='material-icons'>location_city</i>";
+                    echo $a->getNome();
+                    echo "<span class='badge'>";
+                    echo AtendimentoQuery::create()->filterByCidade($a)->where('atendimento.data like ?', $periodoMes)->find()->count();
+                    echo "</span></div></li>";
+                }
+                ?>
+            </ul>
+            <h5>Atendimentos por agendamento no mês</h5>
+            <ul class="collapsible">
+                <?php
+                $as = AgendamentoQuery::create()->find();
+                foreach ($as as $a){
+                    $icon = 'assignment_turned_in';
+                    echo "<li><div class='collapsible-header'><i class='material-icons'>".$icon."</i>";
+                    echo $a->getAgendamento();
+                    echo "<span class='badge'>";
+                    echo AtendimentoQuery::create()->filterByAgendamento($a)->where('atendimento.data like ?', $periodoMes)->find()->count();
+                    echo "</span></div></li>";
+                }
+                ?>
+            </ul>
+        </div>
+        <div class="col s6 dont-break">
+            <h5>Média de atendimentos por horario no mês</h5>
+            <ul class="collapsible">
+                <?php
+                $horas = ['08:00','09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00','21:00','22:00','23:00'];
+                foreach ($horas as $hora){
+                    $icon = 'access_time';
+                    echo "<li><div class='collapsible-header'><i class='material-icons'>".$icon."</i>";
+                    echo $hora;
+                    echo "<span class='badge'>";
+                    echo substr((AtendimentoQuery::create()->filterByHora($hora)->where('atendimento.data like ?', $periodoMes)->find()->count()/30),0,3);
+                    echo "</span></div></li>";
+                }
                 ?>
             </ul>
         </div>
     </div>
     <div class="row">
-        <div class="col s12 dont-break">
+
+    </div>
+    <div class="row">
+        <div class="col s6 dont-break">
             <h5>Atendimentos por contato no mês</h5>
             <ul class="collapsible">
                 <?php
@@ -180,10 +207,8 @@ $mesAtendimentos = AtendimentoQuery::create()->where('atendimento.data like ?', 
                 ?>
             </ul>
         </div>
-    </div>
-    <div class="row">
-        <div class="col s12 dont-break">
-            <h5>Atendimentos por solicitação no mês</h5>
+        <div class="col s6 dont-break">
+            <h5>Atendimento por solicitação no mês</h5>
             <ul class="collapsible">
                 <?php
                 $as = SolicitacaoQuery::create()->find();
@@ -207,6 +232,9 @@ $mesAtendimentos = AtendimentoQuery::create()->where('atendimento.data like ?', 
                 ?>
             </ul>
         </div>
+    </div>
+    <div class="row">
+
     </div>
     <div class="row">
         <div class="col s12 dont-break">
@@ -253,24 +281,7 @@ $mesAtendimentos = AtendimentoQuery::create()->where('atendimento.data like ?', 
             </ul>
         </div>
     </div>
-    <div class="row">
-        <div class="col s12 dont-break">
-            <h5>Atendimentos por agendamento no mês</h5>
-            <ul class="collapsible">
-                <?php
-                $as = AgendamentoQuery::create()->find();
-                foreach ($as as $a){
-                    $icon = 'assignment_turned_in';
-                    echo "<li><div class='collapsible-header'><i class='material-icons'>".$icon."</i>";
-                    echo $a->getAgendamento();
-                    echo "<span class='badge'>";
-                    echo AtendimentoQuery::create()->filterByAgendamento($a)->where('atendimento.data like ?', $periodoMes)->find()->count();
-                    echo "</span></div></li>";
-                }
-                ?>
-            </ul>
-        </div>
-    </div>
+
 
 </div>
 
