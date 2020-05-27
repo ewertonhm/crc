@@ -26,7 +26,7 @@
     <link rel="icon" href="img/footerfinal.png" sizes="16x16 32x32" type="image/png">
     <?php
         $atendimentos = '';
-        $data = '';
+        $periodo = '';
         if(isset($_GET['periodo'])){
             $mes = substr($_GET['periodo'], -2);
             $ano = substr($_GET['periodo'], 0, -3);
@@ -237,6 +237,19 @@
         </table>
     </div>
     <div class="fixed-action-btn">
+        <a class="btn-floating btn-large green" href="
+        <?php
+        if(AtendenteQuery::create()->findOneById($_SESSION['id'])->getForm() == 0){
+            echo "inserir.php";
+        } elseif(AtendenteQuery::create()->findOneById($_SESSION['id'])->getForm() == 1) {
+            echo "inserir-autocomplete.php";
+        } elseif(AtendenteQuery::create()->findOneById($_SESSION['id'])->getForm() == 2) {
+            echo "inserir-dropdown.php";
+        }
+        ?>
+        ">
+            <i class="large material-icons">add</i>
+        </a>
         <button class="btn-floating btn-large green" onClick="scrollToBottom()"><i class="large material-icons">arrow_downward</i></button>
     </div>
 

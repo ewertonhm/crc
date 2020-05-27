@@ -22,6 +22,9 @@ class User
                     return true;
                 } else {
                     $usuario->setTentativas($usuario->getTentativas()+1);
+                    if($usuario->getTentativas() >= 0){
+                        $usuario->setDesabilitado(1);
+                    }
                     $usuario->save();
                     return false;
                 }

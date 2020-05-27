@@ -31,6 +31,7 @@ if(isset($_POST['edit'])){
         $u->setDesabilitado(1);
     } else {
         $u->setDesabilitado(0);
+        $u->setTentativas(0);
     }
     $u->save();
 }
