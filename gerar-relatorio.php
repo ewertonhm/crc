@@ -64,7 +64,7 @@ $mesAtendimentos = AtendimentoQuery::create()->where('atendimento.data like ?', 
     <div class="row">
         <div class="col s12 dont-break">
             <h4>Relatório do C.R.C</h4>
-            <h6><?php echo $_GET['periodo'] ;?></h6>
+            <h6><?php echo $periodoValue ;?></h6>
         </div>
     </div>
     <div class="row">
@@ -120,7 +120,7 @@ $mesAtendimentos = AtendimentoQuery::create()->where('atendimento.data like ?', 
     </div>
     <div class="row">
         <div class="col s12 dont-break">
-            <h4>Atendimentos por atendente no mês</h4>
+            <h5>Atendimentos por atendente no mês</h5>
             <ul class="collapsible">
                 <?php
                 $as = AtendenteQuery::create()->find();
@@ -139,7 +139,7 @@ $mesAtendimentos = AtendimentoQuery::create()->where('atendimento.data like ?', 
     </div>
     <div class="row">
         <div class="col s12 dont-break">
-            <h4>Atendimentos por cidade no mês</h4>
+            <h5>Atendimentos por cidade no mês</h5>
             <ul class="collapsible">
                 <?php
                     $as = CidadeQuery::create()->find();
@@ -156,7 +156,7 @@ $mesAtendimentos = AtendimentoQuery::create()->where('atendimento.data like ?', 
     </div>
     <div class="row">
         <div class="col s12 dont-break">
-            <h4>Atendimentos por contato no mês</h4>
+            <h5>Atendimentos por contato no mês</h5>
             <ul class="collapsible">
                 <?php
                 $as = ContatoQuery::create()->find();
@@ -183,7 +183,7 @@ $mesAtendimentos = AtendimentoQuery::create()->where('atendimento.data like ?', 
     </div>
     <div class="row">
         <div class="col s12 dont-break">
-            <h4>Atendimentos por solicitação no mês</h4>
+            <h5>Atendimentos por solicitação no mês</h5>
             <ul class="collapsible">
                 <?php
                 $as = SolicitacaoQuery::create()->find();
@@ -210,7 +210,7 @@ $mesAtendimentos = AtendimentoQuery::create()->where('atendimento.data like ?', 
     </div>
     <div class="row">
         <div class="col s12 dont-break">
-            <h4>Atendimentos por motivo no mês</h4>
+            <h5>Atendimentos por motivo no mês</h5>
             <ul class="collapsible">
                 <?php
                 $as = MotivoQuery::create()->find();
@@ -237,7 +237,7 @@ $mesAtendimentos = AtendimentoQuery::create()->where('atendimento.data like ?', 
     </div>
     <div class="row">
         <div class="col s12 dont-break">
-            <h4>Atendimentos por contrato no mês</h4>
+            <h5>Atendimentos por contrato no mês</h5>
             <ul class="collapsible">
                 <?php
                 $as = ContratoQuery::create()->find();
@@ -255,7 +255,7 @@ $mesAtendimentos = AtendimentoQuery::create()->where('atendimento.data like ?', 
     </div>
     <div class="row">
         <div class="col s12 dont-break">
-            <h4>Atendimentos por agendamento no mês</h4>
+            <h5>Atendimentos por agendamento no mês</h5>
             <ul class="collapsible">
                 <?php
                 $as = AgendamentoQuery::create()->find();
