@@ -1,0 +1,20 @@
+{
+  "name": "crc",
+  "homepage": "https://github.com/ewertonhm/crc",
+  "description": "",
+  "main": "",
+  "authors": [
+    "Ewerton Henrique Marschalk"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "chartist": "^0.11.4"
+  }
+}
