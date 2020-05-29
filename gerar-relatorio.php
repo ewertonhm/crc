@@ -104,10 +104,16 @@ $mesAtendimentos = AtendimentoQuery::create()->where('atendimento.data like ?', 
                     } else {
                         $icon = 'business';
                     }
+
+                    $total = AtendimentoQuery::create()->where('atendimento.data like ?', $periodoMes)->find()->count();
+                    $parcial = AtendimentoQuery::create()->filterByTipo($a)->where('atendimento.data like ?', $periodoMes)->find()->count();
+                    $porcentagem = substr((($parcial * 100) / $total),0,4);
+
                     echo "<li><div class='collapsible-header'><i class='material-icons'>".$icon."</i>";
                     echo $a->getTipo();
-                    echo "<span class='badge'>";
-                    echo AtendimentoQuery::create()->filterByTipo($a)->where('atendimento.data like ?', $periodoMes)->find()->count();
+                    echo "<span class='badge'>".$parcial;
+                    echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+                    echo "<span class='badge'>".$porcentagem."%</span>";
                     echo "</span></div></li>";
                 }
                 ?>
@@ -121,10 +127,15 @@ $mesAtendimentos = AtendimentoQuery::create()->where('atendimento.data like ?', 
                 foreach ($as as $a){
                     $icon = 'account_box';
 
+                    $total = AtendimentoQuery::create()->where('atendimento.data like ?', $periodoMes)->find()->count();
+                    $parcial = AtendimentoQuery::create()->filterByAtendente($a)->where('atendimento.data like ?', $periodoMes)->find()->count();
+                    $porcentagem = substr(($parcial * 100) / $total,0,4);
+
                     echo "<li><div class='collapsible-header'><i class='material-icons'>".$icon."</i>";
                     echo $a->getNome();
-                    echo "<span class='badge'>";
-                    echo AtendimentoQuery::create()->filterByAtendente($a)->where('atendimento.data like ?', $periodoMes)->find()->count();
+                    echo "<span class='badge'>".$parcial;
+                    echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+                    echo "<span class='badge'>".$porcentagem."%</span>";
                     echo "</span></div></li>";
                 }
                 ?>
@@ -138,10 +149,17 @@ $mesAtendimentos = AtendimentoQuery::create()->where('atendimento.data like ?', 
                 <?php
                 $as = CidadeQuery::create()->find();
                 foreach ($as as $a){
+
+                    $total = AtendimentoQuery::create()->where('atendimento.data like ?', $periodoMes)->find()->count();
+                    $parcial = AtendimentoQuery::create()->filterByCidade($a)->where('atendimento.data like ?', $periodoMes)->find()->count();
+                    $porcentagem = substr(($parcial * 100) / $total,0,4);
+
+
                     echo "<li><div class='collapsible-header'><i class='material-icons'>location_city</i>";
                     echo $a->getNome();
-                    echo "<span class='badge'>";
-                    echo AtendimentoQuery::create()->filterByCidade($a)->where('atendimento.data like ?', $periodoMes)->find()->count();
+                    echo "<span class='badge'>".$parcial;
+                    echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+                    echo "<span class='badge'>".$porcentagem."%</span>";
                     echo "</span></div></li>";
                 }
                 ?>
@@ -151,11 +169,17 @@ $mesAtendimentos = AtendimentoQuery::create()->where('atendimento.data like ?', 
                 <?php
                 $as = AgendamentoQuery::create()->find();
                 foreach ($as as $a){
+
+                    $total = AtendimentoQuery::create()->where('atendimento.data like ?', $periodoMes)->find()->count();
+                    $parcial = AtendimentoQuery::create()->filterByAgendamento($a)->where('atendimento.data like ?', $periodoMes)->find()->count();
+                    $porcentagem = substr(($parcial * 100) / $total,0,4);
+
                     $icon = 'assignment_turned_in';
                     echo "<li><div class='collapsible-header'><i class='material-icons'>".$icon."</i>";
                     echo $a->getAgendamento();
-                    echo "<span class='badge'>";
-                    echo AtendimentoQuery::create()->filterByAgendamento($a)->where('atendimento.data like ?', $periodoMes)->find()->count();
+                    echo "<span class='badge'>".$parcial;
+                    echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+                    echo "<span class='badge'>".$porcentagem."%</span>";
                     echo "</span></div></li>";
                 }
                 ?>
@@ -198,10 +222,16 @@ $mesAtendimentos = AtendimentoQuery::create()->where('atendimento.data like ?', 
                     } else {
                         $icon = 'contacts';
                     }
+
+                    $total = AtendimentoQuery::create()->where('atendimento.data like ?', $periodoMes)->find()->count();
+                    $parcial = AtendimentoQuery::create()->filterByContato($a)->where('atendimento.data like ?', $periodoMes)->find()->count();
+                    $porcentagem = substr(($parcial * 100) / $total,0,4);
+
                     echo "<li><div class='collapsible-header'><i class='material-icons'>".$icon."</i>";
                     echo $a->getContato();
-                    echo "<span class='badge'>";
-                    echo AtendimentoQuery::create()->filterByContato($a)->where('atendimento.data like ?', $periodoMes)->find()->count();
+                    echo "<span class='badge'>".$parcial;
+                    echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+                    echo "<span class='badge'>".$porcentagem."%</span>";
                     echo "</span></div></li>";
                 }
                 ?>
@@ -223,10 +253,16 @@ $mesAtendimentos = AtendimentoQuery::create()->where('atendimento.data like ?', 
                     } else {
                         $icon = 'assignment';
                     }
+
+                    $total = AtendimentoQuery::create()->where('atendimento.data like ?', $periodoMes)->find()->count();
+                    $parcial = AtendimentoQuery::create()->filterBySolicitacao($a)->where('atendimento.data like ?', $periodoMes)->find()->count();
+                    $porcentagem = substr(($parcial * 100) / $total,0,4);
+
                     echo "<li><div class='collapsible-header'><i class='material-icons'>".$icon."</i>";
                     echo $a->getSolicitacao();
-                    echo "<span class='badge'>";
-                    echo AtendimentoQuery::create()->filterBySolicitacao($a)->where('atendimento.data like ?', $periodoMes)->find()->count();
+                    echo "<span class='badge'>".$parcial;
+                    echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+                    echo "<span class='badge'>".$porcentagem."%</span>";
                     echo "</span></div></li>";
                 }
                 ?>
@@ -253,10 +289,17 @@ $mesAtendimentos = AtendimentoQuery::create()->where('atendimento.data like ?', 
                     } else {
                         $icon = 'live_help';
                     }
+
+                    $total = AtendimentoQuery::create()->where('atendimento.data like ?', $periodoMes)->find()->count();
+                    $parcial = AtendimentoQuery::create()->filterByMotivo($a)->where('atendimento.data like ?', $periodoMes)->find()->count();
+                    $porcentagem = substr(($parcial * 100) / $total,0,4);
+
+
                     echo "<li><div class='collapsible-header'><i class='material-icons'>".$icon."</i>";
                     echo $a->getMotivo();
-                    echo "<span class='badge'>";
-                    echo AtendimentoQuery::create()->filterByMotivo($a)->where('atendimento.data like ?', $periodoMes)->find()->count();
+                    echo "<span class='badge'>".$parcial;
+                    echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+                    echo "<span class='badge'>".$porcentagem."%</span>";
                     echo "</span></div></li>";
                 }
                 ?>
@@ -271,10 +314,16 @@ $mesAtendimentos = AtendimentoQuery::create()->where('atendimento.data like ?', 
                 $as = ContratoQuery::create()->find();
                 foreach ($as as $a){
                     $icon = 'network_wifi';
+
+                    $total = AtendimentoQuery::create()->where('atendimento.data like ?', $periodoMes)->find()->count();
+                    $parcial = AtendimentoQuery::create()->filterByContrato($a)->where('atendimento.data like ?', $periodoMes)->find()->count();
+                    $porcentagem = substr(($parcial * 100) / $total,0,4);
+
                     echo "<li><div class='collapsible-header'><i class='material-icons'>".$icon."</i>";
                     echo $a->getContrato();
-                    echo "<span class='badge'>";
-                    echo AtendimentoQuery::create()->filterByContrato($a)->where('atendimento.data like ?', $periodoMes)->find()->count();
+                    echo "<span class='badge'>".$parcial;
+                    echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+                    echo "<span class='badge'>".$porcentagem."%</span>";
                     echo "</span></div></li>";
                 }
                 ?>
