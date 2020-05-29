@@ -34,6 +34,9 @@
 
     <!-- Materialize CSS -->
     <link rel="stylesheet" href="css/materialize/materialize.min.css" >
+
+    <!-- chartist -->
+    <link rel="stylesheet" href="bower_components/chartist/dist/chartist.min.css">
 </head>
 <body>
 <!-- Dropdown Structure -->
@@ -72,7 +75,7 @@
 <!-- jQuery first, then Popper.js, then Bootstrap JS, then Materialize -->
 <script src="js/jquery-3.5.1.min.js"></script>
 <script src="js/materialize.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<script src="bower_components/chartist/dist/chartist.min.js"></script>
 
 
 <script>
