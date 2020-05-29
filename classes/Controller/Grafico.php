@@ -11,6 +11,7 @@ class Grafico
     public function getTotalAtendimentosMesAnterior($quantosMesesAntes = 0){
         return count(AtendimentoQuery::create()->where('atendimento.data like ?', \Carbon\Carbon::parse(\Carbon\Carbon::now()->subMonth($quantosMesesAntes)->toDateTimeString())->isoFormat('%MM/YYYY'))->find());
     }
+
     public function getTotalAtendimentosPorClasseMes($arrayClasse,$getter,$filter,$quantosMesesAntes = 0){
         // recebe
         // Array de objetos da classe a ser filtrada
@@ -99,6 +100,7 @@ TAG;
 
 
     }
+
     public function GraficoTipoDeCliente($numeroDeMesesAntes = 0,$idDoCampo,$bgColor1 = 'rgba(63, 191, 63, 0.2)',$bgColor2 = 'rgba(63, 191, 191, 0.2)',$borderColor1 = 'rgba(63, 191, 63, 1)', $borderColor2 = 'rgba(63, 191, 191, 1)'){
         echo "<script>var ctx = document.getElementById('".$idDoCampo."'); var myChart = new Chart(ctx, {type: 'pie', data: { labels: [";
         // nomes campos
@@ -241,5 +243,77 @@ TAG;
 TAG;
 
 
+    }
+
+    public function chartDiv($id)
+    {
+        echo "div class='ct-chart ct-golden-section' id='$id'></div>'";
+    }
+
+    public function chartScript($chartId,$arrayDados,$getter,$filter, $periodo = '%12/1999')
+    {
+        // variavel periodo
+        if($periodo == '12/1999'){
+            $periodo =  \Carbon\Carbon::parse(\Carbon\Carbon::now()->toDateTimeString())->isoFormat('%MM/YYYY');
+        }
+
+
+
+
+        //open script
+        echo "<cript>";
+
+        //data
+        echo "data = {";
+        //lables
+        echo "labels: [";
+
+        $counter = 0;
+        foreach ($arrayDados as $a){
+            // labels
+            echo "'".$a->{$getter}()."'";
+
+            // virgulas
+            if (count($arrayDados)-1 > $counter){
+                echo ",";
+            }
+            $counter++;
+        }
+
+        echo "],";
+        //series
+        echo "series: [";
+
+        $counter = 0;
+        foreach ($arrayDados as $a){
+            echo AtendimentoQuery::create()->{$filter}($a)->where('atendimento.data like ?',$periodo)->find()->count();
+        }
+
+
+
+        echo "]]};";
+        //options
+        echo "var options = {distributeSeries: true}";
+
+        //responsiveOptions
+        echo "var responsiveOptions = [";
+        echo "['screen and (min-width: 641px) and (max-width: 1024px)', {";
+        echo "seriesBarDistance: 10,";
+        echo "axisX: {";
+        echo "labelInterpolationFnc: function (value) {";
+        echo "return value;";
+        echo "}}}],";
+        echo "['screen and (max-width: 640px)', {";
+        echo "seriesBarDistance: 5,";
+        echo "axisX: {";
+        echo "labelInterpolationFnc: function (value) {";
+        echo "return value[0];";
+        echo "}}}]];";
+
+        //start chart
+        echo "new Chartlist.Bar('#".$chartId."', data, options, responsiveOptions);";
+
+        //close script
+        echo "</script>";
     }
 }

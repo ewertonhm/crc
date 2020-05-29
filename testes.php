@@ -1,7 +1,7 @@
 <?php
 require_once 'config.php';
 
-$test = $_GET['id'];
-var_dump($test);
+$graficos = new \controller\Grafico();
 
-//$g->GraficoTodos(ContratoQuery::create()->find(),'getContrato','FilterByContrato',0,'teste','Atendimentos por Contrato');
+echo "<pre>";
+$graficos->chartScript('teste',TipoQuery::create()->find(),'getTipo','filterByTipo','%05/2020');
