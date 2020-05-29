@@ -66,51 +66,6 @@
 
 <div class="container">
 
-
-    <div class="row">
-        <div class="col s8">
-            <div class="card-panel">
-                <canvas id="contato" width="400" height="200"></canvas>
-            </div>
-        </div>
-        <div class="col s4">
-            <ul class="collapsible">
-                <li>
-                    <div class="collapsible-header">
-                        <i class="material-icons">date_range</i>
-                        Total de atendimentos:
-                        <span class="badge"><?php echo AtendimentoQuery::create()->count();?></span></div>
-                    <div class="collapsible-body"><p>Total de atendimentos: <?php echo AtendimentoQuery::create()->count();?></p></div>
-                </li>
-                <li>
-                    <div class="collapsible-header">
-                        <i class="material-icons">today</i>
-                        Atendimentos no mês:
-                        <span class="badge"><?php echo $grafico->getTotalAtendimentosMesAnterior(0)?></p></span></div>
-                    <div class="collapsible-body"><p>Atendimentos no mês: <?php echo $grafico->getTotalAtendimentosMesAnterior(0)?></p></div>
-                </li>
-            </ul>
-            <div class="card-panel">
-                <canvas id="tipo_cliente" width="400" height="200"></canvas>
-            </div>
-        </div>
-        <div class="col s2"></div>
-    </div>
-    <div class="row">
-        <div class="col s8">
-            <div class="card-panel">
-                <canvas id="cidade" width="400" height="200"></canvas>
-            </div>
-        </div>
-        <div class="col s4">
-            <div class="card-panel">
-                <canvas id="solicitacao" width="400" height="200"></canvas>
-            </div>
-            <div class="card-panel">
-                <canvas id="agendamento" width="400" height="190"></canvas>
-            </div>
-        </div>
-    </div>
 </div>
 
 
@@ -129,11 +84,6 @@
 
 </script>
 <?php
-$grafico->GraficoTodos(ContatoQuery::create()->find(),'getContato','filterByContato',0,'contato','Atendimentos por Plataforma','bar');
-$grafico->GraficoTipoDeCliente(0,'tipo_cliente');
-$grafico->GraficoTodos(CidadeQuery::create()->find(),'getNome','FilterByCidade',0,'cidade','Atendimentos por Cidade');
-$grafico->GraficoTodos(SolicitacaoQuery::create()->find(),'getSolicitacao','filterBySolicitacao',0,'solicitacao','Atendimentos por Solicitação','bar');
-$grafico->GraficoTodos(AgendamentoQuery::create()->find(),'getAgendamento','filterByAgendamento',0,'agendamento','Agendamentos','bar');
 
 ?>
 
